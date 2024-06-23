@@ -17,7 +17,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('role:seller')->group(function () {
         Route::get('/seller', [SellerController::class, 'index'])->name('seller');
-        Route::get('/seller/produk', [ProductController::class, 'index'])->name('seller.produk');
+        Route::get('/seller/produk', [ProductController::class, 'index'])->name('dashboard.product.index');
+        Route::get('/seller/produk/tambah', [ProductController::class, 'create'])->name('dashboard.product.tambah');
+        Route::post('/seller/produk', [ProductController::class, 'store'])->name('dashboard.product.simpan');
+        Route::get('/seller/produk/edit/{slug}', [ProductController::class, 'edit'])->name('dashboard.product.edit');
+        Route::put('/seller/produk/{slug}', [ProductController::class, 'update'])->name('dashboard.product.update');
+        Route::delete('/seller/produk/{slug}', [ProductController::class, 'destroy'])->name('dashboard.product.hapus');
     });
 
     Route::prefix('profile')->group(function () {
