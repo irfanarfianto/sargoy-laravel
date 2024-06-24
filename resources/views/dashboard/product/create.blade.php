@@ -6,7 +6,10 @@
             </h4>
             <x-breadcrumb :items="$breadcrumbItems" />
         </div>
-        <button type="submit" form="tambah-product-form" class="btn btn-primary w-full md:w-auto">Simpan</button>
+        <div class="flex flex-wrap-reverse w-full md:w-auto">
+            <button class="btn btn-ghost w-full md:w-auto" onclick="window.history.back();">Kembali</button>
+            <button type="submit" form="tambah-product-form" class="btn btn-primary w-full md:w-auto">Simpan</button>
+        </div>
     </div>
     <div class="container mx-auto px-4 py-8">
         <form id="tambah-product-form" action="{{ route('dashboard.product.simpan') }}" method="POST"
@@ -43,6 +46,21 @@
                     <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>
                 @enderror
             </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">Status Produk</label>
+                <div class="mt-1 flex items-center">
+                    <input id="active" name="active" type="checkbox" class="toggle toggle-success" checked="checked"
+                        onchange="updateStatusLabel()" />
+                    <label id="statusLabel" for="active" class="ml-2 block text-sm leading-5 text-gray-900">
+                        Aktif
+                    </label>
+                </div>
+                @error('active')
+                    <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
 
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
@@ -142,4 +160,15 @@
             slugInput.value = slugValue;
         });
     });
+
+    function updateStatusLabel() {
+        const checkbox = document.getElementById('active');
+        const statusLabel = document.getElementById('statusLabel');
+
+        if (checkbox.checked) {
+            statusLabel.textContent = 'Aktif';
+        } else {
+            statusLabel.textContent = 'Tidak Aktif';
+        }
+    }
 </script>

@@ -6,7 +6,11 @@
             </h4>
             <x-breadcrumb :items="$breadcrumbItems" />
         </div>
-        <button type="submit" form="edit-product-form" class="btn btn-primary w-full md:w-auto">Simpan Perubahan</button>
+        <div class="flex flex-wrap-reverse w-full md:w-auto">
+            <button class="btn btn-ghost w-full md:w-auto" onclick="window.history.back();">Kembali</button>
+            <button type="submit" form="edit-product-form" class="btn btn-primary w-full md:w-auto">Simpan
+                Perubahan</button>
+        </div>
     </div>
     <div class="container mx-auto px-4 py-8">
         <form id="edit-product-form" action="{{ route('dashboard.product.update', $product->slug) }}" method="POST"
@@ -46,6 +50,22 @@
                     <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>
                 @enderror
             </div>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700">Status Produk</label>
+                <div class="mt-1 flex items-center">
+                    <input id="active" name="active" type="checkbox" class="toggle toggle-success"
+                        {{ $product->active ? 'checked' : '' }} />
+                    <label for="active" class="ml-2 block text-sm leading-5 text-gray-900">
+                        {{ $product->active ? 'Aktif' : 'Tidak Aktif' }}
+                    </label>
+                </div>
+                @error('active')
+                    <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>
+                @enderror
+            </div>
+
+
 
             <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
@@ -159,5 +179,23 @@
 
             slugInput.value = slugValue;
         });
+
+        const checkbox = document.getElementById('active');
+        const statusLabel = document.getElementById('statusLabel');
+
+        checkbox.addEventListener('change', function() {
+            if (checkbox.checked) {
+                statusLabel.textContent = 'Aktif';
+            } else {
+                statusLabel.textContent = 'Tidak Aktif';
+            }
+        });
+
+        // Initialize label based on initial checkbox state
+        if (checkbox.checked) {
+            statusLabel.textContent = 'Aktif';
+        } else {
+            statusLabel.textContent = 'Tidak Aktif';
+        }
     });
 </script>

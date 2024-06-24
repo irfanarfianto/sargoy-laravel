@@ -1,12 +1,12 @@
 <x-dashboard-layout>
-    <div class="pt-14 flex w-full justify-between items-start">
+    <div class="pt-14 flex flex-wrap w-full justify-between items-start">
         <div class="flex flex-col">
             <h4 class="text-xl font-bold text-gray-900">
                 {{ __('Daftar Produk') }}
             </h4>
             <x-breadcrumb :items="$breadcrumbItems" />
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center justify-between w-full md:w-auto">
             <div class="dropdown dropdown-left">
                 <div tabindex="0" role="button" class="btn btn-ghost m-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -48,17 +48,39 @@
                             Nama Z-A
                         </a>
                     </li>
-                    <!-- Tambahkan opsi pengurutan lainnya sesuai kebutuhan -->
                 </ul>
             </div>
-            <a href="{{ route('dashboard.product.tambah') }}" class="btn btn-primary">Tambah Produk</a>
+            <!-- Form Pencarian -->
+            <form action="{{ route('dashboard.product.index') }}" method="GET" class="flex items-center mr-2">
+                <div class="relative flex-grow">
+                    <input type="text" class="rounded-l-md input input-bordered w-full py-2 px-4" name="search"
+                        value="{{ $search }}" placeholder="Search" />
+                    <button type="submit" class=" absolute right-0 top-0 bottom-0 px-3 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            class="h-5 w-5">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            <a href="{{ route('dashboard.product.tambah') }}" class="btn btn-primary">
+                <span class="hidden sm:inline">Tambah Produk</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+            </a>
+
         </div>
     </div>
+
 
     <!-- Daftar Produk -->
     <div class="container mx-auto">
         @if ($products->isEmpty())
-            <p class="text-center text-gray-600 mt-8">Produk yang Anda cari tidak ditemukan.</p>
+            <p class="text-center text-gray-600 mt-8">Produk {{ $search }} yang Anda cari tidak ditemukan.</p>
         @else
             <div class="overflow-x-auto">
                 <table class="table">
@@ -67,11 +89,11 @@
                         <tr>
                             <th>
                                 <label>
-                                    <input type="checkbox" class="checkbox" />
+                                    <input type="checkbox" id="select-all-checkbox" class="checkbox checkbox-primary" />
                                 </label>
                             </th>
                             <th>Nama</th>
-                            <th>Harga</th>
+                            <th>Dilihat</th>
                             <th>Status</th>
                             <th>Aksi</th>
                         </tr>
@@ -81,7 +103,7 @@
                             <tr>
                                 <th>
                                     <label>
-                                        <input type="checkbox" class="checkbox" />
+                                        <input type="checkbox" class="checkbox checkbox-primary" />
                                     </label>
                                 </th>
                                 <td>
@@ -108,7 +130,18 @@
                                     </div>
                                 </td>
                                 <td>
-                                    {{ $product->price }}
+                                    <div class="item-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class=" size-3 inline-block ml-1">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
+                                        </svg>
+                                        @if ($product->view_count > 0)
+                                            {{ $product->view_count }}x
+                                        @else
+                                            0x
+                                        @endif
+                                    </div>
                                 </td>
                                 <td>
                                     @if ($product->active)
@@ -119,40 +152,150 @@
                                 </td>
 
                                 <th>
-                                    <a href="{{ route('dashboard.product.edit', $product->slug) }}"
-                                        class="text-indigo-600 hover:text-indigo-900 btn btn-ghost btn-xs">Edit</a>
-                                    <a class="btn btn-ghost btn-xs text-error"
-                                        onclick="my_modal_1.showModal()">Hapus</a>
-
+                                    <div class=" flex flex-wrap item-center">
+                                        <a class="btn btn-ghost btn-xs text-neutral"
+                                            onclick="document.getElementById('viewModal{{ $product->id }}').showModal()">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                            </svg>
+                                        </a>
+                                        <a href="{{ route('dashboard.product.edit', $product->slug) }}"
+                                            class="text-indigo-600 hover:text-indigo-900 btn btn-ghost btn-xs">Edit</a>
+                                        <a class="btn btn-ghost btn-xs text-error"
+                                            onclick="document.getElementById('deleteModal{{ $product->id }}').showModal()">
+                                            Hapus
+                                        </a>
+                                    </div>
                                 </th>
                             </tr>
+
+                            <!-- Modal Hapus -->
+                            <dialog id="deleteModal{{ $product->id }}" class="modal modal-bottom sm:modal-middle">
+                                <div class="modal-box">
+                                    <form method="dialog">
+                                        <button
+                                            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                    </form>
+                                    <h3 class="text-lg font-bold">Hapus Produk?</h3>
+                                    <p class="py-4">Anda yakin ingin menghapus produk {{ $product->name }} ?</p>
+                                    <div class="modal-action">
+                                        <form action="{{ route('dashboard.product.hapus', $product->slug) }}"
+                                            method="POST">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-error btn-md">Hapus</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </dialog>
+
+                            <!-- Modal Lihat -->
+                            <dialog id="viewModal{{ $product->id }}" class="modal modal-bottom sm:modal-middle">
+                                <div class="modal-box">
+                                    <form method="dialog">
+                                        <button
+                                            class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+                                    </form>
+                                    <h3 class="text-lg font-bold">{{ $product->name }}</h3>
+                                    <p class="py-4">{{ $product->description }}</p>
+                                    <div class="flex flex-col gap-2">
+                                        <div>
+                                            <span class="font-semibold">Harga:</span> {{ $product->price }}
+                                        </div>
+                                        <div>
+                                            <span class="font-semibold">Kategori:</span>
+                                            {{ $product->category->name }}
+                                        </div>
+                                        <div>
+                                            <span class="font-semibold">Status:</span>
+                                            @if ($product->active)
+                                                <span class="badge badge-success badge-outline badge-sm">Aktif</span>
+                                            @else
+                                                <span class="badge badge-danger badge-outline badge-sm">Nonaktif</span>
+                                            @endif
+                                        </div>
+                                        @if ($product->material)
+                                            <div>
+                                                <span class="font-semibold">Material:</span> {{ $product->material }}
+                                            </div>
+                                        @endif
+                                        @if ($product->color)
+                                            <div>
+                                                <span class="font-semibold">Warna:</span> {{ $product->color }}
+                                            </div>
+                                        @endif
+                                        @if ($product->size)
+                                            <div>
+                                                <span class="font-semibold">Ukuran:</span> {{ $product->size }}
+                                            </div>
+                                        @endif
+                                        @if ($product->pattern)
+                                            <div>
+                                                <span class="font-semibold">Pola:</span> {{ $product->pattern }}
+                                            </div>
+                                        @endif
+                                        @if ($product->ecommerce_link)
+                                            <div>
+                                                <span class="font-semibold">Link E-commerce:</span> <a
+                                                    href="{{ $product->ecommerce_link }}" target="_blank"
+                                                    class="text-blue-500 underline">{{ $product->ecommerce_link }}</a>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="modal-action">
+                                        <form method="dialog">
+                                            <button class="btn btn-primary">Tutup</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </dialog>
                         @endforeach
+                    </tbody>
                 </table>
             </div>
             <div class="mt-4">
-                {{ $products->links() }}
+                {{ $products->links('vendor.pagination.custom') }}
             </div>
+
         @endif
     </div>
-
-    <!-- Modal Hapus -->
-    <dialog id="my_modal_1" class="modal modal-bottom sm:modal-middle">
-        @foreach ($products as $product)
-            <div class="modal-box">
-                <form method="dialog">
-                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                </form>
-                <h3 class="text-lg font-bold">Hapus Produk?</h3>
-                <p class="py-4">Anda yakin ingin menghapus produk ini ?</p>
-                <div class="modal-action">
-                    <form action="{{ route('dashboard.product.hapus', $product->slug) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-
-                        <button type="submit" class="btn btn-error btn-md">Hapus</button>
-                    </form>
-                </div>
-            </div>
-        @endforeach
-    </dialog>
 </x-dashboard-layout>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Mengambil elemen checkbox untuk memilih semua dan semua checkbox lainnya
+        const selectAllCheckbox = document.getElementById('select-all-checkbox');
+        const checkboxes = document.querySelectorAll('.checkbox');
+
+        // Tambahkan event listener untuk checkbox "Pilih Semua"
+        selectAllCheckbox.addEventListener('change', function() {
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+        });
+
+        // Tambahkan event listener untuk checkbox individual
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                // Jika salah satu checkbox individual tidak terpilih, checkbox "Pilih Semua" harus tidak terpilih
+                if (!this.checked) {
+                    selectAllCheckbox.checked = false;
+                } else {
+                    // Periksa apakah semua checkbox lainnya terpilih, jika ya, centang checkbox "Pilih Semua"
+                    let allChecked = true;
+                    checkboxes.forEach(cb => {
+                        if (!cb.checked) {
+                            allChecked = false;
+                        }
+                    });
+                    selectAllCheckbox.checked = allChecked;
+                }
+            });
+        });
+    });
+</script>

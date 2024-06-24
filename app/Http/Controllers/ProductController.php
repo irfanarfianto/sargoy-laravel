@@ -76,7 +76,7 @@ class ProductController extends Controller
             'variants.*.variant_name' => 'required|string|max:255',
             'variants.*.variant_value' => 'required|string|max:255',
             'variants.*.price' => 'required|numeric|min:0',
-            'variants.*.stock' => 'required|integer|min:0',
+            'variants.*.stock' => 'required|integer|min:0', 'active' => 'boolean',
         ]);
 
         DB::beginTransaction();
@@ -93,7 +93,7 @@ class ProductController extends Controller
                 'color' => $validatedData['color'],
                 'size' => $validatedData['size'],
                 'pattern' => $validatedData['pattern'],
-                'ecommerce_link' => $validatedData['ecommerce_link'],
+                'ecommerce_link' => $validatedData['ecommerce_link'], 'active' => $validatedData['active'] ?? false,
             ]);
 
             if ($request->hasFile('images')) {
@@ -170,6 +170,7 @@ class ProductController extends Controller
             'variants.*.variant_value' => 'required|string|max:255',
             'variants.*.price' => 'required|numeric|min:0',
             'variants.*.stock' => 'required|integer|min:0',
+            'active' => 'boolean',
         ]);
 
         DB::beginTransaction();
@@ -187,11 +188,11 @@ class ProductController extends Controller
                 'size' => $validatedData['size'],
                 'pattern' => $validatedData['pattern'],
                 'ecommerce_link' => $validatedData['ecommerce_link'],
+                'active' => $validatedData['active'] ?? false,
             ]);
 
             if ($request->hasFile('images')) {
                 ProductImage::where('product_id', $product->id)->delete();
-
 
                 foreach ($request->file('images') as $image) {
                     $imageUrl = $image->store('product_images');
@@ -241,22 +242,29 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try {
+            // Hapus semua gambar produk
             $images = ProductImage::where('product_id', $product->id)->get();
             foreach ($images as $image) {
                 Storage::delete($image->image_url);
                 $image->delete();
             }
 
+            // Hapus semua variant produk
             ProductVariant::where('product_id', $product->id)->delete();
+
+            // Hapus produk itu sendiri
             $product->delete();
 
             DB::commit();
+
             flash()->success('Product deleted successfully.');
             return redirect()->route('dashboard.product.index');
         } catch (Exception $e) {
             DB::rollBack();
+
             flash()->error('Failed to delete product: ' . $e->getMessage());
             Log::error('Error deleting product: ' . $e->getMessage());
+
             return back();
         }
     }
