@@ -6,7 +6,7 @@
             </h4>
             <x-breadcrumb :items="$breadcrumbItems" />
         </div>
-        <div class="flex items-center justify-between w-full md:w-auto">
+        <div class="flex items-center justify-end w-full md:w-auto">
             <!-- Dropdown untuk memilih kriteria sorting -->
             <details class="dropdown dropdown-end">
                 <summary class="btn m-1">{{ __('Urutkan') }}</summary>
