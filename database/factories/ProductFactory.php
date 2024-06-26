@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -24,8 +25,12 @@ class ProductFactory extends Factory
      */
     public function definition()
     {
+        // Ambil user yang memiliki peran 'seller' atau 'admin'
+        $sellerOrAdmin = User::role(['seller', 'admin'])->get()->random();
+
         return [
             'category_id' => \App\Models\Category::factory(), // Menggunakan factory Category untuk relasi
+            'user_id' => $sellerOrAdmin->id,
             'name' => $this->faker->sentence(3), // Nama produk dengan kalimat acak
             'slug' => $this->faker->slug, // Slug produk, bisa digunakan untuk URL
             'description' => $this->faker->paragraph(3), // Deskripsi produk dengan beberapa paragraf acak

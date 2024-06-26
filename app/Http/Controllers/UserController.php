@@ -21,13 +21,18 @@ class UserController extends Controller
 
 
         $users = $usersQuery->paginate(10);
+        $usersCount = $usersQuery->count();
 
         $roles = Role::all();
 
         $breadcrumbItems = [
             ['name' => 'Dashboard', 'url' => route('admin')],
-            ['name' => 'Daftar Pengguna'],
+            ['name' => 'Daftar Pengguna', 'url' => route('users.index')],
         ];
+
+        if (!empty($search)) {
+            $breadcrumbItems[] = ['name' => 'Hasil Pencarian (' . $usersCount . ')'];
+        }
 
         return view('dashboard.admin.users.index', compact('users', 'breadcrumbItems', 'roles', 'search'));
     }

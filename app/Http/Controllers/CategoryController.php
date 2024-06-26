@@ -12,8 +12,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('categories.index', compact('categories'));
+        $categories = Category::paginate(10);
+        $breadcrumbItems = [
+            ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
+            ['name' => 'Category'],
+        ];
+        return view('dashboard.categories.index', compact('categories', 'breadcrumbItems'));
     }
 
     /**
@@ -21,7 +25,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('categories.create');
+        return view('dashboard.categories.create');
     }
 
     /**
@@ -36,8 +40,8 @@ class CategoryController extends Controller
 
         Category::create($request->all());
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Category created successfully.');
+        flash()->success('Category created successfully.');
+        return redirect()->route('categories.index');
     }
 
     /**
@@ -45,7 +49,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return view('categories.show', compact('category'));
+        return view('dashboard.categories.show', compact('category'));
     }
 
     /**
@@ -53,7 +57,7 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('categories.edit', compact('category'));
+        return view('dashboard.categories.edit', compact('category'));
     }
 
     /**
@@ -68,8 +72,8 @@ class CategoryController extends Controller
 
         $category->update($request->all());
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Category updated successfully.');
+        flash()->success('Category updated successfully.');
+        return redirect()->route('dashboard.categories.index');
     }
 
     /**
@@ -79,7 +83,7 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return redirect()->route('categories.index')
-            ->with('success', 'Category deleted successfully.');
+        flash()->success('Category deleted successfully.');
+        return redirect()->route('dashboard.categories.index');
     }
 }

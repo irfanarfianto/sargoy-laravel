@@ -21,7 +21,8 @@ class ProductController extends Controller
         $direction = $request->get('direction', 'desc');
         $search = $request->get('search');
 
-        $query = Product::with('category', 'images');
+        $query = Product::with('category', 'images')
+            ->where('user_id', auth()->id()); // Filter produk berdasarkan ID pengguna yang sedang login
 
         // Filter data berdasarkan pencarian
         if ($search) {
@@ -46,6 +47,7 @@ class ProductController extends Controller
 
         return view('dashboard.product.index', compact('products', 'breadcrumbItems', 'search'));
     }
+
 
 
     public function create()
@@ -83,6 +85,7 @@ class ProductController extends Controller
 
         try {
             $product = Product::create([
+                'user_id' => auth()->id(), 
                 'category_id' => $validatedData['category_id'],
                 'name' => $validatedData['name'],
                 'slug' => Str::slug($validatedData['name']),
