@@ -1,6 +1,7 @@
 @php
     $userName = Auth::user()->name;
     $initials = strtoupper(substr($userName, 0, 1));
+    $userRole = Auth::user()->roles()->first()->name;
 @endphp
 
 <div class="navbar bg-neutral px-5 fixed top-0 z-50">
@@ -16,9 +17,14 @@
     <div class="navbar-end">
         <div class="dropdown dropdown-end">
             <button tabindex="0" role="button" class="flex items-center gap-3">
-                <span class="hidden md:block text-base-100">{{ $userName }}</span>
+                <div class="flex flex-col items-end">
+                    <span class="hidden md:block text-base-100">{{ $userName }}</span>
+                    @if ($userRole)
+                        <span class="text-xs text-neutral-content">{{ ucfirst($userRole) }}</span>
+                    @endif
+                </div>
                 <div class="avatar online placeholder">
-                    <div class="bg-primary text-neutral-content rounded-full w-8">
+                    <div class="bg-primary text-neutral-content rounded-full w-10">
                         <span class="text-xl"> {{ $initials }}</span>
                     </div>
                 </div>
