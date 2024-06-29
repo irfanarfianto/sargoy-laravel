@@ -6,93 +6,122 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Illuminate\Database\QueryException;
 
 class UserController extends Controller
 {
     public function index(Request $request)
     {
-        $search = $request->input('search');
-        $usersQuery = User::query();
+        try {
+            $search = $request->input('search');
+            $usersQuery = User::query();
 
-        if (!empty($search)) {
-            $usersQuery->where('name', 'like', '%' . $search . '%')
-                ->orWhere('email', 'like', '%' . $search . '%');
+            if (!empty($search)) {
+                $usersQuery->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('email', 'like', '%' . $search . '%');
+            }
+
+            $users = $usersQuery->paginate(10);
+            $usersCount = $usersQuery->count();
+
+            $roles = Role::all();
+
+            $breadcrumbItems = [
+                ['name' => 'Dashboard', 'url' => route('admin')],
+                ['name' => 'Daftar Pengguna', 'url' => route('users.index')],
+            ];
+
+            if (!empty($search)) {
+                $breadcrumbItems[] = ['name' => 'Hasil Pencarian (' . $usersCount . ')'];
+            }
+
+            return view('dashboard.admin.users.index', compact('users', 'breadcrumbItems', 'roles', 'search'));
+        } catch (\Exception $e) {
+            // Handle any unexpected exceptions here
+            flash()->error('Error: ' . $e->getMessage());
+            return redirect()->back();
         }
-
-
-        $users = $usersQuery->paginate(10);
-        $usersCount = $usersQuery->count();
-
-        $roles = Role::all();
-
-        $breadcrumbItems = [
-            ['name' => 'Dashboard', 'url' => route('admin')],
-            ['name' => 'Daftar Pengguna', 'url' => route('users.index')],
-        ];
-
-        if (!empty($search)) {
-            $breadcrumbItems[] = ['name' => 'Hasil Pencarian (' . $usersCount . ')'];
-        }
-
-        return view('dashboard.admin.users.index', compact('users', 'breadcrumbItems', 'roles', 'search'));
     }
 
 
     public function create()
     {
-        $roles = Role::all();
-        return view('users.create', compact('roles'));
+        try {
+            $roles = Role::all();
+            return view('users.create', compact('roles'));
+        } catch (\Exception $e) {
+            flash()->error('Error: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8|confirmed',
-            'roles' => 'required|array'
-        ]);
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8|confirmed',
+                'roles' => 'required|array'
+            ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
 
-        $user->syncRoles($request->roles);
+            $user->syncRoles($request->roles);
 
-        return redirect()->route('dashboard.admin.users.index')->with('success', 'User created successfully.');
+            flash()->success('User created successfully.');
+
+            return redirect()->route('dashboard.admin.users.index');
+        } catch (\Exception $e) {
+            // Handle any unexpected exceptions here
+            flash()->error('Error: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     public function edit(User $user)
     {
-        $roles = Role::all();
-        return view('users.edit', compact('user', 'roles'));
+        try {
+            $roles = Role::all();
+            return view('users.edit', compact('user', 'roles'));
+        } catch (\Exception $e) {
+            flash()->error('Error: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     public function update(Request $request, User $user)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'password' => 'nullable|string|min:8|confirmed',
-            'roles' => 'required|array'
-        ]);
+        try {
+            $request->validate([
+                'roles' => 'required|array'
+            ]);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
-        ]);
 
-        $user->syncRoles($request->roles);
-
-        return redirect()->route('dashboard.admin.users.index')->with('success', 'User updated successfully.');
+            $user->syncRoles($request->roles);
+            flash()->success('User updated successfully.');
+            return redirect()->route('users.index');
+        } catch (\Exception $e) {
+            // Handle any unexpected exceptions here
+            flash()->error('Error: ' . $e->getMessage());
+            return redirect()->back();
+        }
     }
 
     public function destroy(User $user)
     {
-        $user->delete();
-        return redirect()->route('dashboard.admin.users.index')->with('success', 'User deleted successfully.');
+        try {
+            $user->delete();
+            flash()->success('User deleted successfully.');
+            return redirect()->route('users.index');
+        } catch (\Exception $e) {
+            // Handle any unexpected exceptions here
+            flash()->error('Error: ' . $e->getMessage());
+            return redirect()->route('users.index');
+        }
     }
 }

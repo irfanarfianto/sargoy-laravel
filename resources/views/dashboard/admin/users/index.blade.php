@@ -87,7 +87,7 @@
                                         <select name="roles[]" class="select select-bordered w-full"
                                             {{ $user->hasRole('admin') ? 'disabled' : '' }}>
                                             @foreach ($roles as $role)
-                                                <option value="{{ $role->id }}"
+                                                <option value="{{ $role->name }}"
                                                     {{ $user->hasRole($role->name) ? 'selected' : '' }}>
                                                     {{ $role->name }}
                                                 </option>

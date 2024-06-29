@@ -46,7 +46,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
 
     Route::prefix('profile')->group(function () {
-        Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
+        Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
+        Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });

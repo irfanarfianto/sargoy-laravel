@@ -16,21 +16,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // $this->call(RolePermissionSeeder::class);
+        // $this->call(UserSeeder::class);
 
-        // User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
+        // Product::factory()->count(10)->create()->each(function ($product) {
+        //     $product->variants()->saveMany(ProductVariant::factory()->count(3)->make());
+        //     $product->images()->saveMany(ProductImage::factory()->count(3)->make());
+        // });
 
-        $this->call(RolePermissionSeeder::class);
-        $this->call(UserSeeder::class);
+        // User::factory()->count(1000)->create();
 
-        Product::factory()->count(10)->create()->each(function ($product) {
-            $product->variants()->saveMany(ProductVariant::factory()->count(3)->make());
-            $product->images()->saveMany(ProductImage::factory()->count(3)->make());
-        });
-
-        User::factory()->count(1000)->create();
+        $this->call([
+            AdminProfileSeeder::class,
+            SellerProfileSeeder::class,
+            VisitorProfileSeeder::class,
+        ]);
     }
 }

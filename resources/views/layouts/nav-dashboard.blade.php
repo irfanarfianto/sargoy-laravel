@@ -23,14 +23,15 @@
                         <span class="text-xs text-neutral-content">{{ ucfirst($userRole) }}</span>
                     @endif
                 </div>
-                <div class="avatar online placeholder">
-                    <div class="bg-primary text-neutral-content rounded-full w-10">
-                        <span class="text-xl"> {{ $initials }}</span>
+                <div class="avatar">
+                    <div class="mask mask-squircle h-10 w-10">
+                        <img src="https://ui-avatars.com/api/?name={{ urlencode($initials) }}"
+                            alt="Avatar of {{ $initials }}" />
                     </div>
                 </div>
             </button>
             <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                <li><a href="{{ route('profile.edit') }}">Profile</a></li>
+                <li><a href="{{ route('profile.index') }}">Profile</a></li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" class="m-0">
                         @csrf

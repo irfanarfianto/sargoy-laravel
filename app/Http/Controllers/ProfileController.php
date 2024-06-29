@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Admin;
+use App\Models\Seller;
+use App\Models\Visitor;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -11,6 +14,29 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
+    /**
+     * Show the user's profile.
+     */
+    public function index(Request $request): View
+    {
+        $user = $request->user();
+
+        $breadcrumbItems = [
+            ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
+            ['name' => 'Profile'],
+        ];
+
+        if ($user->hasRole('admin')) {
+            $profile = Admin::where('user_id', $user->id)->first();
+        } elseif ($user->hasRole('seller')) {
+            $profile = Seller::where('user_id', $user->id)->first();
+        } else {
+            $profile = null; // Handle other types of users or roles here
+        }
+
+        return view('dashboard.profile.index', compact('user', 'profile', 'breadcrumbItems'));
+    }
+
     /**
      * Display the user's profile form.
      */
@@ -26,15 +52,37 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        try {
+            // Update basic user information
+            $user->fill($request->validated());
+
+            // Check if email is updated, reset verification status
+            if ($user->isDirty('email')) {
+                $user->email_verified_at = null;
+            }
+
+            $user->save();
+
+            // Update profile details based on role
+            if ($user->hasRole('admin')) {
+                $adminProfile = Admin::where('user_id', $user->id)->firstOrNew();
+                $adminProfile->update($request->input('admin', []));
+            } elseif ($user->hasRole('seller')) {
+                $sellerProfile = Seller::where('user_id', $user->id)->firstOrNew();
+                $sellerProfile->update($request->input('seller', []));
+            } elseif ($user->hasRole('visitor')) {
+                $visitorProfile = Visitor::where('user_id', $user->id)->firstOrNew();
+                $visitorProfile->update($request->input('visitor', []));
+            }
+
+            flash()->success('Profile updated successfully.');
+        } catch (\Exception $e) {
+            flash()->error('An error occurred while updating the profile.');
         }
 
-        $request->user()->save();
-
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('profile.index');
     }
 
     /**
@@ -48,12 +96,18 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        Auth::logout();
+        try {
+            Auth::logout();
+            $user->delete();
 
-        $user->delete();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
 
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+            flash()->success('Account deleted successfully.');
+        } catch (\Exception $e) {
+            flash()->error('An error occurred while deleting the account.');
+            return Redirect::route('profile.index');
+        }
 
         return Redirect::to('/');
     }

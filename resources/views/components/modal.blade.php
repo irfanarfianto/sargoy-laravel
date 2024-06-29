@@ -1,4 +1,4 @@
-@props([
+{{-- @props([
     'name',
     'show' => false,
     'maxWidth' => '2xl'
@@ -75,4 +75,18 @@ $maxWidth = [
     >
         {{ $slot }}
     </div>
-</div>
+</div> --}}
+
+@props(['id', 'title'])
+
+<dialog id="{{ $id }}" class="modal">
+  <div class="modal-box relative">
+    <form method="dialog">
+      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+    <h3 class="text-lg font-bold">{{ $title }}</h3>
+    <div class="py-4">
+      {{ $slot }}
+    </div>
+  </div>
+</dialog>
