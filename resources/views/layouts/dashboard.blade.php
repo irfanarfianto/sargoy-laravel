@@ -31,6 +31,7 @@
     </div>
 
     <script src="//cdn.ckeditor.com/4.14.1/basic/ckeditor.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script type="text/javascript">
         $(document).ready(function() {
             $('.ckeditor').ckeditor();

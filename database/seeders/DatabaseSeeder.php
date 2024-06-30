@@ -27,9 +27,10 @@ class DatabaseSeeder extends Seeder
         // User::factory()->count(1000)->create();
 
         $this->call([
-            AdminProfileSeeder::class,
-            SellerProfileSeeder::class,
-            VisitorProfileSeeder::class,
+            // AdminProfileSeeder::class,
+            // SellerProfileSeeder::class,
+            // VisitorProfileSeeder::class,
+            CategoryImageSeeder::class,
         ]);
     }
 }

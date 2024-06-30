@@ -20,7 +20,6 @@ class ProfileController extends Controller
     public function index(Request $request): View
     {
         $user = $request->user();
-
         $breadcrumbItems = [
             ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
             ['name' => 'Profile'],
@@ -30,12 +29,15 @@ class ProfileController extends Controller
             $profile = Admin::where('user_id', $user->id)->first();
         } elseif ($user->hasRole('seller')) {
             $profile = Seller::where('user_id', $user->id)->first();
+        } elseif ($user->hasRole('visitor')) {
+            $profile = Visitor::where('user_id', $user->id)->first();
         } else {
             $profile = null; // Handle other types of users or roles here
         }
 
         return view('dashboard.profile.index', compact('user', 'profile', 'breadcrumbItems'));
     }
+
 
     /**
      * Display the user's profile form.

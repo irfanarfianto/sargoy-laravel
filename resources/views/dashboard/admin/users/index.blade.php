@@ -68,11 +68,11 @@
                         <!-- Modal untuk Edit -->
                         <dialog id="editModal{{ $user->id }}" class="modal modal-bottom sm:modal-middle">
                             <div class="modal-box">
+                                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
+                                    onclick="document.getElementById('editModal{{ $user->id }}').close()">✕</button>
                                 <form action="{{ route('users.update', $user->id) }}" method="POST">
                                     @csrf
                                     @method('PUT')
-                                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2"
-                                        onclick="document.getElementById('editModal{{ $user->id }}').close()">✕</button>
                                     <h3 class="text-lg font-bold">Edit Pengguna</h3>
                                     <div class="modal-body">
                                         <label for="name" class="block">Nama:</label>

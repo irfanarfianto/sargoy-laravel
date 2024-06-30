@@ -38,11 +38,28 @@
                             value="{{ old('name', $category->name) }}" class="input input-bordered w-full"
                             oninput="updateSlug('editModal{{ $category->id }}')">
                     </div>
-                    <div class="mb-4">
+                    {{-- <div class="mb-4">
                         <label for="slug{{ $category->id }}"
                             class="block text-sm font-medium text-gray-700">Slug</label>
                         <input type="text" name="slug" id="slug{{ $category->id }}"
                             value="{{ old('slug', $category->slug) }}" class="input input-bordered w-full" disabled>
+                    </div> --}}
+                    <div class="mb-4">
+                        <label for="image{{ $category->id }}"
+                            class="block text-sm font-medium text-gray-700">Gambar</label>
+                        <input type="file" name="image" id="image{{ $category->id }}"
+                            class="file-input file-input-bordered w-full">
+                        @if ($category->image)
+                            <div class="avatar mt-5">
+                                <div class="w-24 rounded">
+                                    <img src="{{ asset('storage/' . $category->image) }}"
+                                        alt="{{ $category->name }}" />
+                                </div>
+                            </div>
+                        @endif
+                        @error('image')
+                            <span class="error">{{ $message }}</span>
+                        @enderror
                     </div>
                     <div class="flex justify-end">
                         <button type="submit" class="btn btn-primary">Simpan</button>
@@ -70,9 +87,19 @@
                     <input type="text" name="name" id="nameCreate" class="input input-bordered w-full"
                         oninput="updateSlug('createModal')">
                 </div>
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <label for="slugCreate" class="block text-sm font-medium text-gray-700">Slug</label>
                     <input type="text" name="slug" id="slugCreate" class="input input-bordered w-full" disabled>
+                </div> --}}
+                <div class="mb-4">
+                    <label for="imageCreate" class="block text-sm font-medium text-gray-700">Gambar</label>
+                    <input type="file" name="image" id="imageCreate" class="file-input file-input-bordered w-full"
+                        onchange="previewImage('createModal')">
+                    <img id="imagePreviewCreate" src="" alt="Preview" style="display: none;" class="mt-2"
+                        width="100">
+                    @error('image')
+                        <span class="error">{{ $message }}</span>
+                    @enderror
                 </div>
                 <div class="flex justify-end">
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -83,11 +110,30 @@
 </dialog>
 
 <script>
-    function updateSlug(modalId) {
-        const nameInput = document.querySelector(`#${modalId} [name="name"]`);
-        const slugInput = document.querySelector(`#${modalId} [name="slug"]`);
-        const slug = nameInput.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
-        slugInput.value = slug;
+    // function updateSlug(modalId) {
+    //     const nameInput = document.querySelector(`#${modalId} [name="name"]`);
+    //     const slugInput = document.querySelector(`#${modalId} [name="slug"]`);
+    //     const slug = nameInput.value.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
+    //     slugInput.value = slug;
+    // }
+
+    function previewImage(modalId) {
+        const input = document.querySelector(`#${modalId} [name="image"]`);
+        const preview = document.getElementById(
+            `imagePreview${modalId === 'createModal' ? 'Create' : modalId.replace('editModal', '')}`);
+
+        const file = input.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(file);
+        } else {
+            preview.src = '';
+            preview.style.display = 'none';
+        }
     }
 
     function closeModal(modalId, categoryId = null) {
@@ -97,9 +143,11 @@
         if (categoryId) {
             const form = document.getElementById(`editForm${categoryId}`);
             form.reset();
+            document.getElementById(`imagePreview${categoryId}`).style.display = 'none';
         } else {
             const createForm = document.getElementById('createForm');
             createForm.reset();
+            document.getElementById('imagePreviewCreate').style.display = 'none';
         }
     }
 </script>
