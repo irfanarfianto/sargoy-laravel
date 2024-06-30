@@ -27,7 +27,7 @@ This project is a Laravel-based web application named Sargoy. It includes variou
 
     ```sh
     git clone https://github.com/irfanarfianto/sargoy-laravel.git
-    
+
     cd sargoy-laravel
     ```
 
@@ -67,7 +67,7 @@ This project is a Laravel-based web application named Sargoy. It includes variou
     php artisan migrate
     ```
 
-8. (Optional) Seed the database:
+8. Seed the database:
     ```sh
     php artisan db:seed
     ```
