@@ -9,11 +9,15 @@ use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\NotificationController;
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+
+Route::get('/send-announcement', [NotificationController::class, 'sendAnnouncement']);
+Route::get('/send-alert', [NotificationController::class, 'sendAlert']);
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -44,6 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::put('produk/{slug}', [ProductController::class, 'update'])->name('dashboard.product.update');
         Route::delete('produk/{slug}', [ProductController::class, 'destroy'])->name('dashboard.product.hapus');
     });
+
+    Route::get('notifications', [NotificationController::class, 'index'])->name('pesan');
+
 
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
