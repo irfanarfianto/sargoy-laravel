@@ -106,6 +106,6 @@ class CategoryController extends Controller
         $category->delete();
 
         flash()->success('Category deleted successfully.');
-        return redirect()->route('dashboard.categories.index');
+        return redirect()->route('categories.index');
     }
 }
