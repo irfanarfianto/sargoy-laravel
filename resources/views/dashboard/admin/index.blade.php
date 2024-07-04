@@ -126,26 +126,15 @@
 
 
     <h3 class="text-xl font-bold mt-8 mb-4">Latest Users</h3>
-    <div class="overflow-x-auto">
-        <table class="table-auto min-w-full bg-white rounded-lg overflow-hidden">
-            <thead class="bg-gray-200 text-gray-700">
-                <tr>
-                    <th class="px-4 py-2">Name</th>
-                    <th class="px-4 py-2">Email</th>
-                    <th class="px-4 py-2">Created At</th>
-                </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-200">
-                @foreach ($latestUsers as $user)
-                    <tr>
-                        <td class="px-4 py-2">{{ $user->name }}</td>
-                        <td class="px-4 py-2">{{ $user->email }}</td>
-                        <td class="px-4 py-2">{{ $user->created_at->format('Y-m-d H:i:s') }}</td>
-                    </tr>
-                @endforeach
-            </tbody>
-        </table>
-    </div>
+    <x-table :headers="['Name', 'Email', 'Created At']" :rows="$latestUsers
+        ->map(function ($latestUsers) {
+            return [
+                'name' => $latestUsers->name,
+                'email' => $latestUsers->email,
+                'created_at' => $latestUsers->created_at,
+            ];
+        })
+        ->toArray()" />
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
@@ -160,6 +149,7 @@
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
                     fill: true,
+                    tension: 0.4,
                 }]
             },
             options: {

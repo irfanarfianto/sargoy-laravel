@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Product;
 use App\Models\User;
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -26,10 +27,13 @@ class ProductFactory extends Factory
     public function definition()
     {
         // Ambil user yang memiliki peran 'seller' atau 'admin'
-        $sellerOrAdmin = User::role(['seller', 'admin'])->get()->random();
+        $sellerOrAdmin = User::role(['seller'])->get()->random();
+
+        // Ambil ID kategori yang sudah ada dari basis data
+        $category = Category::inRandomOrder()->first();
 
         return [
-            'category_id' => \App\Models\Category::factory(), // Menggunakan factory Category untuk relasi
+            'category_id' => $category->id, // Menggunakan factory Category untuk relasi
             'user_id' => $sellerOrAdmin->id,
             'name' => $this->faker->sentence(3), // Nama produk dengan kalimat acak
             'slug' => $this->faker->slug, // Slug produk, bisa digunakan untuk URL
@@ -41,6 +45,9 @@ class ProductFactory extends Factory
             'size' => $this->faker->randomElement(['S', 'M', 'L', 'XL']), // Ukuran produk dengan pilihan acak
             'pattern' => $this->faker->word, // Pola produk dengan kata acak
             'ecommerce_link' => $this->faker->url, // Link e-commerce produk dengan URL acak
+            'status' => false, // Default status nonaktif untuk produk baru
+            'is_verified' => false, // Default belum diverifikasi untuk produk baru
+            'views_count' => rand(1, 1000000), // View count secara acak
         ];
     }
 }

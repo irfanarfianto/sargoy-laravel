@@ -13,18 +13,20 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // $admin = User::create([
-        //     'name' => 'Admin',
-        //     'email' => 'admin@gmail.com',
-        //     'password' => bcrypt('password'),
-        // ]);
-        // $admin->assignRole('admin');
+        $admin = User::create([
+            'name' => 'Admin',
+            'email' => 'admin@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $admin->assignRole('admin');
 
-        // $user = User::create([
-        //     'name' => 'Seller',
-        //     'email' => 'seller@gmail.com',
-        //     'password' => bcrypt('password'),
-        // ]);
+        $user = User::create([
+            'name' => 'Seller',
+            'email' => 'seller@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $user->assignRole('seller');
+        
         $user = User::create([
             'name' => 'Seller2',
             'email' => 'seller2@gmail.com',
@@ -32,11 +34,13 @@ class UserSeeder extends Seeder
         ]);
         $user->assignRole('seller');
 
-        // $user2 = User::create([
-        //     'name' => 'User',
-        //     'email' => 'user@gmail.com',
-        //     'password' => bcrypt('password'),
-        // ]);
-        // $user2->assignRole('visitor');
+        $user2 = User::create([
+            'name' => 'User',
+            'email' => 'user@gmail.com',
+            'password' => bcrypt('password'),
+        ]);
+        $user2->assignRole('visitor');
+
+        User::factory()->count(15)->create();
     }
 }

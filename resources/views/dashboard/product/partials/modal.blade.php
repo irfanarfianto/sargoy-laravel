@@ -34,10 +34,14 @@
             </div>
             <div>
                 <span class="font-semibold">Status:</span>
-                @if ($product->active)
-                    <span class="badge badge-success badge-outline badge-sm">Aktif</span>
+                @if (!$product->is_verified)
+                    <span class="badge badge-red">Belum Diverifikasi</span>
                 @else
-                    <span class="badge badge-danger badge-outline badge-sm">Nonaktif</span>
+                    @if ($product->status)
+                        <span class="badge badge-success badge-outline badge-sm">Aktif</span>
+                    @else
+                        <span class="badge badge-danger badge-outline badge-sm">Nonaktif</span>
+                    @endif
                 @endif
             </div>
             @if ($product->material)

@@ -6,7 +6,7 @@
             </h4>
             <x-breadcrumb :items="$breadcrumbItems" />
         </div>
-        <div class="flex items-center justify-between w-full md:w-auto">
+        <div class="flex items-center justify-between mb-2 w-full md:w-auto">
             <div class="dropdown dropdown-left">
                 <div tabindex="0" role="button" class="btn btn-ghost m-1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -89,36 +89,33 @@
             @endif
         @else
             <div class="overflow-x-auto">
-                <table class="table">
+                <table class="table table-zebra min-w-full bg-white shadow-md rounded-lg overflow-hidden">
                     <!-- head -->
-                    <thead>
+                    <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                         <tr>
-                            <th>
+                            <th class="py-3 px-6 text-left">
                                 <label>
                                     <input type="checkbox" id="select-all-checkbox" class="checkbox checkbox-primary" />
                                 </label>
                             </th>
-                            <th>Nama</th>
-                            <th>Dilihat</th>
-                            <th>Status</th>
-                            @if (auth()->user()->hasRole('seller'))
-                                <th>Status Verifikasi</th>
-                            @endif
+                            <th class="py-3 px-6 text-left">Nama</th>
+                            <th class="py-3 px-6 text-left">Dilihat</th>
+                            <th class="py-3 px-6 text-left">Status</th>
                             @if (auth()->user()->hasRole('admin'))
-                                <th>Dibuat</th>
+                                <th class="py-3 px-6 text-left">Dibuat</th>
                             @endif
-                            <th>Actions</th>
+                            <th class="py-3 px-6 text-left">Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-gray-600 text-sm font-light">
                         @foreach ($products as $product)
-                            <tr>
-                                <th>
+                            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                                <td class="py-3 px-6 text-left align-center">
                                     <label>
                                         <input type="checkbox" class="checkbox checkbox-primary" />
                                     </label>
-                                </th>
-                                <td>
+                                </td>
+                                <td class="py-3 px-6 text-left">
                                     <div class="flex items-center gap-3">
                                         @if ($product->images->isNotEmpty())
                                             <div class="avatar">
@@ -136,56 +133,59 @@
                                             </div>
                                         @endif
                                         <div>
-                                            <div class="font-bold">{{ $product->name }}</div>
+                                            <div class="font-bold truncate w-40">{{ $product->name }}</div>
                                             <div class="text-sm opacity-50">{{ $product->category->name }}</div>
                                         </div>
                                     </div>
                                 </td>
-                                <td>
-                                    <div class="item-center">
+                                <td class="py-3 px-6 text-left">
+                                    <p class="text-xs items-center">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class=" size-3 inline-block ml-1">
+                                            stroke-width="1.5" stroke="currentColor" class=" size-3 inline-block">
                                             <path stroke-linecap="round" stroke-linejoin="round"
                                                 d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z" />
                                         </svg>
-                                        @if ($product->view_count > 0)
-                                            {{ $product->view_count }}x
+                                        @if ($product->views_count >= 1000000)
+                                            {{ number_format($product->views_count / 1000000, 1, '.', '') }}JT
+                                        @elseif ($product->views_count >= 1000)
+                                            {{ number_format($product->views_count / 1000, 1, '.', '') }}K
                                         @else
-                                            0x
+                                            {{ number_format($product->views_count, 0, ',', '.') }}
                                         @endif
-                                    </div>
+                                    </p>
                                 </td>
-                                <td>
-                                    @if ($product->active)
-                                        <span class="badge badge-success badge-outline badge-sm">Aktif</span>
-                                    @else
-                                        <span class="badge badge-danger badge-outline badge-sm">Nonaktif</span>
-                                    @endif
-                                </td>
-                                @if (auth()->user()->hasRole('seller'))
-                                    <td>
-                                        <span class="badge badge-{{ $product->is_verified ? 'success' : 'warning' }}">
-                                            {{ $product->is_verified ? 'Terverifikasi' : 'Belum Terverifikasi' }}
-                                        </span>
-                                    </td>
-                                @endif
-                                <td>
-                                    {{ $product->user->name }}
-                                    <div class="text-xs opacity-50">
-                                        {{ $product->created_at }}</div>
-                                </td>
-                                <td>
-                                    <div class=" flex flex-wrap items-center space-x-2">
+                                <td class="py-3 px-6 text-left">
+                                    @if (!$product->is_verified)
+                                        @if (auth()->user()->hasRole('seller'))
+                                            <span class="badge badge-red">Belum Diverifikasi</span>
+                                        @endif
                                         @if (auth()->user()->hasRole('admin'))
                                             @if (!$product->is_verified)
                                                 <form action="{{ route('product.verify', $product) }}"
                                                     method="POST">
                                                     @csrf
-                                                    <button type="submit"
-                                                        class="btn btn-success btn-xs">Verif</button>
+                                                    <button type="submit" class="btn btn-success btn-sm text-base-100">Verifikasi
+                                                        Sekarang</button>
                                                 </form>
                                             @endif
                                         @endif
+                                    @else
+                                        @if ($product->status)
+                                            <span class="badge badge-success badge-outline badge-sm">Aktif</span>
+                                        @else
+                                            <span class="badge badge-danger badge-outline badge-sm">Nonaktif</span>
+                                        @endif
+                                    @endif
+                                </td>
+                                @if (auth()->user()->hasRole('admin'))
+                                    <td class="py-3 px-6 text-left">
+                                        {{ $product->user->name }}
+                                        <div class="text-xs opacity-50">
+                                            {{ $product->created_at }}</div>
+                                    </td>
+                                @endif
+                                <td class="py-3 px-6 text-left">
+                                    <div class=" flex flex-wrap items-center space-x-2">
                                         <a class="btn btn-ghost btn-xs text-neutral"
                                             onclick="document.getElementById('viewModal{{ $product->id }}').showModal()">
                                             <svg xmlns="http://www.w3.org/2000/svg" fill="none"

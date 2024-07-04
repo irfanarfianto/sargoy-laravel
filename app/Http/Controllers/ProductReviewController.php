@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductReview;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
 
 class ProductReviewController extends Controller
@@ -15,18 +16,15 @@ class ProductReviewController extends Controller
      */
     public function index(Request $request)
     {
-        // Ambil id user yang sedang login
         $userId = Auth::id();
-
-        // Mendefinisikan kriteria default
         $sortBy = $request->get('sort_by', 'latest');
 
-        // Query untuk mengambil ulasan produk berdasarkan pemilik produk (user yang login) dengan paginasi
+        // Query to fetch product reviews based on the logged-in user's products, with eager loading
         $reviewsQuery = ProductReview::whereHas('product', function ($query) use ($userId) {
             $query->where('user_id', $userId);
         })->with('product', 'user');
 
-        // Menentukan kriteria sorting
+        // Sorting criteria
         switch ($sortBy) {
             case 'oldest':
                 $reviewsQuery->oldest();
@@ -43,19 +41,46 @@ class ProductReviewController extends Controller
                 break;
         }
 
-        // Mendapatkan data ulasan dengan paginasi
-        $reviews = $reviewsQuery->paginate(10);
+        // Get the reviews and group them by product_id
+        $reviews = $reviewsQuery->get();
+        $productReviews = $reviews->groupBy('product_id')->map(function ($productReviews) {
+            $totalReviews = $productReviews->count();
+            $totalRatings = $productReviews->sum('rating');
+            $averageRating = $totalReviews > 0 ? round($totalRatings / $totalReviews, 1) : 0;
 
-        // Data breadcrumb
+            $reviewsForProduct = $productReviews->map(function ($review) {
+                return [
+                    'user' => $review->user,
+                    'rating' => $review->rating,
+                    'comment' => $review->comment,
+                    'created_at' => $review->created_at,
+                ];
+            });
+
+            return [
+                'product' => $productReviews->first()->product,
+                'review_count' => $totalReviews,
+                'average_rating' => $averageRating, 'reviews' => $reviewsForProduct,
+                'created_at' => $productReviews->first()->created_at, 'ratings' => $productReviews->pluck('rating')->toArray(),
+            ];
+        });
+
+        // Pagination (assuming 10 items per page)
+        $currentPage = $request->get('page', 1);
+        $perPage = 10;
+        $offset = ($currentPage - 1) * $perPage;
+        $pagedProductReviews = $productReviews->slice($offset, $perPage)->all();
+        $productReviews = new LengthAwarePaginator($pagedProductReviews, $productReviews->count(), $perPage, $currentPage, [
+            'path' => route('reviews.index', ['sort_by' => $sortBy]),
+            'query' => $request->query(),
+        ]);
+
         $breadcrumbItems = [
             ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
-            ['name' => 'Produk Review'],
+            ['name' => 'Product Reviews'],
         ];
 
-        // Menambahkan parameter sort_by ke dalam link paginasi
-        $reviews->appends(['sort_by' => $sortBy]);
-
-        return view('dashboard.product_reviews.index', compact('reviews', 'breadcrumbItems'));
+        return view('dashboard.product_reviews.index', compact('productReviews', 'breadcrumbItems', 'sortBy'));
     }
 
     /**

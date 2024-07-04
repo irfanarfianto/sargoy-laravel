@@ -25,7 +25,7 @@ return new class extends Migration
             $table->string('size')->nullable();
             $table->string('pattern')->nullable();
             $table->string('ecommerce_link')->nullable();
-            $table->boolean('active')->default(true);
+            $table->boolean('status')->default(false);
             $table->integer('views_count')->default(0);
             $table->timestamps();
         });

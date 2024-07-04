@@ -26,8 +26,7 @@ class ProductController extends Controller
 
         // Filter data berdasarkan peran pengguna
         if (auth()->user()->hasRole('seller')) {
-            $query->where('user_id', auth()->id())
-                ->where('is_verified', true);
+            $query->where('user_id', auth()->id());
         }
 
         // Filter data berdasarkan pencarian
@@ -45,13 +44,18 @@ class ProductController extends Controller
 
         // Ambil data produk dengan pagination
         $products = $query->paginate(10);
-        
+
+        // Tambahkan badge "Belum Diverifikasi" untuk produk yang belum diverifikasi
+        foreach ($products as $product) {
+            if (!$product->is_verified) {
+                $product->status = 'Belum Diverifikasi';
+            }
+        }
 
         $breadcrumbItems = [
             ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
             ['name' => 'Daftar Produk'],
         ];
-        
 
         return view('dashboard.product.index', compact('products', 'breadcrumbItems', 'search'));
     }
@@ -104,7 +108,7 @@ class ProductController extends Controller
                 'size' => $validatedData['size'],
                 'pattern' => $validatedData['pattern'],
                 'ecommerce_link' => $validatedData['ecommerce_link'],
-                'active' => false, // Product is not active by default
+                'status' => false, // Product is not status by default
                 'is_verified' => false, // Product is not verified by default
             ]);
 
@@ -199,7 +203,7 @@ class ProductController extends Controller
                 'size' => $validatedData['size'],
                 'pattern' => $validatedData['pattern'],
                 'ecommerce_link' => $validatedData['ecommerce_link'],
-                'active' => $validatedData['active'] ?? false,
+                'status' => $validatedData['status'] ?? false,
             ]);
 
             if ($request->hasFile('images')) {
@@ -285,7 +289,7 @@ class ProductController extends Controller
     {
         if (auth()->user()->hasRole('admin')) {
             $product->is_verified = true;
-            $product->active = true; 
+            $product->status = true;
             $product->save();
             flash()->success('Product verified successfully.');
             return redirect()->route('dashboard.product.index');
@@ -294,5 +298,4 @@ class ProductController extends Controller
             return redirect()->route('dashboard.product.index');
         }
     }
-    
 }

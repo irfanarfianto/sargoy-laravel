@@ -54,20 +54,22 @@
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">Status Produk</label>
                 <div class="mt-1 flex items-center">
-                    <div class="form-control">
-                        <label class="label cursor-pointer">
-                            <span class="label-text">Aktif</span>
-                            <input type="checkbox" class="toggle" name="active"
-                                {{ $product->active ? 'checked' : '' }}>
-                        </label>
-                    </div>
-
+                    @if ($product->is_verified)
+                        <div class="form-control">
+                            <label class="label cursor-pointer">
+                                <span class="label-text">Aktif</span>
+                                <input type="checkbox" class="toggle" name="status"
+                                    {{ $product->status ? 'checked' : '' }}>
+                            </label>
+                        </div>
+                    @else
+                        <p class="text-sm text-gray-500">Produk belum diverifikasi</p>
+                    @endif
                 </div>
-                @error('active')
+                @error('status')
                     <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>
                 @enderror
             </div>
-
 
 
             <div class="mb-4">
@@ -183,7 +185,7 @@
             slugInput.value = slugValue;
         });
 
-        const checkbox = document.getElementById('active');
+        const checkbox = document.getElementById('status');
         const statusLabel = document.getElementById('statusLabel');
 
         checkbox.addEventListener('change', function() {
