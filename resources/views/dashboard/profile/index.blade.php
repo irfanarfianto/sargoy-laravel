@@ -152,4 +152,21 @@
     <x-modal id="delete-user" title="Hapus Akun">
         @include('dashboard.profile.partials.delete-user-form')
     </x-modal>
+
+    <script>
+        function closeModal(modalId, categoryId = null) {
+            const modal = document.getElementById(modalId);
+            modal.close();
+
+            if (categoryId) {
+                const form = document.getElementById(`editForm${categoryId}`);
+                form.reset();
+                document.getElementById(`imagePreview${categoryId}`).style.display = 'none';
+            } else {
+                const createForm = document.getElementById('createForm');
+                createForm.reset();
+                document.getElementById('imagePreviewCreate').style.display = 'none';
+            }
+        }
+    </script>
 </x-dashboard-layout>

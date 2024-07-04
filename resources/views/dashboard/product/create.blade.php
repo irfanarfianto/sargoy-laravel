@@ -48,21 +48,6 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Status Produk</label>
-                <div class="mt-1 flex items-center">
-                    <input id="active" name="active" type="checkbox" class="toggle toggle-success" checked="checked"
-                        onchange="updateStatusLabel()" />
-                    <label id="statusLabel" for="active" class="ml-2 block text-sm leading-5 text-gray-900">
-                        Aktif
-                    </label>
-                </div>
-                @error('active')
-                    <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>
-                @enderror
-            </div>
-
-
-            <div class="mb-4">
                 <label for="description" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                 <textarea name="description" id="description" class="textarea textarea-bordered w-full" rows="3" required>{{ old('description') }}</textarea>
                 @error('description')
@@ -162,15 +147,4 @@
     });
 
     CKEDITOR.replace('description');
-
-    function updateStatusLabel() {
-        const checkbox = document.getElementById('active');
-        const statusLabel = document.getElementById('statusLabel');
-
-        if (checkbox.checked) {
-            statusLabel.textContent = 'Aktif';
-        } else {
-            statusLabel.textContent = 'Tidak Aktif';
-        }
-    }
 </script>

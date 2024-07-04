@@ -58,7 +58,10 @@ class ProfileController extends Controller
 
         try {
             // Update basic user information
-            $user->fill($request->validated());
+            $user->fill([
+                'name' => substr($request->input('name'), 0, 80), // Batasi nama pengguna
+                // Tambahan field lainnya
+            ]);
 
             // Check if email is updated, reset verification status
             if ($user->isDirty('email')) {

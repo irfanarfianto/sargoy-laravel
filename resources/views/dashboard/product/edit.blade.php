@@ -6,8 +6,8 @@
             </h4>
             <x-breadcrumb :items="$breadcrumbItems" />
         </div>
-        <div class="flex flex-wrap-reverse w-full md:w-auto">
-            <button class="btn btn-ghost w-full md:w-auto" onclick="window.history.back();">Kembali</button>
+        <div class="flex flex-wrap-reverse w-full md:w-auto space-x-2">
+            <a href="{{ route('dashboard.product.index') }}" class="btn btn-ghost w-full md:w-auto">Kembali</a>
             <button type="submit" form="edit-product-form" class="btn btn-primary w-full md:w-auto">Simpan
                 Perubahan</button>
         </div>
@@ -54,11 +54,14 @@
             <div class="mb-4">
                 <label class="block text-sm font-medium text-gray-700">Status Produk</label>
                 <div class="mt-1 flex items-center">
-                    <input id="active" name="active" type="checkbox" class="toggle toggle-success"
-                        {{ $product->active ? 'checked' : '' }} />
-                    <label for="active" class="ml-2 block text-sm leading-5 text-gray-900">
-                        {{ $product->active ? 'Aktif' : 'Tidak Aktif' }}
-                    </label>
+                    <div class="form-control">
+                        <label class="label cursor-pointer">
+                            <span class="label-text">Aktif</span>
+                            <input type="checkbox" class="toggle" name="active"
+                                {{ $product->active ? 'checked' : '' }}>
+                        </label>
+                    </div>
+
                 </div>
                 @error('active')
                     <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>

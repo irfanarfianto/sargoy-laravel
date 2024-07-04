@@ -21,8 +21,14 @@ class ProductController extends Controller
         $direction = $request->get('direction', 'desc');
         $search = $request->get('search');
 
-        $query = Product::with('category', 'images')
-            ->where('user_id', auth()->id()); // Filter produk berdasarkan ID pengguna yang sedang login
+        // Mengambil semua produk dengan relasi kategori dan gambar
+        $query = Product::with('category', 'images');
+
+        // Filter data berdasarkan peran pengguna
+        if (auth()->user()->hasRole('seller')) {
+            $query->where('user_id', auth()->id())
+                ->where('is_verified', true);
+        }
 
         // Filter data berdasarkan pencarian
         if ($search) {
@@ -39,15 +45,16 @@ class ProductController extends Controller
 
         // Ambil data produk dengan pagination
         $products = $query->paginate(10);
+        
 
         $breadcrumbItems = [
             ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
             ['name' => 'Daftar Produk'],
         ];
+        
 
         return view('dashboard.product.index', compact('products', 'breadcrumbItems', 'search'));
     }
-
 
 
     public function create()
@@ -78,14 +85,14 @@ class ProductController extends Controller
             'variants.*.variant_name' => 'required|string|max:255',
             'variants.*.variant_value' => 'required|string|max:255',
             'variants.*.price' => 'required|numeric|min:0',
-            'variants.*.stock' => 'required|integer|min:0', 'active' => 'boolean',
+            'variants.*.stock' => 'required|integer|min:0',
         ]);
 
         DB::beginTransaction();
 
         try {
             $product = Product::create([
-                'user_id' => auth()->id(), 
+                'user_id' => auth()->id(),
                 'category_id' => $validatedData['category_id'],
                 'name' => $validatedData['name'],
                 'slug' => Str::slug($validatedData['name']),
@@ -96,7 +103,9 @@ class ProductController extends Controller
                 'color' => $validatedData['color'],
                 'size' => $validatedData['size'],
                 'pattern' => $validatedData['pattern'],
-                'ecommerce_link' => $validatedData['ecommerce_link'], 'active' => $validatedData['active'] ?? false,
+                'ecommerce_link' => $validatedData['ecommerce_link'],
+                'active' => false, // Product is not active by default
+                'is_verified' => false, // Product is not verified by default
             ]);
 
             if ($request->hasFile('images')) {
@@ -173,7 +182,6 @@ class ProductController extends Controller
             'variants.*.variant_value' => 'required|string|max:255',
             'variants.*.price' => 'required|numeric|min:0',
             'variants.*.stock' => 'required|integer|min:0',
-            'active' => 'boolean',
         ]);
 
         DB::beginTransaction();
@@ -271,4 +279,20 @@ class ProductController extends Controller
             return back();
         }
     }
+
+
+    public function verify(Product $product)
+    {
+        if (auth()->user()->hasRole('admin')) {
+            $product->is_verified = true;
+            $product->active = true; 
+            $product->save();
+            flash()->success('Product verified successfully.');
+            return redirect()->route('dashboard.product.index');
+        } else {
+            flash()->error('Unauthorized access.');
+            return redirect()->route('dashboard.product.index');
+        }
+    }
+    
 }

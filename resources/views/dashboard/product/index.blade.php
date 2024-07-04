@@ -80,7 +80,13 @@
     <!-- Daftar Produk -->
     <div class="container mx-auto">
         @if ($products->isEmpty())
-            <p class="text-center text-gray-600 mt-8">Produk {{ $search }} yang Anda cari tidak ditemukan.</p>
+            @if ($search)
+                <p class="text-center text-gray-600 mt-8">Produk {{ $search }} yang Anda cari tidak ditemukan.
+                </p>
+            @else
+                <p class="text-center text-gray-600 mt-8">Belum ada produk yang dibuat. <a
+                        href="{{ route('dashboard.product.tambah') }}" class="text-blue-500">Buat produk baru</a>.</p>
+            @endif
         @else
             <div class="overflow-x-auto">
                 <table class="table">
@@ -95,7 +101,13 @@
                             <th>Nama</th>
                             <th>Dilihat</th>
                             <th>Status</th>
-                            <th>Aksi</th>
+                            @if (auth()->user()->hasRole('seller'))
+                                <th>Status Verifikasi</th>
+                            @endif
+                            @if (auth()->user()->hasRole('admin'))
+                                <th>Dibuat</th>
+                            @endif
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -150,13 +162,35 @@
                                         <span class="badge badge-danger badge-outline badge-sm">Nonaktif</span>
                                     @endif
                                 </td>
-
-                                <th>
-                                    <div class=" flex flex-wrap item-center">
+                                @if (auth()->user()->hasRole('seller'))
+                                    <td>
+                                        <span class="badge badge-{{ $product->is_verified ? 'success' : 'warning' }}">
+                                            {{ $product->is_verified ? 'Terverifikasi' : 'Belum Terverifikasi' }}
+                                        </span>
+                                    </td>
+                                @endif
+                                <td>
+                                    {{ $product->user->name }}
+                                    <div class="text-xs opacity-50">
+                                        {{ $product->created_at }}</div>
+                                </td>
+                                <td>
+                                    <div class=" flex flex-wrap items-center space-x-2">
+                                        @if (auth()->user()->hasRole('admin'))
+                                            @if (!$product->is_verified)
+                                                <form action="{{ route('product.verify', $product) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    <button type="submit"
+                                                        class="btn btn-success btn-xs">Verif</button>
+                                                </form>
+                                            @endif
+                                        @endif
                                         <a class="btn btn-ghost btn-xs text-neutral"
                                             onclick="document.getElementById('viewModal{{ $product->id }}').showModal()">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="size-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                class="size-4">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -170,7 +204,7 @@
                                             Hapus
                                         </a>
                                     </div>
-                                </th>
+                                </td>
                             </tr>
 
                             @include('dashboard.product.partials.modal')

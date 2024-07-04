@@ -17,6 +17,12 @@ class Product extends Model
         'user_id',
     ];
 
+    public function getCreatedAtAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->translatedFormat('l, d F Y H:i');
+    }
+
+
     public function category()
     {
         return $this->belongsTo(Category::class);

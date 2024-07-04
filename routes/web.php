@@ -25,7 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('admin', [AdminController::class, 'index'])->name('admin');
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
-
+        Route::post('product/{product}/verify', [ProductController::class, 'verify'])->name('product.verify');
         Route::get('/faqs/create', [FAQController::class, 'create'])->name('faqs.create');
         Route::post('/faqs', [FAQController::class, 'store'])->name('faqs.store');
         Route::get('/faqs/{faq}/edit', [FAQController::class, 'edit'])->name('faqs.edit');
