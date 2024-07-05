@@ -24,25 +24,10 @@ class ProductReviewController extends Controller
             $query->where('user_id', $userId);
         })->with('product', 'user');
 
-        // Sorting criteria
-        switch ($sortBy) {
-            case 'oldest':
-                $reviewsQuery->oldest();
-                break;
-            case 'highest_rating':
-                $reviewsQuery->orderBy('rating', 'desc');
-                break;
-            case 'lowest_rating':
-                $reviewsQuery->orderBy('rating', 'asc');
-                break;
-            case 'latest':
-            default:
-                $reviewsQuery->latest();
-                break;
-        }
-
-        // Get the reviews and group them by product_id
+        // Get the reviews
         $reviews = $reviewsQuery->get();
+
+        // Group the reviews by product_id and calculate average rating
         $productReviews = $reviews->groupBy('product_id')->map(function ($productReviews) {
             $totalReviews = $productReviews->count();
             $totalRatings = $productReviews->sum('rating');
@@ -61,17 +46,42 @@ class ProductReviewController extends Controller
             return [
                 'product' => $productReviews->first()->product,
                 'review_count' => $totalReviews,
-                'average_rating' => $averageRating, 'reviews' => $reviewsForProduct,
+                'average_rating' => $averageRating,
+                'reviews' => $reviewsForProduct,
                 'created_at' => $productReviews->first()->created_at,
                 'ratings' => $productReviews->pluck('rating')->toArray(),
             ];
         });
 
+        // Sorting criteria
+        switch ($sortBy) {
+            case 'oldest':
+                $productReviews = $productReviews->sortBy('created_at');
+                break;
+            case 'highest_rating':
+                $productReviews = $productReviews->sortByDesc('average_rating');
+                break;
+            case 'lowest_rating':
+                $productReviews = $productReviews->sortBy('average_rating');
+                break;
+            case 'latest':
+            default:
+                $productReviews = $productReviews->sortByDesc('created_at');
+                break;
+        }
+
         // Pagination (assuming 10 items per page)
         $currentPage = $request->get('page', 1);
         $perPage = 10;
         $offset = ($currentPage - 1) * $perPage;
-        $pagedProductReviews = $productReviews->slice($offset, $perPage)->all();
+        $pagedProductReviews = $productReviews->slice($offset, $perPage)->values();
+
+        // Add index to the product reviews
+        $pagedProductReviews->transform(function ($item, $key) use ($offset) {
+            $item['index'] = $offset + $key + 1;
+            return $item;
+        });
+
         $productReviews = new LengthAwarePaginator($pagedProductReviews, $productReviews->count(), $perPage, $currentPage, [
             'path' => route('reviews.index', ['sort_by' => $sortBy]),
             'query' => $request->query(),
@@ -82,8 +92,9 @@ class ProductReviewController extends Controller
             ['name' => 'Product Reviews'],
         ];
 
-        return view('dashboard.product_reviews.index', compact('productReviews', 'breadcrumbItems', 'sortBy'));
+        return view('dashboard.product_reviews.index', compact('productReviews', 'breadcrumbItems', 'sortBy', 'offset'));
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -174,15 +185,22 @@ class ProductReviewController extends Controller
             ->with('success', 'Review deleted successfully.');
     }
 
-    public function markReviewsRead(Request $request)
+    public function markAsRead($productId)
     {
-        $productId = $request->input('product_id');
-
-        // Update status is_read untuk ulasan yang belum dibaca
-        ProductReview::where('product_id', $productId)
+        $userId = Auth::id();
+        $reviews = ProductReview::where('product_id', $productId)
+            ->whereHas('product', function ($query) use ($userId) {
+                $query->where('user_id', $userId);
+            })
             ->where('is_read', false)
-            ->update(['is_read' => true]);
+            ->get();
+
+        foreach ($reviews as $review) {
+            $review->is_read = true;
+            $review->save();
+        }
 
         return response()->json(['message' => 'Reviews marked as read successfully.']);
     }
+
 }

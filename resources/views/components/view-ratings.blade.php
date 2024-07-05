@@ -13,7 +13,6 @@
     @endif
 </button>
 
-
 <x-modal :id="'rating_modal_' . $productReview['product']->id" title="{{ $productReview['review_count'] }} Ulasan">
     <!-- Isi konten modal -->
     <div>
@@ -64,3 +63,30 @@
         @endif
     </div>
 </x-modal>
+<script>
+    // Function to mark reviews as read when modal is closed
+    function closeModalAndMarkRead(modalId, reviewIds) {
+        // Ajax request to mark reviews as read
+        reviewIds.forEach(reviewId => {
+            fetch(`/mark-review-as-read/${reviewId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    is_read: true
+                })
+            });
+        });
+    }
+
+    // Add event listener for modal close event
+    const modal = document.getElementById('{{ 'rating_modal_' . $productReview['product']->id }}');
+    modal.addEventListener('close', function() {
+        // Get review IDs to mark as read
+        const reviewIds = {{ $productReview['reviews']->pluck('id')->toJson() }};
+        // Call function to mark reviews as read
+        closeModalAndMarkRead('{{ 'rating_modal_' . $productReview['product']->id }}', reviewIds);
+    });
+</script>

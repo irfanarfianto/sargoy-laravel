@@ -287,7 +287,6 @@ class ProductController extends Controller
         }
     }
 
-
     public function verify(Product $product)
     {
         if (auth()->user()->hasRole('admin')) {
