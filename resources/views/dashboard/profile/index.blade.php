@@ -136,7 +136,7 @@
                 </div>
                 <p><strong>Nomor WhatsApp:</strong> {{ $profile ? $profile->no_wa : 'Belum diisi' }}</p>
                 <p><strong>Alamat:</strong> {{ $profile ? $profile->alamat : 'Belum diisi' }}</p>
-                <p><strong>Begabung pada:</strong> {{ $user->created_at->format('d M Y H:i') }}</p>
+                <p><strong>Begabung pada:</strong> {{ $user->created_at }}</p>
             </div>
         @endif
     </div>

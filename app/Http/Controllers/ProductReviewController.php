@@ -54,6 +54,7 @@ class ProductReviewController extends Controller
                     'rating' => $review->rating,
                     'comment' => $review->comment,
                     'created_at' => $review->created_at,
+                    'is_read' => $review->is_read,
                 ];
             });
 
@@ -61,7 +62,8 @@ class ProductReviewController extends Controller
                 'product' => $productReviews->first()->product,
                 'review_count' => $totalReviews,
                 'average_rating' => $averageRating, 'reviews' => $reviewsForProduct,
-                'created_at' => $productReviews->first()->created_at, 'ratings' => $productReviews->pluck('rating')->toArray(),
+                'created_at' => $productReviews->first()->created_at,
+                'ratings' => $productReviews->pluck('rating')->toArray(),
             ];
         });
 
@@ -170,5 +172,17 @@ class ProductReviewController extends Controller
 
         return redirect()->route('reviews.index')
             ->with('success', 'Review deleted successfully.');
+    }
+
+    public function markReviewsRead(Request $request)
+    {
+        $productId = $request->input('product_id');
+
+        // Update status is_read untuk ulasan yang belum dibaca
+        ProductReview::where('product_id', $productId)
+            ->where('is_read', false)
+            ->update(['is_read' => true]);
+
+        return response()->json(['message' => 'Reviews marked as read successfully.']);
     }
 }

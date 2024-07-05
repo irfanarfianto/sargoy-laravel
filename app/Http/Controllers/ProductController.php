@@ -49,6 +49,8 @@ class ProductController extends Controller
         foreach ($products as $product) {
             if (!$product->is_verified) {
                 $product->status = 'Belum Diverifikasi';
+            } else {
+                $product->status = 'Sudah Diverifikasi';
             }
         }
 
@@ -59,6 +61,7 @@ class ProductController extends Controller
 
         return view('dashboard.product.index', compact('products', 'breadcrumbItems', 'search'));
     }
+
 
 
     public function create()

@@ -48,6 +48,22 @@
                             Nama Z-A
                         </a>
                     </li>
+                    <li>
+                        <a
+                            href="{{ route('dashboard.product.index', ['sort' => 'status', 'direction' => 'asc', 'search' => $search]) }}">
+                            <input type="radio" name="sort-direction" class="radio radio-secondary"
+                                {{ request('sort') == 'status' && request('direction') == 'asc' ? 'checked' : '' }}>
+                            Belum Diverifikasi
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            href="{{ route('dashboard.product.index', ['sort' => 'status', 'direction' => 'desc', 'search' => $search]) }}">
+                            <input type="radio" name="sort-direction" class="radio radio-secondary"
+                                {{ request('sort') == 'status' && request('direction') == 'desc' ? 'checked' : '' }}>
+                            Sudah Diverifikasi
+                        </a>
+                    </li>
                 </ul>
             </div>
             <!-- Form Pencarian -->
@@ -72,8 +88,8 @@
                         d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                 </svg>
             </a>
-
         </div>
+
     </div>
 
 
@@ -164,7 +180,8 @@
                                                 <form action="{{ route('product.verify', $product) }}"
                                                     method="POST">
                                                     @csrf
-                                                    <button type="submit" class="btn btn-success btn-sm text-base-100">Verifikasi
+                                                    <button type="submit"
+                                                        class="btn btn-success btn-sm text-base-100">Verifikasi
                                                         Sekarang</button>
                                                 </form>
                                             @endif

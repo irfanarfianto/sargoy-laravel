@@ -61,7 +61,7 @@
                     </li>
                 </ul>
             </details>
-
+            
         </div>
     </div>
     <div class="container mx-auto">
@@ -75,7 +75,7 @@
                 <p>{{ __('No reviews available at the moment.') }}</p>
             </div>
         @else
-            <x-table :headers="['Produk', 'Jumlah Ulasan', 'Rata - Ra Rating', 'Actions']" :rows="$productReviews
+            <x-table :headers="['Produk', 'Jumlah Ulasan', 'Rata - Rata Rating', 'Actions']" :rows="$productReviews
                 ->map(function ($productReview) {
                     return [
                         'name' => $productReview['product']->name,
@@ -90,8 +90,7 @@
             <div class="mt-4">
                 {{ $productReviews->links('vendor.pagination.custom') }}
             </div>
-
-            @include('dashboard.product_reviews.partials.modal')
         @endif
     </div>
 </x-dashboard-layout>
+

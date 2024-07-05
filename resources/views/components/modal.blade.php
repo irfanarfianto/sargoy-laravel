@@ -80,13 +80,13 @@ $maxWidth = [
 @props(['id', 'title'])
 
 <dialog id="{{ $id }}" class="modal modal-bottom sm:modal-middle">
-  <div class="modal-box relative">
-    <form method="dialog">
-      <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-    </form>
-    <h3 class="text-lg font-bold">{{ $title }}</h3>
-    <div class="py-4">
-      {{ $slot }}
+    <div class="modal-box relative">
+        <form method="dialog">
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+        </form>
+        <h3 class="text-lg font-bold">{{ $title }}</h3>
+        <div class="py-4">
+            {{ $slot }}
+        </div>
     </div>
-  </div>
 </dialog>

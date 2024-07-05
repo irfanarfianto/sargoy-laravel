@@ -39,6 +39,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::middleware('role:seller|admin')->group(function () {
         Route::resource('reviews', ProductReviewController::class);
+        Route::post('/mark-reviews-read', [ProductReviewController::class, 'markReviewsRead'])->name('mark.reviews.read');
+
         Route::get('/faqs', [FAQController::class, 'index'])->name('faqs.index');
 
         Route::get('produk', [ProductController::class, 'index'])->name('dashboard.product.index');
