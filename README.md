@@ -16,7 +16,7 @@ This project is a Laravel-based web application named Sargoy. It includes variou
 
 ### Prerequisites
 
--   PHP >= 8.0
+-   PHP >= 8.2
 -   Composer
 -   Node.js & NPM
 -   MySQL or any other supported database
