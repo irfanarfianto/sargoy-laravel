@@ -11,9 +11,11 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\NotificationController;
 
-Route::get('/', function () {
-    return view('pages.home.welcome');
-});
+// Route::get('/', function () {
+//     return view('pages.home.welcome');
+// });
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 
 Route::get('/send-announcement', [NotificationController::class, 'sendAnnouncement']);
