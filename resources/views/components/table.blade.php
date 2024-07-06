@@ -3,7 +3,6 @@
         <!-- head -->
         <thead class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
             <tr>
-                <th class="py-3 px-6 text-left">#</th>
                 @foreach ($headers as $header)
                     <th class="py-3 px-6 text-left">{{ $header }}</th>
                 @endforeach
