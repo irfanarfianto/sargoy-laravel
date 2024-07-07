@@ -1,10 +1,10 @@
 <x-dashboard-layout>
     <div class="pt-14 flex flex-wrap w-full justify-between items-start">
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-5">
+            <x-breadcrumb :items="$breadcrumbItems" />
             <h4 class="text-xl font-bold text-gray-900">
                 {{ __('Product Reviews') }}
             </h4>
-            <x-breadcrumb :items="$breadcrumbItems" />
         </div>
         <div class="flex items-center justify-end w-full md:w-auto">
             <!-- Dropdown untuk memilih kriteria sorting -->
@@ -69,7 +69,7 @@
 
         </div>
     </div>
-    <div class="container mx-auto">
+    <div class="container mx-auto shadow bg-white rounded-lg py-4 px-5">
         @if ($productReviews->isEmpty())
             <div class="flex bg-gray-400 w-full px-2 py-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -83,7 +83,6 @@
             <x-table :headers="['Produk', 'Jumlah Ulasan', 'Rata - Rata Rating', 'Actions']" :rows="$productReviews
                 ->map(function ($productReview) {
                     return [
-                        'index' => $productReview['index'],
                         'name' => $productReview['product']->name,
                         'review_count' => $productReview['review_count'] . ' ulasan',
                         'average_rating' => view('components.rating-stars', [

@@ -5,7 +5,7 @@
         </h4>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-6">
         <x-statistic-card title="Total Pengguna" value="{{ number_format($userCount, 0, ',', '.') }}"
             description="{{ $totalSellers }} Penjual">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

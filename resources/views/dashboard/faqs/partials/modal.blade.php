@@ -64,6 +64,7 @@
                     <label for="answer" class="block text-sm font-medium text-gray-700">Jawaban</label>
                     <textarea name="answer" id="answer" rows="4" class="input ckeditor input-bordered w-full max-w-xs"></textarea>
                 </div>
+                <div id="ckeditor"></div>
                 <div class="flex justify-end">
                     <button type="submit" class="btn btn-primary">Simpan</button>
                 </div>

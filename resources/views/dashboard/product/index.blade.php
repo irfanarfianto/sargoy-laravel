@@ -1,10 +1,10 @@
 <x-dashboard-layout>
     <div class="pt-14 flex flex-wrap w-full justify-between items-start">
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-5">
+            <x-breadcrumb :items="$breadcrumbItems" />
             <h4 class="text-xl font-bold text-gray-900">
                 {{ __('Daftar Produk') }}
             </h4>
-            <x-breadcrumb :items="$breadcrumbItems" />
         </div>
         <div class="flex items-center justify-between mb-2 w-full md:w-auto">
             <div class="dropdown dropdown-left">
@@ -94,7 +94,7 @@
 
 
     <!-- Daftar Produk -->
-    <div class="container mx-auto">
+    <div class="container mx-auto shadow bg-white rounded-lg py-4 px-5">
         @if ($products->isEmpty())
             @if ($search)
                 <p class="text-center text-gray-600 mt-8">Produk {{ $search }} yang Anda cari tidak ditemukan.

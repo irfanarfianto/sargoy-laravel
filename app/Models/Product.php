@@ -13,7 +13,7 @@ class Product extends Model
     protected $fillable = [
         'category_id', 'name', 'slug', 'description', 'price', 'stock',
         'material', 'color', 'size', 'pattern', 'ecommerce_link',
-        'status', 'views_count',
+        'status', 'views_count', 'is_verified',
         'user_id',
     ];
 
@@ -41,5 +41,10 @@ class Product extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
     }
 }

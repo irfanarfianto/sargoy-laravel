@@ -11,6 +11,20 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <style>
+        .drawer-side {
+            /* Aktifkan scrolling */
+            scrollbar-width: none;
+            /* Sembunyikan scrollbar di Firefox */
+            -ms-overflow-style: none;
+            /* Sembunyikan scrollbar di IE/Edge */
+        }
+
+        .drawer-side::-webkit-scrollbar {
+            display: none;
+            /* Sembunyikan scrollbar di Chrome/Safari */
+        }
+    </style>
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
