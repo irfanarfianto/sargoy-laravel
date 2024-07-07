@@ -1,10 +1,10 @@
 <x-dashboard-layout>
     <div class="pt-14 flex flex-wrap w-full justify-between items-start">
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-5">
+            <x-breadcrumb :items="$breadcrumbItems" />
             <h4 class="text-xl font-bold text-gray-900">
                 {{ __('Edit Produk') }}
             </h4>
-            <x-breadcrumb :items="$breadcrumbItems" />
         </div>
         <div class="flex flex-wrap-reverse w-full md:w-auto space-x-2">
             <a href="{{ route('dashboard.product.index') }}" class="btn btn-ghost w-full md:w-auto">Kembali</a>
@@ -12,7 +12,7 @@
                 Perubahan</button>
         </div>
     </div>
-    <div class="container mx-auto px-4 py-8">
+    <div class="container mx-auto">
         <form id="edit-product-form" action="{{ route('dashboard.product.update', $product->slug) }}" method="POST"
             enctype="multipart/form-data">
             @csrf

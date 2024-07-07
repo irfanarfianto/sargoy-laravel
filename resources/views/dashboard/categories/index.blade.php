@@ -1,10 +1,10 @@
 <x-dashboard-layout>
     <div class="pt-14 flex flex-wrap w-full justify-between items-start">
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-5">
+            <x-breadcrumb :items="$breadcrumbItems" />
             <h4 class="text-xl font-bold text-gray-900">
                 {{ __('Daftar Kategori') }}
             </h4>
-            <x-breadcrumb :items="$breadcrumbItems" />
         </div>
         <div class="flex items-center justify-between w-full md:w-auto">
             <a onclick="document.getElementById('createModal').showModal()" class="btn btn-primary">

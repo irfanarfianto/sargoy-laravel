@@ -22,7 +22,7 @@ class AdminController extends Controller
             // Hitung total data
             $userCount = User::count();
             $categoryCount = Category::count();
-            $productCount = Product::count();
+            $productCount = Product::where('is_verified', true)->count();
             $latestUsers = User::orderBy('created_at', 'desc')->take(5)->get();
             $totalSellers = Seller::count();
 

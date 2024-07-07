@@ -1,12 +1,12 @@
 <x-dashboard-layout>
     <div class="pt-14 flex flex-wrap w-full justify-between items-start">
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-5">
+            <x-breadcrumb :items="$breadcrumbItems" />
             <h4 class="text-xl font-bold text-gray-900">
                 {{ __('User Management') }}
             </h4>
-            <x-breadcrumb :items="$breadcrumbItems" />
         </div>
-        <form action="{{ route('users.index') }}" method="GET" class="flex items-center mr-2">
+        <form action="{{ route('users.index') }}" method="GET" class="flex items-center mr-2 w-full lg:w-1/4">
             <div class="relative flex-grow">
                 <input type="text" class="rounded-l-md input input-bordered w-full py-2 px-4" name="search"
                     value="{{ $search }}" placeholder="Search" />
