@@ -12,11 +12,15 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductReviewController;
 
-// Route::get('/', function () {
-//     return view('pages.home.welcome');
-// });
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('produk', function () {
+    return view('pages.products.index');
+})->name('products.page');
+
+Route::get('tentang-kami', function () {
+    return view('pages.about.index');
+})->name('about.page');
 Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
 
 
@@ -29,8 +33,9 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
         Route::get('admin', [AdminController::class, 'index'])->name('admin');
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
-        Route::resource('admin/blogs', BlogPostController::class);
-        Route::post('ckeditor/upload', [App\Http\Controllers\CKEditorController::class, 'upload'])->name('ckeditor.upload');
+        Route::resource('blogs', BlogPostController::class);
+        Route::post('blogs/{id}/mark-as-recommended', [BlogPostController::class, 'markAsRecommended'])->name('blogs.markAsRecommended');
+        Route::post('blogs/{id}/unmark-as-recommended', [BlogPostController::class, 'unmarkAsRecommended'])->name('blogs.unmarkAsRecommended');
         Route::post('product/{product}/verify', [ProductController::class, 'verify'])->name('product.verify');
         Route::get('/faqs/create', [FAQController::class, 'create'])->name('faqs.create');
         Route::post('/faqs', [FAQController::class, 'store'])->name('faqs.store');

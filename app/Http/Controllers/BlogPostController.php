@@ -21,7 +21,8 @@ class BlogPostController extends Controller
     public function publicIndex()
     {
         $posts = BlogPost::orderBy('created_at', 'desc')->get();
-        return view('pages.blogs.index', compact('posts'));
+        $recommendedPosts = BlogPost::where('recommended', true)->orderBy('created_at', 'desc')->get();
+        return view('pages.blogs.index', compact('posts', 'recommendedPosts'));
     }
 
     public function show($slug)
@@ -130,6 +131,27 @@ class BlogPostController extends Controller
         $post->delete();
 
         flash()->success('Blog post deleted successfully.');
+        return redirect()->route('blogs.index');
+    }
+
+
+    public function markAsRecommended($id)
+    {
+        $post = BlogPost::findOrFail($id);
+        $post->recommended = true;
+        $post->save();
+
+        flash()->success('Blog post marked as recommended.');
+        return redirect()->route('blogs.index');
+    }
+
+    public function unmarkAsRecommended($id)
+    {
+        $post = BlogPost::findOrFail($id);
+        $post->recommended = false;
+        $post->save();
+
+        flash()->success('Blog post unmarked as recommended.');
         return redirect()->route('blogs.index');
     }
 }

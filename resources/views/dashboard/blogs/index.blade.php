@@ -23,6 +23,7 @@
                     <th>Title</th>
                     <th>Author</th>
                     <th>Created At</th>
+                    <th>Recommended</th>
                     <th>Actions</th>
                 </tr>
             </thead>
@@ -33,6 +34,22 @@
                         <td>{{ $post->author }}</td>
                         <td>{{ $post->created_at->format('d M Y') }}</td>
                         <td>
+                            @if ($post->recommended)
+                                <form action="{{ route('blogs.unmarkAsRecommended', $post->id) }}" method="POST"
+                                    style="display:inline-block;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-warning">Batal Rekomendasi</button>
+                                </form>
+                            @else
+                                <form action="{{ route('blogs.markAsRecommended', $post->id) }}" method="POST"
+                                    style="display:inline-block;">
+                                    @csrf
+                                    <button type="submit" class="btn btn-sm btn-success">Rekomendasikan</button>
+                                </form>
+                            @endif
+                        </td>
+                        <td>
+
                             <a href="{{ route('blogs.edit', $post->slug) }}" class="btn btn-warning btn-sm">Edit</a>
                             <form action="{{ route('blogs.destroy', $post->slug) }}" method="POST"
                                 style="display:inline-block;">
@@ -47,7 +64,7 @@
             </tbody>
         </table>
         <div class="mt-4">
-                {{ $posts->links('vendor.pagination.custom') }}
-            </div>
+            {{ $posts->links('vendor.pagination.custom') }}
+        </div>
     </div>
 </x-dashboard-layout>
