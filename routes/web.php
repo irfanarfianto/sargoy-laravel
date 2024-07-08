@@ -18,10 +18,10 @@ Route::get('produk', function () {
     return view('pages.products.index');
 })->name('products.page');
 
+Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
 Route::get('tentang-kami', function () {
     return view('pages.about.index');
 })->name('about.page');
-Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
 
 
 Route::get('/send-announcement', [NotificationController::class, 'sendAnnouncement']);
