@@ -43,6 +43,16 @@
                         <input type="text" class="input input-bordered w-full" id="author" name="author"
                             value="{{ old('author') }}" required>
                     </div>
+                    <div class="form-group mt-4">
+                        <label for="tags" class="block text-gray-700 mb-2">Tags (comma-separated)</label>
+                        <input type="text" name="tags[]" id="tags" class="input input-bordered w-full"
+                            placeholder="Tag1" value="{{ old('tags.0') }}" required>
+                        <input type="text" name="tags[]" class="input input-bordered w-full mt-2" placeholder="Tag2"
+                            value="{{ old('tags.1') }}">
+                        <input type="text" name="tags[]" class="input input-bordered w-full mt-2" placeholder="Tag3"
+                            value="{{ old('tags.2') }}">
+                    </div>
+
                 </div>
 
                 <div class="w-full lg:w-1/3 shadow bg-white rounded-lg py-4 px-5 mt-6 lg:mt-0">

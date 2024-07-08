@@ -81,6 +81,8 @@ class BlogPostController extends Controller
             'content' => 'required',
             'author' => 'required|max:255',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'tags' => 'nullable|array',
+            'tags.*' => 'nullable|string|max:255',
         ]);
 
         // Simpan post ke dalam database
@@ -99,11 +101,19 @@ class BlogPostController extends Controller
             $post->cover = $imageName;
         }
 
+        // Mengelola tags
+        if ($request->has('tags')) {
+            $post->tags = $request->tags; // Simpan tags dalam bentuk array
+        }
+
+
         $post->save();
 
         flash()->success('Blog post created successfully.');
         return redirect()->route('blogs.index');
     }
+
+
 
     public function edit($slug)
     {
@@ -123,34 +133,53 @@ class BlogPostController extends Controller
             'content' => 'required',
             'author' => 'required|max:255',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'tags' => 'nullable|array',
+            'tags.*' => 'nullable|string|max:255',
         ]);
 
-        $post = BlogPost::where('slug', $slug)->firstOrFail();
+        try {
+            $post = BlogPost::where('slug', $slug)->firstOrFail();
 
-        $post->title = $request->title;
-        $post->content = $request->content;
-        $post->author = $request->author;
+            $post->title = $request->title;
+            $post->content = $request->content;
+            $post->author = $request->author;
 
-        // Mengelola gambar yang diunggah
-        if ($request->hasFile('cover')) {
-            $image = $request->file('cover');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->storeAs('public/blog_images', $imageName); // Menyimpan gambar di storage
+            // Mengelola gambar yang diunggah
+            if ($request->hasFile('cover')) {
+                $image = $request->file('cover');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->storeAs('public/blog_images', $imageName); // Menyimpan gambar di storage
 
-            // Hapus gambar lama jika ada
-            if ($post->cover) {
-                Storage::delete('public/blog_images/' . $post->cover);
+                // Hapus gambar lama jika ada
+                if ($post->cover) {
+                    Storage::delete('public/blog_images/' . $post->cover);
+                }
+
+                // Simpan nama file gambar baru ke dalam database
+                $post->cover = $imageName;
             }
 
-            // Simpan nama file gambar baru ke dalam database
-            $post->cover = $imageName;
+            // Mengelola tags
+            if ($request->has('tags')) {
+                $post->tags = $request->tags; // Simpan tags dalam bentuk array
+            }
+
+            $post->save();
+
+            flash()->success('Blog post updated successfully.');
+            return redirect()->route('blogs.index');
+        } catch (ModelNotFoundException $e) {
+            Log::error('Blog post not found for slug: ' . $slug);
+            flash()->error('Blog post not found.');
+            return redirect()->route('blogs.index');
+        } catch (\Exception $e) {
+            Log::error('Error updating blog post: ' . $e->getMessage());
+            flash()->error('An error occurred while updating blog post.');
+            return redirect()->route('blogs.index');
         }
-
-        $post->save();
-
-        flash()->success('Blog post updated successfully.');
-        return redirect()->route('blogs.index');
     }
+
+
 
     public function destroy($slug)
     {
