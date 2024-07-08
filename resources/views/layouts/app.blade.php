@@ -33,6 +33,7 @@
         <main class="max-w-7xl mx-auto mt-3 px-3 lg:px-[8px]">
             {{ $slot }}
         </main>
+         @include('layouts.footer')
     </div>
 </body>
 

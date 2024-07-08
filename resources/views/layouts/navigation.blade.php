@@ -70,7 +70,9 @@
                             </div>
                         </button>
                         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                            <li><a href="{{ route('profile.index') }}">Profile</a></li>
+                            @unless (Auth::user()->hasRole('admin') || Auth::user()->hasRole('seller'))
+                                <li><a href="{{ route('profile.index') }}">Profile</a></li>
+                            @endunless
                             <li>
                                 @if (Auth::user()->hasRole('admin'))
                                     <a href="{{ route('admin') }}">Dashboard Admin</a>
