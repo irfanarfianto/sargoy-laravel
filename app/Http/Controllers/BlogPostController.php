@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\BlogPost;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BlogPostController extends Controller
 {
@@ -21,28 +23,44 @@ class BlogPostController extends Controller
 
     public function publicIndex()
     {
-        $posts = BlogPost::orderBy('created_at', 'desc')->paginate(6);
-        $recommendedPosts = BlogPost::where('recommended', true)
-            ->inRandomOrder()
-            ->limit(5)
-            ->get();
-        return view('pages.blogs.index', compact('posts', 'recommendedPosts'));
+        try {
+            $posts = BlogPost::orderBy('created_at', 'desc')->paginate(6);
+            $recommendedPosts = BlogPost::where('recommended', true)
+                ->inRandomOrder()
+                ->limit(5)
+                ->get();
+            return view('pages.blogs.index', compact('posts', 'recommendedPosts'));
+        } catch (\Exception $e) {
+            Log::error('Error fetching blog posts: ' . $e->getMessage());
+            flash()->error('An error occurred while fetching blog posts.');
+            return redirect()->route('home');
+        }
     }
 
     public function show($slug)
     {
-        $post = BlogPost::where('slug', $slug)->firstOrFail();
-        $recommendedPosts = BlogPost::where('recommended', true)
-            ->where('id', '!=', $post->id)
-            ->orderBy('created_at', 'desc')
-            ->take(5)
-            ->get();
-        $breadcrumbItems = [
-            ['name' => 'Home', 'url' => route('home')],
-            ['name' => 'Blogs', 'url' => route('blogs.page')],
-            ['name' => Str::limit($post->title, 30)]
-        ];
-        return view('pages.blogs.show', compact('post', 'recommendedPosts', 'breadcrumbItems'));
+        try {
+            $post = BlogPost::where('slug', $slug)->firstOrFail();
+            $recommendedPosts = BlogPost::where('recommended', true)
+                ->where('id', '!=', $post->id)
+                ->orderBy('created_at', 'desc')
+                ->take(5)
+                ->get();
+            $breadcrumbItems = [
+                ['name' => 'Home', 'url' => route('home')],
+                ['name' => 'Blogs', 'url' => route('blogs.page')],
+                ['name' => Str::limit($post->title, 30)]
+            ];
+            return view('pages.blogs.show', compact('post', 'recommendedPosts', 'breadcrumbItems'));
+        } catch (ModelNotFoundException $e) {
+            Log::error('Blog post not found for slug: ' . $slug);
+            flash()->error('Blog post not found.');
+            return redirect()->route('home');
+        } catch (\Exception $e) {
+            Log::error('Error fetching blog post: ' . $e->getMessage());
+            flash()->error('An error occurred while fetching blog post.');
+            return redirect()->route('home');
+        }
     }
 
 

@@ -9,7 +9,7 @@
             <div class="flex-1">
                 <h2 class="text-xl font-semibold">Semua Blog</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
-                    @foreach ($posts as $post)
+                    @forelse ($posts as $post)
                         <a href="{{ route('blogs.show', $post->slug) }}">
                             <div class="flex flex-col overflow-hidden">
                                 <img class="h-48 w-full rounded-lg object-cover"
@@ -27,13 +27,14 @@
                                             alt="{{ $post->author }}" loading="lazy">
                                         <div class="ml-2 text-sm">
                                             <p class="text-gray-800">{{ $post->author }}</p>
-                                            {{-- <p class="text-gray-600">{{ $post->author->job_title }}</p> --}}
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </a>
-                    @endforeach
+                    @empty
+                        <p class="text-gray-600">Tidak ada blog yang tersedia.</p>
+                    @endforelse
                 </div>
                 <div class="mt-6">
                     {{ $posts->links('vendor.pagination.custom') }}
@@ -44,7 +45,7 @@
             <div class="lg:w-1/4 lg:ml-8 mt-8 lg:mt-0">
                 <h2 class="text-xl font-semibold">Rekomendasi</h2>
                 <div class="grid grid-cols-1 gap-6 mt-4">
-                    @foreach ($recommendedPosts as $post)
+                    @forelse ($recommendedPosts as $post)
                         <a href="{{ route('blogs.show', $post->slug) }}">
                             <div class="flex flex-row h-28 overflow-hidden">
                                 <img class="w-28 rounded-lg object-cover"
@@ -59,7 +60,9 @@
                                 </div>
                             </div>
                         </a>
-                    @endforeach
+                    @empty
+                        <p class="text-gray-600">Tidak ada rekomendasi blog saat ini.</p>
+                    @endforelse
                 </div>
             </div>
         </div>
