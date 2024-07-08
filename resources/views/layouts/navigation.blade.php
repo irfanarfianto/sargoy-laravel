@@ -1,5 +1,5 @@
 @php
-    $userName = Auth::user()->name;
+    $userName = Auth::check() ? Auth::user()->name : 'Guest';
     $initials = strtoupper(substr($userName, 0, 1));
 @endphp
 
@@ -16,14 +16,20 @@
                 </div>
                 <ul tabindex="0"
                     class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                    <li><a href="/"
+                    <li><a href="{{ route('home') }}"
                             class="{{ Request::is('/') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Beranda</a>
                     </li>
-                    <li><a>Produk</a></li>
+                    <li><a href="{{ route('products.page') }}"
+                            class="{{ Request::is('produk') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
+                    </li>
                     <li><a href="{{ route('blogs.page') }}"
                             class="{{ Request::is('blogs') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
                     </li>
-                    <li><a>Tentang Kami</a></li>
+                    <li><a href="{{ route('about.page') }}"
+                            class="{{ Request::is('tentang-kami') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Tentang
+                            Kami</a>
+                    </li>
+
                 </ul>
             </div>
             <a href="/" class="text-xl">Sargoy</a>
