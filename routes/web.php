@@ -19,6 +19,7 @@ Route::get('produk', function () {
 })->name('products.page');
 
 Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
+Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');
 Route::get('tentang-kami', function () {
     return view('pages.about.index');
 })->name('about.page');
@@ -33,7 +34,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
         Route::get('admin', [AdminController::class, 'index'])->name('admin');
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
-        Route::resource('blogs', BlogPostController::class);
+        Route::resource('blogs', BlogPostController::class)->except(['show']);
         Route::post('blogs/{id}/mark-as-recommended', [BlogPostController::class, 'markAsRecommended'])->name('blogs.markAsRecommended');
         Route::post('blogs/{id}/unmark-as-recommended', [BlogPostController::class, 'unmarkAsRecommended'])->name('blogs.unmarkAsRecommended');
         Route::post('product/{product}/verify', [ProductController::class, 'verify'])->name('product.verify');

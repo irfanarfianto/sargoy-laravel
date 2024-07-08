@@ -3,7 +3,7 @@
     $initials = strtoupper(substr($userName, 0, 1));
 @endphp
 
-<nav class="bg-base-100 shadow">
+<nav class="bg-base-100 shadow h-20 items-center flex">
     <div class="navbar max-w-7xl mx-auto">
         <div class="navbar-start">
             <div class="dropdown">
@@ -23,8 +23,9 @@
                             class="{{ Request::is('produk') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
                     </li>
                     <li><a href="{{ route('blogs.page') }}"
-                            class="{{ Request::is('blogs') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
+                            class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
                     </li>
+
                     <li><a href="{{ route('about.page') }}"
                             class="{{ Request::is('tentang-kami') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Tentang
                             Kami</a>
@@ -43,8 +44,9 @@
                         class="{{ Request::is('produk') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
                 </li>
                 <li><a href="{{ route('blogs.page') }}"
-                        class="{{ Request::is('blogs') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
+                        class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
                 </li>
+
                 <li><a href="{{ route('about.page') }}"
                         class="{{ Request::is('tentang-kami') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Tentang
                         Kami</a>

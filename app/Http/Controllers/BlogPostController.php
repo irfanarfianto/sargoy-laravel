@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\BlogPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class BlogPostController extends Controller
 {
@@ -20,16 +21,30 @@ class BlogPostController extends Controller
 
     public function publicIndex()
     {
-        $posts = BlogPost::orderBy('created_at', 'desc')->get();
-        $recommendedPosts = BlogPost::where('recommended', true)->orderBy('created_at', 'desc')->get();
+        $posts = BlogPost::orderBy('created_at', 'desc')->paginate(6);
+        $recommendedPosts = BlogPost::where('recommended', true)
+            ->inRandomOrder()
+            ->limit(5)
+            ->get();
         return view('pages.blogs.index', compact('posts', 'recommendedPosts'));
     }
 
     public function show($slug)
     {
         $post = BlogPost::where('slug', $slug)->firstOrFail();
-        return view('blogs.show', compact('post'));
+        $recommendedPosts = BlogPost::where('recommended', true)
+            ->where('id', '!=', $post->id)
+            ->orderBy('created_at', 'desc')
+            ->take(5)
+            ->get();
+        $breadcrumbItems = [
+            ['name' => 'Home', 'url' => route('home')],
+            ['name' => 'Blogs', 'url' => route('blogs.page')],
+            ['name' => Str::limit($post->title, 30)]
+        ];
+        return view('pages.blogs.show', compact('post', 'recommendedPosts', 'breadcrumbItems'));
     }
+
 
     public function create()
     {

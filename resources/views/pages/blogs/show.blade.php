@@ -1,0 +1,42 @@
+<!-- show.blade.php -->
+<x-app-layout>
+    <x-breadcrumb :items="$breadcrumbItems" />
+    <div class="mt-8 text-2xl">
+        {{ $post->title }}
+    </div>
+
+    <div class="mt-6 text-gray-500">
+        <div class="flex flex-col lg:flex-row">
+            <div class="flex-1">
+                <img class="h-56 w-full rounded-lg object-cover mb-4"
+                    src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
+                    alt="{{ $post->title }}" loading="lazy" />
+                <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
+                <h2 class="text-xl font-bold mb-2">{{ $post->title }}</h2>
+                <p class="text-gray-600">{{ $post->content }}</p>
+            </div>
+            <!-- Recommended Blogs Section -->
+            <div class="lg:w-1/4 lg:ml-8 mt-8 lg:mt-0">
+                <h2 class="text-xl font-semibold">Recommended Blogs</h2>
+                <div class="grid grid-cols-1 gap-6 mt-4">
+                    @foreach ($recommendedPosts as $post)
+                        <a href="{{ route('blogs.show', $post->slug) }}">
+                            <div class="flex flex-row h-28 overflow-hidden">
+                                <img class="w-28 rounded-lg object-cover"
+                                    src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
+                                    alt="{{ $post->title }}" loading="lazy" />
+                                <div class="p-4 flex flex-col justify-between">
+                                    <div>
+                                        <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
+                                        <h2 class="text-lg font-bold">{{ $post->title }}</h2>
+                                        <p class="text-gray-600">{{ Str::limit($post->content, 20) }}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
+</x-app-layout>
