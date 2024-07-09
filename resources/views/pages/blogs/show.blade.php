@@ -17,7 +17,18 @@
                         alt="{{ $post->title }}" loading="lazy" />
                     <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
                     <h2 class="text-xl font-bold mb-2">{{ $post->title }}</h2>
+                    <p class="text-gray-600 text-xs mb-2">By: {{ $post->author }}</p>
                     <p class="text-gray-600">{!! $post->content !!}</p>
+                    @if ($post->tags)
+                        @php
+                            $tags = json_decode($post->tags);
+                        @endphp
+
+                        @foreach ($tags as $tag)
+                            <span
+                                class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mt-2">#{{ $tag }}</span>
+                        @endforeach
+                    @endif
                 @else
                     <p>Blog tidak ditemukan.</p>
                 @endisset
@@ -35,7 +46,7 @@
                                 <div class="p-4 flex flex-col justify-between">
                                     <div>
                                         <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
-                                        <h2 class="text-lg font-bold">{{ $post->title }}</h2>
+                                        <h5 class="font-bold">{!! Str::limit($post->title, 20) !!}</h5>
                                         {{-- <p class="text-gray-600">{!! Str::limit($post->content, 20) !!}</p> --}}
                                     </div>
                                 </div>

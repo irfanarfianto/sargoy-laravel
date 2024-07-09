@@ -10,7 +10,7 @@ class BlogPost extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug', 'content', 'author'];
+    protected $fillable = ['title', 'slug', 'content', 'author', 'tags'];
 
     public static function boot()
     {
@@ -24,6 +24,18 @@ class BlogPost extends Model
             $post->slug = Str::slug($post->title);
         });
     }
+
+    // // Konversi tags ke array saat diambil dari database
+    // public function getTagsAttribute($value)
+    // {
+    //     return explode(', ', $value);
+    // }
+
+    // // Konversi tags ke string saat disimpan ke database
+    // public function setTagsAttribute($value)
+    // {
+    //     $this->attributes['tags'] = implode(', ', array_unique($value));
+    // }
 
     public function getRouteKeyName()
     {

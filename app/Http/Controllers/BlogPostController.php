@@ -76,14 +76,21 @@ class BlogPostController extends Controller
 
     public function store(Request $request)
     {
+
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
             'author' => 'required|max:255',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'tags' => 'nullable|array',
-            'tags.*' => 'nullable|string|max:255',
+            'tags' => 'nullable|string',
         ]);
+
+        // Check if the title already exists
+        $existingPost = BlogPost::where('title', $validatedData['title'])->first();
+        if ($existingPost) {
+            flash()->error('Blog post with this title already exists.');
+            return redirect()->back()->withInput();
+        }
 
         // Simpan post ke dalam database
         $post = new BlogPost();
@@ -102,16 +109,17 @@ class BlogPostController extends Controller
         }
 
         // Mengelola tags
-        if ($request->has('tags')) {
-            $post->tags = $request->tags; // Simpan tags dalam bentuk array
+        if ($request->filled('tags')) {
+            $tags = array_map('trim', explode(',', $validatedData['tags'])); // Pisahkan string tags menjadi array
+            $post->tags = json_encode($tags); // Simpan tags sebagai JSON string
         }
-
 
         $post->save();
 
         flash()->success('Blog post created successfully.');
         return redirect()->route('blogs.index');
     }
+
 
 
 
@@ -128,17 +136,26 @@ class BlogPostController extends Controller
 
     public function update(Request $request, $slug)
     {
+        
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
             'author' => 'required|max:255',
             'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'tags' => 'nullable|array',
-            'tags.*' => 'nullable|string|max:255',
+            'tags' => 'nullable|string',
         ]);
 
         try {
             $post = BlogPost::where('slug', $slug)->firstOrFail();
+
+            // Check if the title already exists for a different post
+            $existingPost = BlogPost::where('title', $request->title)
+                ->where('id', '!=', $post->id)
+                ->first();
+            if ($existingPost) {
+                flash()->error('Blog post with this title already exists.');
+                return redirect()->back()->withInput();
+            }
 
             $post->title = $request->title;
             $post->content = $request->content;
@@ -160,8 +177,9 @@ class BlogPostController extends Controller
             }
 
             // Mengelola tags
-            if ($request->has('tags')) {
-                $post->tags = $request->tags; // Simpan tags dalam bentuk array
+            if ($request->filled('tags')) {
+                $tags = array_map('trim', explode(',', $request->tags)); // Pisahkan string tags menjadi array
+                $post->tags = json_encode($tags); // Simpan tags sebagai JSON string
             }
 
             $post->save();
@@ -178,6 +196,7 @@ class BlogPostController extends Controller
             return redirect()->route('blogs.index');
         }
     }
+
 
 
 

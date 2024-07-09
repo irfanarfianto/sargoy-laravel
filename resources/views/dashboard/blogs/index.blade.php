@@ -23,46 +23,56 @@
                     <th>Title</th>
                     <th>Author</th>
                     <th>Created At</th>
-                    <th>Recommended</th>
+                    <th>Status</th>
                     <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($posts as $post)
                     <tr>
-                        <td>{{ $post->title }}</td>
+                        <td>
+                            <div class="flex flex-col gap-1">
+                                {{ Str::limit($post->title, 50) }}
+                                <div class="flex flex-warp">
+                                    @if ($post->tags)
+                                        @php
+                                            $tags = json_decode($post->tags);
+                                        @endphp
+
+                                        @foreach ($tags as $tag)
+                                            <span class="badge text-xs mr-1">#{{ $tag }}</span>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </td>
                         <td>{{ $post->author }}</td>
                         <td>{{ $post->created_at->format('d M Y') }}</td>
                         <td>
                             @if ($post->recommended)
-                                <form action="{{ route('blogs.unmarkAsRecommended', $post->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-warning">Batal Rekomendasi</button>
-                                </form>
+                                <span>
+                                    <span class="badge badge-success badge-outline badge-sm">Rekomendasi</span>
+                                </span>
                             @else
-                                <form action="{{ route('blogs.markAsRecommended', $post->id) }}" method="POST"
-                                    style="display:inline-block;">
-                                    @csrf
-                                    <button type="submit" class="btn btn-sm btn-success">Rekomendasikan</button>
-                                </form>
+                                <span>
+                                    <span class="badge badge-error badge-outline badge-sm">Tidak Rekomendasi</span>
+                                </span>
                             @endif
                         </td>
                         <td>
-
-                            <a href="{{ route('blogs.edit', $post->slug) }}" class="btn btn-warning btn-sm">Edit</a>
-                            <form action="{{ route('blogs.destroy', $post->slug) }}" method="POST"
-                                style="display:inline-block;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm"
-                                    onclick="return confirm('Are you sure?')">Delete</button>
-                            </form>
+                            <a class="btn btn-ghost btn-xs"
+                                onclick="document.getElementById('detailModal{{ $post->id }}').showModal()">Detail</a>
+                            <a href="{{ route('blogs.edit', $post->slug) }}" class="btn btn-ghost btn-xs">Edit</a>
+                            <a class="btn btn-error btn-xs"
+                                onclick="document.getElementById('delete{{ $post->id }}').showModal()">Hapus</a>
                         </td>
                     </tr>
+                    @include('dashboard.blogs.partials.hapus')
+                    @include('dashboard.blogs.partials.detail')
                 @endforeach
             </tbody>
         </table>
+
         <div class="mt-4">
             {{ $posts->links('vendor.pagination.custom') }}
         </div>
@@ -71,5 +81,6 @@
                 <a href="{{ route('blogs.create') }}" class="btn btn-primary w-full">Create New Post</a>
             </div>
         </div>
+
     </div>
 </x-dashboard-layout>

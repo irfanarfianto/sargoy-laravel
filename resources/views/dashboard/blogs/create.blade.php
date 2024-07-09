@@ -8,7 +8,7 @@
         </div>
         <div class="mt-4 hidden lg:flex flex-wrap-reverse w-full md:w-auto space-x-2">
             <a href="{{ route('blogs.index') }}" class="btn btn-ghost w-full md:w-auto">Kembali</a>
-            <button id="createButton" type="button" class="btn btn-primary w-full md:w-auto">Create</button>
+            <button type="submit" form="blogForm" class="btn btn-primary w-full md:w-auto">Create</button>
         </div>
     </div>
 
@@ -45,12 +45,8 @@
                     </div>
                     <div class="form-group mt-4">
                         <label for="tags" class="block text-gray-700 mb-2">Tags (comma-separated)</label>
-                        <input type="text" name="tags[]" id="tags" class="input input-bordered w-full"
-                            placeholder="Tag1" value="{{ old('tags.0') }}" required>
-                        <input type="text" name="tags[]" class="input input-bordered w-full mt-2" placeholder="Tag2"
-                            value="{{ old('tags.1') }}">
-                        <input type="text" name="tags[]" class="input input-bordered w-full mt-2" placeholder="Tag3"
-                            value="{{ old('tags.2') }}">
+                        <input type="text" class="input input-bordered w-full" id="tags" name="tags"
+                            value="{{ old('tags') }}" placeholder="Enter tags separated by commas">
                     </div>
 
                 </div>
@@ -84,8 +80,7 @@
             <div class="form-group mt-6 shadow bg-white rounded-lg py-4 px-5">
                 <label for="content" class="block text-gray-700 mb-2">Content <span
                         class="text-red-500">*</span></label>
-                <textarea class="input input-bordered w-full" id="content" name="content" rows="10"
-                    value="{!! old('content') !!}" required></textarea>
+                <textarea class="input ckeditor input-bordered w-full" id="content" name="content" rows="5" >{{ old('content') }}</textarea>
             </div>
 
             <!-- Tombol Submit (sembunyikan, digunakan untuk trigger) -->
@@ -97,7 +92,7 @@
     <div class="btm-nav shadow-lg z-50 flex lg:hidden">
         <div class="flex flex-row px-4">
             <a href="{{ route('blogs.index') }}" class="btn btn-ghost w-1/2">Batal</a>
-            <button id="createButton" type="button" class="btn btn-primary w-1/2">Create</button>
+            <button form="blogForm" type="submit" class="btn btn-primary w-1/2">Create</button>
         </div>
     </div>
 
@@ -122,11 +117,5 @@
                 label.classList.remove('hidden');
             }
         }
-
-        // Event listener untuk tombol "Create"
-        document.getElementById('createButton').addEventListener('click', function() {
-            // Trigger submit form
-            document.getElementById('submitButton').click();
-        });
     </script>
 </x-dashboard-layout>

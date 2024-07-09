@@ -47,18 +47,13 @@
                             value="{{ old('author', $post->author) }}" required>
                     </div>
                     <div class="form-group mt-4">
-                        <label for="tags" class="block text-gray-700 mb-2">Tags (comma-separated)</label>
-                        <div class="flex flex-wrap space-x-2 items-center">
-                            <input type="text" name="tags[]" id="tags" class="input input-bordered"
-                                placeholder="Tag1" value="{{ old('tags.0', $post->tags[0] ?? '') }}" required>
-                            <input type="text" name="tags[]" class="input input-bordered" placeholder="Tag2"
-                                value="{{ old('tags.1', $post->tags[1] ?? '') }}">
-                            <input type="text" name="tags[]" class="input input-bordered" placeholder="Tag3"
-                                value="{{ old('tags.2', $post->tags[2] ?? '') }}">
-                        </div>
+                        <label for="tags" class="block text-gray-700 mb-2">Tags <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" class="input input-bordered w-full" id="tags" name="tags"
+                            value="{{ $post->tags ? implode(', ', json_decode($post->tags)) : '' }}"
+                            placeholder="Enter tags separated by commas" required>
+
                     </div>
-
-
                 </div>
 
                 <div class="w-full lg:w-1/3 shadow bg-white rounded-lg py-4 px-5 mt-6 lg:mt-0">
