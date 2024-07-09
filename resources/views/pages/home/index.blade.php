@@ -1,4 +1,11 @@
 <x-app-layout>
+    <style>
+        .btn-cards {
+            justify-content: center;
+            border: 1px solid black;
+        }
+    </style>
+
     <!-- Carousel -->
     <div id="default-carousel" class="relative" data-carousel="static">
         <div class="overflow-hidden relative h-96 rounded-lg sm:h-64 xl:h-80 2xl:h-96">
@@ -68,7 +75,7 @@
             </div>
         </div>
 
-        <div class="flex mt-8">
+        <div class="flex justify-center mt-4">
             <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Lihat Semua Produk
             </a>
@@ -109,7 +116,7 @@
             </div>
         </div>
 
-        <div class="flex mt-8">
+        <div class="flex justify-center mt-4">
             <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Lihat Semua Produk
             </a>
@@ -178,7 +185,7 @@
             </div>
         </div>
 
-        <div class="flex mt-8">
+        <div class="flex justify-center mt-4">
             <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                 Lihat Semua Produk
             </a>
