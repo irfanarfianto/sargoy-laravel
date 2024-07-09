@@ -7,11 +7,11 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Dashboard') }}</title>
+    <meta name="description" content="Document does not have a meta description">
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css" />
 
     <style>
         .ck-editor__editable_inline {
@@ -50,7 +50,6 @@
         </div>
     </div>
 
-
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
     <script>
@@ -59,21 +58,9 @@
                 ckfinder: {
                     uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
                 },
-                toolbar: [
-                    'undo', 'redo', 'heading', 'bulletedList', 'numberedList', 'fontColor', 'fontBackgroundColor',
-                    'uploadImage'
-                ],
-                fontColor: {
-                    // Disable the color picker for the font color feature.
-                    colorPicker: false
-                },
-                fontBackgroundColor: {
-                    // Disable the color picker for the font background color feature.
-                    colorPicker: false
-                },
             })
             .catch(error => {
-                console.error(error);
+                console.error('Error initializing CKEditor:', error);
             });
     </script>
 </body>
