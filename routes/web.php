@@ -35,6 +35,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
         Route::resource('blogs', BlogPostController::class)->except(['show']);
+        Route::post('ckeditor/upload', [BlogPostController::class, 'upload'])->name('ckeditor.upload');
         Route::post('blogs/{id}/mark-as-recommended', [BlogPostController::class, 'markAsRecommended'])->name('blogs.markAsRecommended');
         Route::post('blogs/{id}/unmark-as-recommended', [BlogPostController::class, 'unmarkAsRecommended'])->name('blogs.unmarkAsRecommended');
         Route::post('product/{product}/verify', [ProductController::class, 'verify'])->name('product.verify');

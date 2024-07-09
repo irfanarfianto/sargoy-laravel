@@ -7,67 +7,11 @@
             </h4>
         </div>
         <div class="flex items-center justify-between mb-2 w-full md:w-auto">
-            <div class="dropdown dropdown-left">
-                <div tabindex="0" role="button" class="btn btn-ghost m-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                        stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round"
-                            d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
-                    </svg>
-                </div>
-                <ul tabindex="0" class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
-                    <li>
-                        <a
-                            href="{{ route('dashboard.product.index', ['sort' => 'created_at', 'direction' => 'desc', 'search' => $search]) }}">
-                            <input type="radio" name="sort-direction" class="radio radio-secondary"
-                                {{ request('sort') == 'created_at' && request('direction') == 'desc' ? 'checked' : '' }}>
-                            Terbaru
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="{{ route('dashboard.product.index', ['sort' => 'created_at', 'direction' => 'asc', 'search' => $search]) }}">
-                            <input type="radio" name="sort-direction" class="radio radio-secondary"
-                                {{ request('sort') == 'created_at' && request('direction') == 'asc' ? 'checked' : '' }}>
-                            Terlama
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="{{ route('dashboard.product.index', ['sort' => 'name', 'direction' => 'asc', 'search' => $search]) }}">
-                            <input type="radio" name="sort-direction" class="radio radio-secondary"
-                                {{ request('sort') == 'name' && request('direction') == 'asc' ? 'checked' : '' }}>
-                            Nama A-Z
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="{{ route('dashboard.product.index', ['sort' => 'name', 'direction' => 'desc', 'search' => $search]) }}">
-                            <input type="radio" name="sort-direction" class="radio radio-secondary"
-                                {{ request('sort') == 'name' && request('direction') == 'desc' ? 'checked' : '' }}>
-                            Nama Z-A
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="{{ route('dashboard.product.index', ['sort' => 'status', 'direction' => 'asc', 'search' => $search]) }}">
-                            <input type="radio" name="sort-direction" class="radio radio-secondary"
-                                {{ request('sort') == 'status' && request('direction') == 'asc' ? 'checked' : '' }}>
-                            Belum Diverifikasi
-                        </a>
-                    </li>
-                    <li>
-                        <a
-                            href="{{ route('dashboard.product.index', ['sort' => 'status', 'direction' => 'desc', 'search' => $search]) }}">
-                            <input type="radio" name="sort-direction" class="radio radio-secondary"
-                                {{ request('sort') == 'status' && request('direction') == 'desc' ? 'checked' : '' }}>
-                            Sudah Diverifikasi
-                        </a>
-                    </li>
-                </ul>
+            <div class="hidden lg:block">
+                @include('dashboard.product.partials.sorting')
             </div>
             <!-- Form Pencarian -->
-            <form action="{{ route('dashboard.product.index') }}" method="GET" class="flex items-center mr-2">
+            <form action="{{ route('dashboard.product.index') }}" method="GET" class="flex items-center w-full lg:mr-2">
                 <div class="relative flex-grow">
                     <input type="text" class="rounded-l-md input input-bordered w-full py-2 px-4" name="search"
                         value="{{ $search }}" placeholder="Search" />
@@ -80,7 +24,7 @@
                     </button>
                 </div>
             </form>
-            <a href="{{ route('dashboard.product.tambah') }}" class="btn btn-primary">
+            <a href="{{ route('dashboard.product.tambah') }}" class="btn btn-primary hidden lg:flex">
                 <span class="hidden sm:inline">Tambah Produk</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
@@ -177,8 +121,7 @@
                                         @endif
                                         @if (auth()->user()->hasRole('admin'))
                                             @if (!$product->is_verified)
-                                                <form action="{{ route('product.verify', $product) }}"
-                                                    method="POST">
+                                                <form action="{{ route('product.verify', $product) }}" method="POST">
                                                     @csrf
                                                     <button type="submit"
                                                         class="btn btn-success btn-sm text-base-100">Verifikasi
@@ -205,9 +148,8 @@
                                     <div class=" flex flex-wrap items-center space-x-2">
                                         <a class="btn btn-ghost btn-xs text-neutral"
                                             onclick="document.getElementById('viewModal{{ $product->id }}').showModal()">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="size-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-4">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -234,6 +176,19 @@
             </div>
 
         @endif
+    </div>
+    <div class="btm-nav shadow-lg z-50 flex lg:hidden">
+        <div class="flex flex-row px-4">
+            @include('dashboard.product.partials.sorting')
+            <a href="{{ route('dashboard.product.tambah') }}" class="btn btn-primary w-4/5">
+                <span class="inline">Tambah Produk</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                </svg>
+            </a>
+        </div>
     </div>
 </x-dashboard-layout>
 

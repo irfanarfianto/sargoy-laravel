@@ -6,7 +6,7 @@
                 {{ __('Blogs') }}
             </h4>
         </div>
-        <div class="flex items-center justify-between w-full md:w-auto">
+        <div class="hidden lg:flex items-center justify-between w-full md:w-auto">
             <a href="{{ route('blogs.create') }}" class="btn btn-primary mb-3">Create New Post</a>
         </div>
     </div>
@@ -65,6 +65,11 @@
         </table>
         <div class="mt-4">
             {{ $posts->links('vendor.pagination.custom') }}
+        </div>
+        <div class="btm-nav shadow-lg z-50 flex lg:hidden ">
+            <div class="px-4">
+                <a href="{{ route('blogs.create') }}" class="btn btn-primary w-full">Create New Post</a>
+            </div>
         </div>
     </div>
 </x-dashboard-layout>

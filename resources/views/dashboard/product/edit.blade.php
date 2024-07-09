@@ -6,13 +6,13 @@
                 {{ __('Edit Produk') }}
             </h4>
         </div>
-        <div class="flex flex-wrap-reverse w-full md:w-auto space-x-2">
+        <div class="hidden lg:flex flex-wrap-reverse w-full md:w-auto space-x-2">
             <a href="{{ route('dashboard.product.index') }}" class="btn btn-ghost w-full md:w-auto">Kembali</a>
             <button type="submit" form="edit-product-form" class="btn btn-primary w-full md:w-auto">Simpan
                 Perubahan</button>
         </div>
     </div>
-    <div class="container mx-auto">
+    <div class="container mx-auto pb-10 lg:pb-0">
         <form id="edit-product-form" action="{{ route('dashboard.product.update', $product->slug) }}" method="POST"
             enctype="multipart/form-data">
             @csrf
@@ -167,6 +167,13 @@
                 @enderror
             </div>
         </form>
+    </div>
+    <div class="btm-nav shadow-lg z-50 flex lg:hidden">
+        <div class="flex flex-row px-4">
+            <a href="{{ route('dashboard.product.index') }}" class="btn btn-ghost w-1/2">Kembali</a>
+            <button type="submit" form="edit-product-form" class="btn btn-primary w-1/2">Simpan
+                Perubahan</button>
+        </div>
     </div>
 </x-dashboard-layout>
 

@@ -6,9 +6,9 @@
                 {{ __('Create New Blog Post') }}
             </h4>
         </div>
-        <div class="mt-4">
-            <a href="{{ route('blogs.index') }}" class="btn btn-ghost">Kembali</a>
-            <button id="createButton" type="button" class="btn btn-primary">Create</button>
+        <div class="mt-4 hidden lg:flex flex-wrap-reverse w-full md:w-auto space-x-2">
+            <a href="{{ route('blogs.index') }}" class="btn btn-ghost w-full md:w-auto">Kembali</a>
+            <button id="createButton" type="button" class="btn btn-primary w-full md:w-auto">Create</button>
         </div>
     </div>
 
@@ -84,13 +84,21 @@
             <div class="form-group mt-6 shadow bg-white rounded-lg py-4 px-5">
                 <label for="content" class="block text-gray-700 mb-2">Content <span
                         class="text-red-500">*</span></label>
-                <textarea class="input ckeditor input-bordered w-full" id="content" name="content" rows="5" required>{{ old('content') }}</textarea>
+                <textarea class="input input-bordered w-full" id="content" name="content" rows="10"
+                    value="{!! old('content') !!}" required></textarea>
             </div>
 
             <!-- Tombol Submit (sembunyikan, digunakan untuk trigger) -->
             <button id="submitButton" type="submit" class="hidden"></button>
 
         </form>
+    </div>
+
+    <div class="btm-nav shadow-lg z-50 flex lg:hidden">
+        <div class="flex flex-row px-4">
+            <a href="{{ route('blogs.index') }}" class="btn btn-ghost w-1/2">Batal</a>
+            <button id="createButton" type="button" class="btn btn-primary w-1/2">Create</button>
+        </div>
     </div>
 
     <script>

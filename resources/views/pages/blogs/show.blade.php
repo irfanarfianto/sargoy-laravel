@@ -17,7 +17,7 @@
                         alt="{{ $post->title }}" loading="lazy" />
                     <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
                     <h2 class="text-xl font-bold mb-2">{{ $post->title }}</h2>
-                    <p class="text-gray-600">{{ $post->content }}</p>
+                    <p class="text-gray-600">{!! $post->content !!}</p>
                 @else
                     <p>Blog tidak ditemukan.</p>
                 @endisset
@@ -28,15 +28,15 @@
                 <div class="grid grid-cols-1 gap-6 mt-4">
                     @forelse ($recommendedPosts as $post)
                         <a href="{{ route('blogs.show', $post->slug) }}">
-                            <div class="flex flex-row h-28 overflow-hidden">
-                                <img class="w-28 rounded-lg object-cover"
+                            <div class="flex flex-row h-24 overflow-hidden">
+                                <img class="w-24 rounded-lg object-cover"
                                     src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
                                     alt="{{ $post->title }}" loading="lazy" />
                                 <div class="p-4 flex flex-col justify-between">
                                     <div>
                                         <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
                                         <h2 class="text-lg font-bold">{{ $post->title }}</h2>
-                                        <p class="text-gray-600">{{ Str::limit($post->content, 20) }}</p>
+                                        {{-- <p class="text-gray-600">{!! Str::limit($post->content, 20) !!}</p> --}}
                                     </div>
                                 </div>
                             </div>

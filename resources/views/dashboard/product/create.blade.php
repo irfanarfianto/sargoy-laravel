@@ -6,12 +6,12 @@
                 {{ __('Tambah Produk') }}
             </h4>
         </div>
-        <div class="flex flex-wrap-reverse w-full md:w-auto space-x-2">
+        <div class="hidden lg:flex flex-wrap-reverse w-full md:w-auto space-x-2">
             <button class="btn btn-ghost w-full md:w-auto" onclick="window.history.back();">Kembali</button>
             <button type="submit" form="tambah-product-form" class="btn btn-primary w-full md:w-auto">Simpan</button>
         </div>
     </div>
-    <div class="container mx-auto">
+    <div class="container mx-auto pb-10 lg:pb-0">
         <form id="tambah-product-form" action="{{ route('dashboard.product.simpan') }}" method="POST"
             enctype="multipart/form-data">
             @csrf
@@ -127,6 +127,12 @@
                 @enderror
             </div>
         </form>
+    </div>
+    <div class="btm-nav shadow-lg z-50 flex lg:hidden">
+        <div class="flex flex-row px-4">
+            <button class="btn btn-ghost w-1/2" onclick="window.history.back();">Kembali</button>
+            <button type="submit" form="tambah-product-form" class="btn btn-primary w-1/2">Simpan</button>
+        </div>
     </div>
 </x-dashboard-layout>
 

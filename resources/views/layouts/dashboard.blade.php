@@ -11,7 +11,13 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.ckeditor.com/ckeditor5/42.0.0/ckeditor5.css" />
+
     <style>
+        .ck-editor__editable_inline {
+            min-height: 450px;
+        }
+
         .drawer-side {
             /* Aktifkan scrolling */
             scrollbar-width: none;
@@ -44,12 +50,31 @@
         </div>
     </div>
 
-    <script src="//cdn.ckeditor.com/4.14.1/basic/ckeditor.js"></script>
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('.ckeditor').ckeditor();
-        });
+    <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
+    <script>
+        ClassicEditor
+            .create(document.querySelector('#content'), {
+                ckfinder: {
+                    uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                },
+                toolbar: [
+                    'undo', 'redo', 'heading', 'bulletedList', 'numberedList', 'fontColor', 'fontBackgroundColor',
+                    'uploadImage'
+                ],
+                fontColor: {
+                    // Disable the color picker for the font color feature.
+                    colorPicker: false
+                },
+                fontBackgroundColor: {
+                    // Disable the color picker for the font background color feature.
+                    colorPicker: false
+                },
+            })
+            .catch(error => {
+                console.error(error);
+            });
     </script>
 </body>
 

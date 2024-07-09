@@ -6,11 +6,12 @@
                 {{ __('Edit Blog Post') }}
             </h4>
         </div>
-        <div class="mt-4 flex">
+        <div class="mt-4 hidden lg:flex">
             <a href="{{ route('blogs.index') }}" class="btn btn-ghost mr-2">Kembali</a>
             <button type="submit" form="blogForm" class="btn btn-primary">Perbarui</button>
         </div>
     </div>
+
 
     <div class="container mt-6">
         <form id="blogForm" action="{{ route('blogs.update', $post->slug) }}" method="POST"
@@ -50,10 +51,10 @@
                         <div class="flex flex-wrap space-x-2 items-center">
                             <input type="text" name="tags[]" id="tags" class="input input-bordered"
                                 placeholder="Tag1" value="{{ old('tags.0', $post->tags[0] ?? '') }}" required>
-                            <input type="text" name="tags[]" class="input input-bordered"
-                                placeholder="Tag2" value="{{ old('tags.1', $post->tags[1] ?? '') }}">
-                            <input type="text" name="tags[]" class="input input-bordered"
-                                placeholder="Tag3" value="{{ old('tags.2', $post->tags[2] ?? '') }}">
+                            <input type="text" name="tags[]" class="input input-bordered" placeholder="Tag2"
+                                value="{{ old('tags.1', $post->tags[1] ?? '') }}">
+                            <input type="text" name="tags[]" class="input input-bordered" placeholder="Tag3"
+                                value="{{ old('tags.2', $post->tags[2] ?? '') }}">
                         </div>
                     </div>
 
@@ -93,13 +94,20 @@
             <div class="form-group mt-6 shadow bg-white rounded-lg py-4 px-5">
                 <label for="content" class="block text-gray-700 mb-2">Content <span
                         class="text-red-500">*</span></label>
-                <textarea class="input ckeditor input-bordered w-full" id="content" name="content" rows="5" required>{{ old('content', $post->content) }}</textarea>
+                <textarea class="input ckeditor input-bordered w-full" id="content" name="content" rows="5" required>{!! old('content', $post->content) !!}</textarea>
             </div>
 
             <!-- Tombol Submit (sembunyikan, digunakan untuk trigger) -->
             <button id="submitButton" type="submit" class="hidden"></button>
 
         </form>
+    </div>
+
+    <div class="btm-nav shadow-lg z-50 flex lg:hidden">
+        <div class="px-4 flex flex-row ">
+            <a href="{{ route('blogs.index') }}" class="btn btn-ghost w-1/2">Batal</a>
+            <button form="blogForm" type="submit" class="btn btn-primary w-1/2">Perbarui</button>
+        </div>
     </div>
 
     <script>
