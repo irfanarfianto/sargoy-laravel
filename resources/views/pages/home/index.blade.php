@@ -39,7 +39,6 @@
         {{ __('Produk Baru') }}
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-        <!-- Card 1 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -47,8 +46,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 2 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -56,8 +53,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 3 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -65,14 +60,18 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 4 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
                 <h3 class="text-lg font-semibold text-gray-800">Card 4</h3>
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
+        </div>
+
+        <div class="flex mt-8">
+            <a href class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Lihat Semua Produk
+            </a>
         </div>
     </div>
 
@@ -81,7 +80,6 @@
         {{ __('Produk Unggulan') }}
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-        <!-- Card 1 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -89,8 +87,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 2 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -98,8 +94,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 3 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -107,14 +101,18 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 4 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
                 <h3 class="text-lg font-semibold text-gray-800">Card 4</h3>
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
+        </div>
+
+        <div class="flex mt-8">
+            <a href class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Lihat Semua Produk
+            </a>
         </div>
     </div>
 
@@ -123,7 +121,6 @@
         {{ __('Semua Produk') }}
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8">
-        <!-- Card 1 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -131,8 +128,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 2 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -140,8 +135,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 3 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -149,8 +142,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 4 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -158,8 +149,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 1 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -167,8 +156,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 2 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -176,8 +163,6 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 3 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
@@ -185,14 +170,18 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <!-- Card 4 -->
         <div class="bg-white rounded-lg shadow-lg overflow-hidden">
             <img src="https://via.placeholder.com/400x300" alt="Card Image" class="w-full h-48 object-cover">
             <div class="p-4">
                 <h3 class="text-lg font-semibold text-gray-800">Card 8</h3>
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
+        </div>
+
+        <div class="flex mt-8">
+            <a href class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                Lihat Semua Produk
+            </a>
         </div>
     </div>
 
