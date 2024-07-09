@@ -5,7 +5,8 @@
 
 <x-dashboard-layout>
     <div class="pt-14 w-full items-start">
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-5">
+            <x-breadcrumb :items="$breadcrumbItems" />
             <h4 class="text-xl font-bold text-gray-900">
                 @if (auth()->user()->hasRole('admin'))
                     {{ __('Profile Admin') }}
@@ -15,7 +16,6 @@
                     {{ __('Profile') }}
                 @endif
             </h4>
-            <x-breadcrumb :items="$breadcrumbItems" />
         </div>
     </div>
     <div class="container mx-auto">

@@ -2,7 +2,7 @@
     <div class="pt-14 flex flex-wrap w-full justify-between items-start">
         <div class="flex flex-col">
             <h4 class="text-xl font-bold text-gray-900">
-                {{ __('Daftar Produk') }}
+                {{ __('Notifikasi') }}
             </h4>
             {{-- <x-breadcrumb :items="$breadcrumbItems" /> --}}
         </div>

@@ -1,0 +1,234 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\BlogPost;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
+class BlogPostController extends Controller
+{
+    public function index()
+    {
+        $posts = BlogPost::orderBy('created_at', 'desc')->paginate(10);
+        $breadcrumbItems = [
+            ['name' => 'Dashboard', 'url' => route('admin')],
+            ['name' => 'Blogs'],
+        ];
+        return view('dashboard.blogs.index', compact('posts', 'breadcrumbItems'));
+    }
+
+    public function publicIndex()
+    {
+        try {
+            $posts = BlogPost::orderBy('created_at', 'desc')->paginate(6);
+            $recommendedPosts = BlogPost::where('recommended', true)
+                ->inRandomOrder()
+                ->limit(5)
+                ->get();
+            return view('pages.blogs.index', compact('posts', 'recommendedPosts'));
+        } catch (\Exception $e) {
+            Log::error('Error fetching blog posts: ' . $e->getMessage());
+            flash()->error('An error occurred while fetching blog posts.');
+            return redirect()->route('home');
+        }
+    }
+
+    public function show($slug)
+    {
+        try {
+            $post = BlogPost::where('slug', $slug)->firstOrFail();
+            $recommendedPosts = BlogPost::where('recommended', true)
+                ->where('id', '!=', $post->id)
+                ->orderBy('created_at', 'desc')
+                ->take(5)
+                ->get();
+            $breadcrumbItems = [
+                ['name' => 'Home', 'url' => route('home')],
+                ['name' => 'Blogs', 'url' => route('blogs.page')],
+                ['name' => Str::limit($post->title, 30)]
+            ];
+            return view('pages.blogs.show', compact('post', 'recommendedPosts', 'breadcrumbItems'));
+        } catch (ModelNotFoundException $e) {
+            Log::error('Blog post not found for slug: ' . $slug);
+            flash()->error('Blog post not found.');
+            return redirect()->route('home');
+        } catch (\Exception $e) {
+            Log::error('Error fetching blog post: ' . $e->getMessage());
+            flash()->error('An error occurred while fetching blog post.');
+            return redirect()->route('home');
+        }
+    }
+
+
+    public function create()
+    {
+        $breadcrumbItems = [
+            ['name' => 'Dashboard', 'url' => route('admin')],
+            ['name' => 'Blogs', 'url' => route('blogs.index')],
+            ['name' => 'Create'],
+        ];
+        return view('dashboard.blogs.create', compact('breadcrumbItems'));
+    }
+
+    public function store(Request $request)
+    {
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'author' => 'required|max:255',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'tags' => 'nullable|array',
+            'tags.*' => 'nullable|string|max:255',
+        ]);
+
+        // Simpan post ke dalam database
+        $post = new BlogPost();
+        $post->title = $validatedData['title'];
+        $post->content = $validatedData['content'];
+        $post->author = $validatedData['author'];
+
+        // Mengelola gambar yang diunggah
+        if ($request->hasFile('cover')) {
+            $image = $request->file('cover');
+            $imageName = time() . '_' . $image->getClientOriginalName();
+            $image->storeAs('public/blog_images', $imageName); // Menyimpan gambar di storage
+
+            // Simpan nama file gambar ke dalam database
+            $post->cover = $imageName;
+        }
+
+        // Mengelola tags
+        if ($request->has('tags')) {
+            $post->tags = $request->tags; // Simpan tags dalam bentuk array
+        }
+
+
+        $post->save();
+
+        flash()->success('Blog post created successfully.');
+        return redirect()->route('blogs.index');
+    }
+
+
+
+    public function edit($slug)
+    {
+        $post = BlogPost::where('slug', $slug)->firstOrFail();
+        $breadcrumbItems = [
+            ['name' => 'Dashboard', 'url' => route('admin')],
+            ['name' => 'Blogs', 'url' => route('blogs.index')],
+            ['name' => 'Edit'],
+        ];
+        return view('dashboard.blogs.edit', compact('post', 'breadcrumbItems'));
+    }
+
+    public function update(Request $request, $slug)
+    {
+        $request->validate([
+            'title' => 'required|max:255',
+            'content' => 'required',
+            'author' => 'required|max:255',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'tags' => 'nullable|array',
+            'tags.*' => 'nullable|string|max:255',
+        ]);
+
+        try {
+            $post = BlogPost::where('slug', $slug)->firstOrFail();
+
+            $post->title = $request->title;
+            $post->content = $request->content;
+            $post->author = $request->author;
+
+            // Mengelola gambar yang diunggah
+            if ($request->hasFile('cover')) {
+                $image = $request->file('cover');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->storeAs('public/blog_images', $imageName); // Menyimpan gambar di storage
+
+                // Hapus gambar lama jika ada
+                if ($post->cover) {
+                    Storage::delete('public/blog_images/' . $post->cover);
+                }
+
+                // Simpan nama file gambar baru ke dalam database
+                $post->cover = $imageName;
+            }
+
+            // Mengelola tags
+            if ($request->has('tags')) {
+                $post->tags = $request->tags; // Simpan tags dalam bentuk array
+            }
+
+            $post->save();
+
+            flash()->success('Blog post updated successfully.');
+            return redirect()->route('blogs.index');
+        } catch (ModelNotFoundException $e) {
+            Log::error('Blog post not found for slug: ' . $slug);
+            flash()->error('Blog post not found.');
+            return redirect()->route('blogs.index');
+        } catch (\Exception $e) {
+            Log::error('Error updating blog post: ' . $e->getMessage());
+            flash()->error('An error occurred while updating blog post.');
+            return redirect()->route('blogs.index');
+        }
+    }
+
+
+
+    public function destroy($slug)
+    {
+        $post = BlogPost::where('slug', $slug)->firstOrFail();
+
+        // Hapus gambar terkait jika ada
+        if ($post->cover) {
+            Storage::delete('public/blog_images/' . $post->cover);
+        }
+
+        $post->delete();
+
+        flash()->success('Blog post deleted successfully.');
+        return redirect()->route('blogs.index');
+    }
+
+
+    public function markAsRecommended($id)
+    {
+        $post = BlogPost::findOrFail($id);
+        $post->recommended = true;
+        $post->save();
+
+        flash()->success('Blog post marked as recommended.');
+        return redirect()->route('blogs.index');
+    }
+
+    public function unmarkAsRecommended($id)
+    {
+        $post = BlogPost::findOrFail($id);
+        $post->recommended = false;
+        $post->save();
+
+        flash()->success('Blog post unmarked as recommended.');
+        return redirect()->route('blogs.index');
+    }
+
+    public function upload(Request $request)
+    {
+        if ($request->hasFile('upload')) {
+            $originName = $request->file('upload')->getClientOriginalName();
+            $fileName = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $request->file('upload')->getClientOriginalExtension();
+            $fileName = $fileName . '_' . time() . '.' . $extension;
+
+            $request->file('upload')->move(public_path('media'), $fileName);
+
+            $url = asset('media/' . $fileName);
+            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
+        }
+    }
+}

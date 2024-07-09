@@ -1,10 +1,10 @@
 <x-dashboard-layout>
     <div class="pt-14 flex flex-wrap w-full justify-between items-start">
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-5">
+            <x-breadcrumb :items="$breadcrumbItems" />
             <h4 class="text-xl font-bold text-gray-900">
                 {{ __('Daftar Produk') }}
             </h4>
-            <x-breadcrumb :items="$breadcrumbItems" />
         </div>
         {{-- Hanya tampilkan untuk admin --}}
         @if (auth()->user()->hasRole('admin'))
@@ -18,7 +18,7 @@
                     </svg>
                 </a>
             </div>
-            <div class="container mx-auto">
+            <div class="container mx-auto ">
                 @isset($error)
                     <p class="text-red-500">{{ $error }}</p>
                 @else
@@ -52,7 +52,7 @@
         {{-- Tampilkan accordion untuk seller --}}
         @if (auth()->user()->hasRole('seller'))
             <div class="container mx-auto flex flex-col lg:flex-row lg:space-x-4">
-                <div class="lg:w-3/4 order-2 lg:order-1">
+                <div class="lg:w-3/4 order-2 lg:order-1 shadow bg-white rounded-lg py-4 px-5">
                     @isset($error)
                         <p class="text-red-500">{{ $error }}</p>
                     @else
@@ -85,8 +85,8 @@
                         @endif
                     @endisset
                 </div>
-                <div class="lg:w-1/4 bg-base-100 order-1 lg:order-2 mb-4 lg:mb-0 ">
-                    <div class="bg-base-200 text-neutral p-4 rounded-lg">
+                <div class="lg:w-1/4 order-1 lg:order-2 mb-4 lg:mb-0 ">
+                    <div class="bg-base-200 shadow text-neutral p-4 rounded-lg">
                         <h3 class="text-lg font-bold">Butuh Bantuan?</h3>
                         <p class="text-sm">Jika Anda memiliki pertanyaan, jangan ragu untuk menghubungi admin.</p>
                         <a href="" class="btn btn-secondary mt-2">Hubungi

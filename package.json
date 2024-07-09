@@ -19,6 +19,8 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "@ckeditor/ckeditor5-build-classic": "^42.0.0",
+        "ckeditor5": "^42.0.0",
         "flatpickr": "^4.6.13",
         "remixicon": "^4.3.0"
     }

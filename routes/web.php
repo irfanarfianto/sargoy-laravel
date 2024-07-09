@@ -1,30 +1,43 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FaqController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProductReviewController;
-use App\Http\Controllers\SellerController;
-use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SellerController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NotificationController;
+use App\Http\Controllers\ProductReviewController;
 
-Route::get('/', function () {
-    return view('pages.home.welcome');
-});
+
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('produk', function () {
+    return view('pages.products.index');
+})->name('products.page');
+
+Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
+Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');
+Route::get('tentang-kami', function () {
+    return view('pages.about.index');
+})->name('about.page');
 
 
 Route::get('/send-announcement', [NotificationController::class, 'sendAnnouncement']);
 Route::get('/send-alert', [NotificationController::class, 'sendAlert']);
 
 
-Route::middleware(['auth', 'verified'])->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () {
     Route::middleware('role:admin')->group(function () {
         Route::get('admin', [AdminController::class, 'index'])->name('admin');
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
+        Route::resource('blogs', BlogPostController::class)->except(['show']);
+        Route::post('ckeditor/upload', [BlogPostController::class, 'upload'])->name('ckeditor.upload');
+        Route::post('blogs/{id}/mark-as-recommended', [BlogPostController::class, 'markAsRecommended'])->name('blogs.markAsRecommended');
+        Route::post('blogs/{id}/unmark-as-recommended', [BlogPostController::class, 'unmarkAsRecommended'])->name('blogs.unmarkAsRecommended');
         Route::post('product/{product}/verify', [ProductController::class, 'verify'])->name('product.verify');
         Route::get('/faqs/create', [FAQController::class, 'create'])->name('faqs.create');
         Route::post('/faqs', [FAQController::class, 'store'])->name('faqs.store');
@@ -53,7 +66,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     Route::get('notifications', [NotificationController::class, 'index'])->name('pesan');
 
-
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('profile.index');
         Route::get('/edit', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -61,6 +73,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 });
+
 
 require __DIR__ . '/auth.php';
 Route::fallback(function () {
