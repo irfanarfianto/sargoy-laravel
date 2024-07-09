@@ -10,10 +10,16 @@
                 <div class="flex flex-col justify-center items-start space-y-2 mt-4">
                     <p class="text-xs text-base-300">Didukung oleh</p>
                     <div class="flex flex-row justify-center items-center space-x-3">
-                        <img src="{{ asset('images/kemenparekraf.png') }}" alt="Logo Kemenparekraf"
-                            class=" w-12 h-12 object-cover">
-                        <img src="{{ asset('images/dicoding.png') }}" alt="Logo dicoding"
-                            class=" w-28 h-12 object-cover">
+                        <a href="https://kemenparekraf.go.id/" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ asset('images/kemenparekraf.png') }}" alt="Logo Kemenparekraf"
+                                class="w-12 h-12 object-cover">
+                        </a>
+
+                        </a>
+                        <a href="https://dicoding.com/" target="_blank" rel="noopener noreferrer">
+                            <img src="{{ asset('images/dicoding.png') }}" alt="Logo dicoding"
+                                class=" w-28 h-12 object-cover filter brightness-0 invert"></a>
+
                         {{-- <p class="text-xs text-neutral leading-relaxed">
                         Kemenparekraf / Baparekraf <br>
                         Republik
