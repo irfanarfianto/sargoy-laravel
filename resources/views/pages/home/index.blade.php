@@ -120,7 +120,7 @@
 
     <!-- Semua Produk -->
     <div class="mt-8 text-2xl">
-        {{ __('Produk Unggulan') }}
+        {{ __('Semua Produk') }}
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 mt-8">
         <!-- Card 1 -->
