@@ -4,9 +4,11 @@
             <div class="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
                 <h3 class="w-auto h-9 text-3xl text-base-100">Sargoy</h3>
 
-                <p class="text-base-300 leading-relaxed text-base-300-300 mt-7">Amet minim mollit non deserunt ullamco
-                    est sit
-                    aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit.</p>
+                <p class="text-base text-gray-300 leading-relaxed mt-5">
+                    Sarung Goyor adalah sarung tradisional yang merupakan kebanggaan dari Desa Wanarejan Utara,
+                    Kabupaten Pemalang. Sarung ini terkenal dengan motif dan teknik tenun khasnya yang memikat, mewakili
+                    keindahan dan keberagaman budaya Indonesia.
+                </p>
                 <div class="flex flex-col justify-center items-start space-y-2 mt-4">
                     <p class="text-xs text-base-300">Didukung oleh</p>
                     <div class="flex flex-row justify-center items-center space-x-3">
