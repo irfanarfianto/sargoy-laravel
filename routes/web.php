@@ -14,9 +14,10 @@ use App\Http\Controllers\ProductReviewController;
 
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('produk', function () {
-    return view('pages.products.index');
-})->name('products.page');
+Route::get('products', [ProductController::class, 'publicIndex'])->name('product.page');
+Route::get('/products/{slug}', [ProductController::class, 'detailProduct'])->name('product.detail');
+Route::get('/products/load-more', [ProductController::class, 'loadMore'])->name('product.loadMore');
+Route::post('/products/{product}/review', [ProductController::class, 'storeReview'])->name('product.review.store');
 
 Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
 Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');

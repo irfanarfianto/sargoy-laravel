@@ -47,4 +47,8 @@ class Product extends Model
     {
         return $this->hasMany(ProductReview::class);
     }
+    public function getAverageRatingAttribute()
+    {
+        return $this->reviews()->avg('rating');
+    }
 }

@@ -97,7 +97,7 @@ class BlogPostController extends Controller
                 ->get();
 
             $breadcrumbItems = [
-                ['name' => 'Home', 'url' => route('home')],
+                ['name' => 'Beranda', 'url' => route('home')],
                 ['name' => 'Blogs', 'url' => route('blogs.page')],
                 ['name' => Str::limit($post->title, 30)]
             ];

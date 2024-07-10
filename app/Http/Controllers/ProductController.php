@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
-use App\Models\ProductImage;
-use App\Models\ProductVariant;
-use App\Models\Category;
 use Exception;
+use App\Models\Product;
+use App\Models\Category;
+use Illuminate\Support\Str;
+use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use App\Models\ProductReview;
+use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class ProductController extends Controller
 {
@@ -61,8 +63,6 @@ class ProductController extends Controller
 
         return view('dashboard.product.index', compact('products', 'breadcrumbItems', 'search'));
     }
-
-
 
     public function create()
     {
@@ -299,5 +299,135 @@ class ProductController extends Controller
             flash()->error('Unauthorized access.');
             return redirect()->route('dashboard.product.index');
         }
+    }
+
+
+    // user public
+    public function publicIndex(Request $request)
+    {
+        $sort = $request->get('sort', 'created_at');
+        $direction = $request->get('direction', 'desc');
+        $search = $request->get('search');
+        $filter = $request->get('filter', 'terbaru'); // Default filter is 'terbaru'
+        $category = $request->get('category'); // Selected category ID
+
+        // Mengambil semua produk yang sudah diverifikasi dengan relasi kategori dan gambar
+        $query = Product::where('is_verified', true)->with('category', 'images', 'reviews');
+
+        // Filter data berdasarkan pencarian
+        if ($search) {
+            $query->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%')
+                    ->orWhereHas('category', function ($query) use ($search) {
+                        $query->where('name', 'like', '%' . $search . '%');
+                    });
+            });
+        }
+
+        // Filter berdasarkan kategori yang dipilih
+        if ($category) {
+            $query->whereHas('category', function ($query) use ($category) {
+                $query->where('slug', $category);
+            });
+        }
+
+        // Filter berdasarkan yang populer, terbaru, atau rating
+        if ($filter === 'populer') {
+            $query->orderBy('views_count', 'desc');
+        } elseif ($filter === 'rating_tertinggi') {
+            $query->withAvg('reviews', 'rating')
+                ->orderByDesc('reviews_avg_rating');
+        } elseif ($filter === 'rating_terendah') {
+            $query->withAvg('reviews', 'rating')
+                ->orderBy('reviews_avg_rating');
+        } else {
+            $query->orderBy($sort, $direction);
+        }
+
+        $products = $query->paginate(9);
+        foreach ($products as $product) {
+            $product->status = 'Sudah Diverifikasi';
+        }
+
+        // Ambil semua kategori untuk dropdown filter
+        $categories = Category::all();
+
+        return view('pages.products.index', compact('products', 'search', 'filter', 'categories', 'category'));
+    }
+
+
+
+    public function detailProduct($slug)
+    {
+        // Mengambil data produk berdasarkan slug
+        $product = Product::where('slug', $slug)->firstOrFail();
+        $product->load([
+            'category',
+            'images',
+            'variants',
+            'reviews' => function ($query) {
+                $query->orderBy('created_at', 'desc');
+            }
+        ]);
+
+        // Breadcrumb
+        $breadcrumbItems = [
+            ['name' => 'Beranda', 'url' => route('home')],
+            ['name' => 'Produk', 'url' => route('product.page')],
+            ['name' => 'Detail Produk'],
+            ['name' => Str::limit($product->name, 30)],
+        ];
+
+        // Produk dengan views_count terendah, kecuali produk yang sedang dibuka
+        $leastViewedProducts = Product::where('id', '<>', $product->id)
+            ->orderBy('views_count')
+            ->limit(3)
+            ->get();
+
+        // Produk dengan views_count tertinggi, kecuali produk yang sedang dibuka
+        $mostViewedProducts = Product::where('id', '<>', $product->id)
+            ->orderByDesc('views_count')
+            ->limit(1)
+            ->get();
+
+        // Menggabungkan kedua kategori produk untuk direkomendasikan
+        $recommendedProducts = $leastViewedProducts->merge($mostViewedProducts);
+
+        // Jika produk yang sedang dibuka ada dalam produk yang direkomendasikan, ganti dengan produk lainnya
+        if ($recommendedProducts->contains('id', $product->id)) {
+            $replacementProduct = Product::where('id', '<>', $product->id)
+                ->orderBy('views_count')
+                ->first();
+
+            if ($replacementProduct) {
+                $recommendedProducts = $recommendedProducts->reject(function ($item) use ($product) {
+                    return $item->id == $product->id;
+                });
+
+                $recommendedProducts->push($replacementProduct);
+            }
+        }
+
+        return view('pages.products.detail', compact('product', 'breadcrumbItems', 'recommendedProducts'));
+    }
+
+
+
+    public function storeReview(Request $request, Product $product)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|max:255',
+        ]);
+
+        $review = new ProductReview();
+        $review->product_id = $product->id;
+        $review->user_id = auth()->id();
+        $review->rating = $request->rating;
+        $review->comment = $request->comment;
+        $review->save();
+
+        return back()->with('success', 'Ulasan berhasil ditambahkan!');
     }
 }

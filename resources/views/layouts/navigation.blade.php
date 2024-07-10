@@ -19,8 +19,8 @@
                     <li><a href="{{ route('home') }}"
                             class="{{ Request::is('/') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Beranda</a>
                     </li>
-                    <li><a href="{{ route('products.page') }}"
-                            class="{{ Request::is('produk') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
+                    <li><a href="{{ route('product.page') }}"
+                            class="{{ Request::is('products') || Request::is('products/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
                     </li>
                     <li><a href="{{ route('blogs.page') }}"
                             class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
@@ -44,8 +44,8 @@
                 <li><a href="{{ route('home') }}"
                         class="{{ Request::is('/') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Beranda</a>
                 </li>
-                <li><a href="{{ route('products.page') }}"
-                        class="{{ Request::is('produk') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
+                <li><a href="{{ route('product.page') }}"
+                        class="{{ Request::is('products') || Request::is('products/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
                 </li>
                 <li><a href="{{ route('blogs.page') }}"
                         class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
@@ -59,7 +59,7 @@
             </ul>
         </div>
         <div class="navbar-end space-x-6">
-            
+
             @if (Route::has('login'))
                 @auth
                     <div class="dropdown dropdown-end">

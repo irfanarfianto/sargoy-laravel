@@ -70,5 +70,6 @@
                 </form>
             </div>
         </div>
+        <x-banner />
     </div>
 </x-app-layout>

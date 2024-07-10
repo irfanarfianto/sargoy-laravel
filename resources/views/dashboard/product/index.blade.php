@@ -77,21 +77,13 @@
                                 </td>
                                 <td class="py-3 px-6 text-left">
                                     <div class="flex items-center gap-3">
-                                        @if ($product->images->isNotEmpty())
-                                            <div class="avatar">
-                                                <div class="mask mask-squircle h-12 w-12">
-                                                    <img src="{{ $product->images->first()->image_url }}"
-                                                        alt="{{ $product->name }}" class="h-12 w-12 object-cover">
-                                                </div>
+                                        <div class="avatar">
+                                            <div class="mask mask-squircle h-12 w-12">
+                                                <img src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}"
+                                                    loading="lazy" alt="{{ $product->name }}"
+                                                    class="h-12 w-12 object-cover">
                                             </div>
-                                        @else
-                                            <div class="avatar">
-                                                <div class="mask mask-squircle h-12 w-12">
-                                                    <img src="https://placehold.co/400" alt="Placeholder"
-                                                        class="h-12 w-12 object-cover">
-                                                </div>
-                                            </div>
-                                        @endif
+                                        </div>
                                         <div>
                                             <div class="font-bold truncate w-40">{{ $product->name }}</div>
                                             <div class="text-sm opacity-50">{{ $product->category->name }}</div>
