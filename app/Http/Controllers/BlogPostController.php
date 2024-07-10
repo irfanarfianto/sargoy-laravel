@@ -21,15 +21,39 @@ class BlogPostController extends Controller
         return view('dashboard.blogs.index', compact('posts', 'breadcrumbItems'));
     }
 
-    public function publicIndex()
+    public function publicIndex(Request $request)
     {
         try {
-            $posts = BlogPost::orderBy('created_at', 'desc')->paginate(6);
+            $query = BlogPost::orderBy('created_at', 'desc');
+
+            // Get unique tags from database
+            $uniqueTags = BlogPost::distinct()
+                ->pluck('tags')
+                ->map(function ($item, $key) {
+                    return json_decode($item, true);
+                })
+                ->flatten(1)
+                ->unique()
+                ->filter()
+                ->toArray();
+
+            // Handle tag filter
+            $selectedTag = null;
+            if ($request->filled('tags')) {
+                $tags = array_map('trim', explode(',', $request->tags));
+                foreach ($tags as $tag) {
+                    $query->whereJsonContains('tags', $tag);
+                }
+                $selectedTag = implode(', ', $tags);
+            }
+
+            $posts = $query->paginate(9);
             $recommendedPosts = BlogPost::where('recommended', true)
                 ->inRandomOrder()
                 ->limit(5)
                 ->get();
-            return view('pages.blogs.index', compact('posts', 'recommendedPosts'));
+
+            return view('pages.blogs.index', compact('posts', 'recommendedPosts', 'uniqueTags', 'selectedTag'));
         } catch (\Exception $e) {
             Log::error('Error fetching blog posts: ' . $e->getMessage());
             flash()->error('An error occurred while fetching blog posts.');
@@ -37,21 +61,48 @@ class BlogPostController extends Controller
         }
     }
 
-    public function show($slug)
+
+
+    public function show($slug, Request $request)
     {
         try {
             $post = BlogPost::where('slug', $slug)->firstOrFail();
+
+            // Get unique tags from database
+            $uniqueTags = BlogPost::distinct()
+                ->pluck('tags')
+                ->map(function ($item, $key) {
+                    return json_decode($item, true);
+                })
+                ->flatten(1)
+                ->unique()
+                ->filter()
+                ->toArray();
+
+            // Handle tag filter
+            $selectedTags = [];
+            if ($request->filled('tags')) {
+                $tags = array_map('trim', explode(',', $request->tags));
+                foreach ($tags as $tag) {
+                    if ($post->tags && in_array($tag, $post->tags)) {
+                        $selectedTags[] = $tag;
+                    }
+                }
+            }
+
             $recommendedPosts = BlogPost::where('recommended', true)
                 ->where('id', '!=', $post->id)
                 ->orderBy('created_at', 'desc')
                 ->take(5)
                 ->get();
+
             $breadcrumbItems = [
                 ['name' => 'Home', 'url' => route('home')],
                 ['name' => 'Blogs', 'url' => route('blogs.page')],
                 ['name' => Str::limit($post->title, 30)]
             ];
-            return view('pages.blogs.show', compact('post', 'recommendedPosts', 'breadcrumbItems'));
+
+            return view('pages.blogs.show', compact('post', 'recommendedPosts', 'breadcrumbItems', 'selectedTags', 'uniqueTags'));
         } catch (ModelNotFoundException $e) {
             Log::error('Blog post not found for slug: ' . $slug);
             flash()->error('Blog post not found.');
@@ -62,6 +113,7 @@ class BlogPostController extends Controller
             return redirect()->route('home');
         }
     }
+
 
 
     public function create()
@@ -136,7 +188,7 @@ class BlogPostController extends Controller
 
     public function update(Request $request, $slug)
     {
-        
+
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',

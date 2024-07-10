@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{{ asset('/logo.png') }}" type="image/png">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
@@ -18,7 +19,9 @@
 
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-base-100">
-        @include('layouts.navigation')
+        <header class="sticky top-0 z-50 bg-white shadow">
+            @include('layouts.navigation')
+        </header>
 
         {{-- <!-- Page Heading -->
             @isset($header)
@@ -33,7 +36,7 @@
         <main class="max-w-7xl mx-auto mt-3 px-3 lg:px-[8px]">
             {{ $slot }}
         </main>
-         @include('layouts.footer')
+        @include('layouts.footer')
     </div>
 </body>
 

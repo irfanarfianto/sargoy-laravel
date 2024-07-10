@@ -38,24 +38,36 @@
                 <h2 class="text-xl font-semibold">Recommended Blogs</h2>
                 <div class="grid grid-cols-1 gap-6 mt-4">
                     @forelse ($recommendedPosts as $post)
-                        <a href="{{ route('blogs.show', $post->slug) }}">
-                            <div class="flex flex-row h-24 overflow-hidden">
-                                <img class="w-24 rounded-lg object-cover"
+                        <div class="flex flex-row h-24 overflow-hidden hover:bg-neutral-200 rounded-lg">
+                            <a href="{{ route('blogs.show', $post->slug) }}" class="p-2">
+                                <img class="h-full min-w-24 max-w-24 rounded-lg object-cover"
                                     src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
                                     alt="{{ $post->title }}" loading="lazy" />
-                                <div class="p-4 flex flex-col justify-between">
-                                    <div>
-                                        <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
-                                        <h5 class="font-bold">{!! Str::limit($post->title, 20) !!}</h5>
-                                        {{-- <p class="text-gray-600">{!! Str::limit($post->content, 20) !!}</p> --}}
-                                    </div>
-                                </div>
+                            </a>
+                            <div class="p-4 flex flex-col">
+                                <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
+                                <h5 class="text-md line-clamp-2">
+                                    <a href="{{ route('blogs.show', $post->slug) }}"
+                                        class="text-black hover:underline">
+                                        {{ $post->title }}
+                                    </a>
+                                </h5>
                             </div>
-                        </a>
+                        </div>
                     @empty
                         <p class="text-gray-600">Tidak ada rekomendasi blog saat ini.</p>
                     @endforelse
                 </div>
+                <form action="{{ route('blogs.page') }}" method="GET">
+                    <label for="tags" class="text-xl font-semibold mb-2">Tags</label>
+                    <div class="flex flex-wrap gap-2">
+                        @foreach ($uniqueTags as $tag)
+                            <button type="submit" name="tags" value="{{ $tag }}"
+                                class="btn btn-sm btn-ghost">#{{ $tag }}</button>
+                        @endforeach
+
+                    </div>
+                </form>
             </div>
         </div>
     </div>

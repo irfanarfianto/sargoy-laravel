@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <link rel="icon" href="{{ asset('/logo.png') }}" type="image/png">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
@@ -18,14 +18,6 @@
 
 <body class="font-sans text-gray-900 antialiased">
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-white lg:bg-gray-100">
-        {{-- <div>
-                <a href="/">
-                    <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-                </a>
-            </div> --}}
-
-
-
         <div class="w-full sm:max-w-md mt-6 p-8 bg-white shadow-none lg:shadow-md overflow-hidden sm:rounded-lg">
             {{ $slot }}
         </div>
@@ -49,8 +41,7 @@
                 <div class="flex flex-row justify-center items-center space-x-3">
                     <img src="{{ asset('images/kemenparekraf.png') }}" alt="Logo Kemenparekraf"
                         class=" w-12 h-12 object-cover">
-                    <img src="{{ asset('images/dicoding.png') }}" alt="Logo dicoding"
-                        class=" w-28 h-12 object-cover">
+                    <img src="{{ asset('images/dicoding.png') }}" alt="Logo dicoding" class=" w-28 h-12 object-cover">
                     {{-- <p class="text-xs text-neutral leading-relaxed">
                         Kemenparekraf / Baparekraf <br>
                         Republik

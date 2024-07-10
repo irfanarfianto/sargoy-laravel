@@ -33,7 +33,11 @@
 
                 </ul>
             </div>
-            <a href="/" class="text-xl">Sargoy</a>
+
+
+            <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
+
+
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="flex flex-row space-x-6">
