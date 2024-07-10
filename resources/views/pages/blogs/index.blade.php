@@ -120,8 +120,8 @@
                         sarung
                         goyor khas Desa Wanarejan Utara. Bergabunglah dengan komunitas kami dan dapatkan manfaatnya!</p>
 
-                    <form action="{{ route('register') }}" method="GET" class="mt-8 lg:mt-12">
-                        <button class="btn btn-primary">
+                    <a href="https://wa.me/082322546452">
+                        <button class="btn btn-primary mt-8 lg:mt-12">
                             Daftar Sekarang
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -129,12 +129,9 @@
                                     d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
                             </svg>
                         </button>
-                    </form>
+                    </a>
                 </div>
             </div>
         </div>
-
-
-
     </div>
 </x-app-layout>
