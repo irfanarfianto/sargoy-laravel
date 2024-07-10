@@ -59,6 +59,7 @@
             </ul>
         </div>
         <div class="navbar-end space-x-6">
+            
             @if (Route::has('login'))
                 @auth
                     <div class="dropdown dropdown-end">
