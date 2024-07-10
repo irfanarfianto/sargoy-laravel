@@ -1,11 +1,4 @@
 <x-app-layout>
-    <style>
-        .btn-cards {
-            justify-content: center;
-            border: 1px solid black;
-        }
-    </style>
-
     <!-- Carousel -->
     <div id="default-carousel" class="relative" data-carousel="static">
         <div class="overflow-hidden relative h-96 rounded-lg sm:h-64 xl:h-80 2xl:h-96">
@@ -25,7 +18,7 @@
             <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
             <button type="button" class="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
         </div>
-       
+
         <button type="button" class="flex absolute top-0 left-0 z-30 justify-center items-center px-4 h-full cursor-pointer group focus:outline-none" data-carousel-prev>
             <span class="inline-flex justify-center items-center w-8 h-8 rounded-full sm:w-10 sm:h-10 bg-white/30  group-focus:ring-4 group-focus:ring-white  group-focus:outline-none">
                 <svg class="w-5 h-5 text-white sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
@@ -74,12 +67,11 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <div class="flex justify-center mt-4">
-            <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Lihat Semua Produk
-            </a>
-        </div>
+    </div>
+    <div class="flex justify-center mt-8">
+        <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Lihat Semua Produk
+        </a>
     </div>
 
     <!-- Produk Unggulan -->
@@ -115,12 +107,11 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <div class="flex justify-center mt-4">
-            <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Lihat Semua Produk
-            </a>
-        </div>
+    </div>
+    <div class="flex justify-center mt-8">
+        <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Lihat Semua Produk
+        </a>
     </div>
 
     <!-- Semua Produk -->
@@ -184,12 +175,11 @@
                 <p class="text-sm text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
             </div>
         </div>
-
-        <div class="flex justify-center mt-4">
-            <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                Lihat Semua Produk
-            </a>
-        </div>
+    </div>
+    <div class="flex justify-center mt-8">
+        <a href="#" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+            Lihat Semua Produk
+        </a>
     </div>
 
     <script src="https://unpkg.com/flowbite@1.4.0/dist/flowbite.js"></script>
