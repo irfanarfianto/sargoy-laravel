@@ -1,6 +1,5 @@
 <!-- Modal Hapus -->
 <x-modal id="deleteModal{{ $product->id }}" title="Hapus Produk">
-
     <h3 class="text-lg font-bold">Hapus Produk?</h3>
     <p class="py-4">Anda yakin ingin menghapus produk {{ $product->name }} ?</p>
     <div class="modal-action">

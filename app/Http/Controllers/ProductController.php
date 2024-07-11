@@ -47,18 +47,9 @@ class ProductController extends Controller
         // Ambil data produk dengan pagination
         $products = $query->paginate(10);
 
-        // Tambahkan badge "Belum Diverifikasi" untuk produk yang belum diverifikasi
-        foreach ($products as $product) {
-            if (!$product->is_verified) {
-                $product->status = 'Belum Diverifikasi';
-            } else {
-                $product->status = 'Sudah Diverifikasi';
-            }
-        }
-
         $breadcrumbItems = [
             ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
-            ['name' => 'Daftar Produk'],
+            ['name' => 'List Produk'],
         ];
 
         return view('dashboard.product.index', compact('products', 'breadcrumbItems', 'search'));
@@ -69,7 +60,7 @@ class ProductController extends Controller
         $categories = Category::all();
         $breadcrumbItems = [
             ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
-            ['name' => 'Daftar Produk', 'url' => route('dashboard.product.index')],
+            ['name' => 'List Produk', 'url' => route('dashboard.product.index')],
             ['name' => 'Tambah Produk'],
         ];
         return view('dashboard.product.create', compact('categories', 'breadcrumbItems'));
@@ -117,11 +108,11 @@ class ProductController extends Controller
 
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $imagePath = $image->store('product_images');
+                    $imagePath = $image->store('public/product_images');
 
                     ProductImage::create([
                         'product_id' => $product->id,
-                        'image_url' => $imagePath,
+                        'image_url' => Storage::url($imagePath),
                     ]);
                 }
             }
@@ -163,15 +154,17 @@ class ProductController extends Controller
 
         $breadcrumbItems = [
             ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
-            ['name' => 'Daftar Produk', 'url' => route('dashboard.product.index')],
+            ['name' => 'List Produk', 'url' => route('dashboard.product.index')],
+            ['name' => 'Edit Produk', 'url' => route('dashboard.product.edit', $product->slug)],
             ['name' => implode(' ', array_slice(explode(' ', $product->name), 0, 2)), '...'],
         ];
 
         return view('dashboard.product.edit', compact('product', 'categories', 'breadcrumbItems'));
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request, $slug)
     {
+        // Validate incoming request data
         $validatedData = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
@@ -189,11 +182,17 @@ class ProductController extends Controller
             'variants.*.variant_value' => 'required|string|max:255',
             'variants.*.price' => 'required|numeric|min:0',
             'variants.*.stock' => 'required|integer|min:0',
+            'status' => 'required|boolean',
         ]);
 
+        // Begin a database transaction to ensure data integrity
         DB::beginTransaction();
 
         try {
+            // Find the product by slug
+            $product = Product::where('slug', $slug)->firstOrFail();
+
+            // Update the main product details
             $product->update([
                 'category_id' => $validatedData['category_id'],
                 'name' => $validatedData['name'],
@@ -206,25 +205,35 @@ class ProductController extends Controller
                 'size' => $validatedData['size'],
                 'pattern' => $validatedData['pattern'],
                 'ecommerce_link' => $validatedData['ecommerce_link'],
-                'status' => $validatedData['status'] ?? false,
+                'status' => $validatedData['status'],
             ]);
 
+            // Handle product images
             if ($request->hasFile('images')) {
-                ProductImage::where('product_id', $product->id)->delete();
+                // Delete old images associated with the product
+                $oldImages = ProductImage::where('product_id', $product->id)->get();
+                foreach ($oldImages as $oldImage) {
+                    Storage::delete('public/' . $oldImage->image_url); // Delete old image from storage
+                    $oldImage->delete();
+                }
 
+                // Upload new images and associate them with the product
                 foreach ($request->file('images') as $image) {
-                    $imageUrl = $image->store('product_images');
+                    $imagePath = $image->store('public/product_images'); // Store in public/product_images directory
 
                     ProductImage::create([
                         'product_id' => $product->id,
-                        'image_url' => $imageUrl,
+                        'image_url' => Storage::url($imagePath), // Store URL in database
                     ]);
                 }
             }
 
+
+            // Handle product variants
             if (isset($validatedData['variants'])) {
                 foreach ($validatedData['variants'] as $variantData) {
                     if (isset($variantData['id'])) {
+                        // If variant ID exists, update the existing variant
                         $variant = ProductVariant::findOrFail($variantData['id']);
                         $variant->update([
                             'variant_name' => $variantData['variant_name'],
@@ -233,6 +242,7 @@ class ProductController extends Controller
                             'stock' => $variantData['stock'],
                         ]);
                     } else {
+                        // If variant ID doesn't exist, create a new variant
                         ProductVariant::create([
                             'product_id' => $product->id,
                             'variant_name' => $variantData['variant_name'],
@@ -244,22 +254,37 @@ class ProductController extends Controller
                 }
             }
 
+            // Commit the transaction
             DB::commit();
+
+            // Log success
+            Log::info('Product updated: ' . $product->name);
+
+            // Flash success message and redirect to product index page
             flash()->success('Product updated successfully.');
             return redirect()->route('dashboard.product.index');
         } catch (Exception $e) {
+            // Rollback the transaction on exception
             DB::rollBack();
-            flash()->error('Failed to update product: ' . $e->getMessage());
+
+            // Log the error and flash an error message
             Log::error('Error updating product: ' . $e->getMessage());
+            flash()->error('Failed to update product: ' . $e->getMessage());
+
+            // Redirect back with input data
             return back()->withInput();
         }
     }
 
-    public function destroy(Product $product)
+
+    public function destroy($slug)
     {
         DB::beginTransaction();
 
         try {
+            // Ambil produk berdasarkan slug
+            $product = Product::where('slug', $slug)->firstOrFail();
+
             // Hapus semua gambar produk
             $images = ProductImage::where('product_id', $product->id)->get();
             foreach ($images as $image) {
@@ -286,6 +311,7 @@ class ProductController extends Controller
             return back();
         }
     }
+
 
     public function verify(Product $product)
     {
