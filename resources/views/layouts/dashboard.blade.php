@@ -37,7 +37,7 @@
         <div class="drawer lg:drawer-open">
             <input id="my-drawer-2" type="checkbox" class="drawer-toggle" />
             <div class="drawer-content flex flex-col items-center lg:ms-72 justify-start">
-                <main class="overflow-y-auto flex-1 p-6 w-full">
+                <main class="overflow-y-auto overflow-x-hidden flex-1 p-6 w-full">
                     {{ $slot }}
                 </main>
             </div>
