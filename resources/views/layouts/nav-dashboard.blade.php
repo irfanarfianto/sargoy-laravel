@@ -26,7 +26,7 @@
         </div>
         <div class="dropdown dropdown-end">
             <button tabindex="0" role="button" class="flex items-center gap-3">
-                <div class="flex flex-col items-end">
+                <div class="hidden lg:flex flex-col items-end">
                     <span class="hidden md:block text-base-100">{{ $userName }}</span>
                     @if ($userRole)
                         <span class="text-xs text-neutral-content">{{ ucfirst($userRole) }}</span>

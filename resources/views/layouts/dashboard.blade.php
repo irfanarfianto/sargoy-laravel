@@ -48,46 +48,50 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
     <script>
-        ClassicEditor
-            .create(document.querySelector('.ckeditor'), {
-                ckfinder: {
-                    uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
-                },
-                toolbar: {
-                    items: [
-                        'heading', 'undo', 'redo', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList',
-                        'blockQuote', 'uploadImage'
-                    ]
-                },
-                image: {
-                    resizeUnit: 'px',
-                    toolbar: ['imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight', '|',
-                        'resizeImage'
-                    ],
-                    styles: [
-                        'alignLeft', 'alignCenter', 'alignRight'
-                    ],
-                    resizeOptions: [{
-                            name: 'resizeImage:original',
-                            label: 'Original size',
-                            value: '50'
-                        },
-                        {
-                            name: 'resizeImage:50',
-                            label: '50%',
-                            value: '50'
-                        },
-                        {
-                            name: 'resizeImage:75',
-                            label: '75%',
-                            value: '75'
-                        }
-                    ]
-                }
-            })
-            .catch(error => {
-                console.error('Error initializing CKEditor:', error);
-            });
+        document.addEventListener('DOMContentLoaded', function() {
+            ClassicEditor
+                .create(document.querySelector('.ckeditor'), {
+                    ckfinder: {
+                        uploadUrl: "{{ route('ckeditor.upload', ['_token' => csrf_token()]) }}",
+                    },
+                    toolbar: {
+                        items: [
+                            'heading', 'undo', 'redo', '|', 'bold', 'italic', 'link', 'bulletedList',
+                            'numberedList',
+                            'blockQuote', 'uploadImage'
+                        ]
+                    },
+                    image: {
+                        resizeUnit: 'px',
+                        toolbar: ['imageStyle:alignLeft', 'imageStyle:alignCenter', 'imageStyle:alignRight',
+                            '|',
+                            'resizeImage'
+                        ],
+                        styles: [
+                            'alignLeft', 'alignCenter', 'alignRight'
+                        ],
+                        resizeOptions: [{
+                                name: 'resizeImage:original',
+                                label: 'Original size',
+                                value: null
+                            },
+                            {
+                                name: 'resizeImage:50',
+                                label: '50%',
+                                value: '50'
+                            },
+                            {
+                                name: 'resizeImage:75',
+                                label: '75%',
+                                value: '75'
+                            }
+                        ]
+                    }
+                })
+                .catch(error => {
+                    console.error('Error initializing CKEditor:', error);
+                });
+        });
     </script>
 </body>
 

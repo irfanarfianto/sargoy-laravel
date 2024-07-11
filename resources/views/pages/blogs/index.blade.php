@@ -36,12 +36,12 @@
                             <div class="p-4 flex flex-col justify-between">
                                 <div>
                                     <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
-                                    <h2 class="text-lg font-bold">
+                                    <p class="text-lg font-bold">
                                         <a href="{{ route('blogs.show', $post->slug) }}"
                                             class="text-black hover:underline">
                                             {{ Str::limit($post->title, 50) }}
                                         </a>
-                                    </h2>
+                                    </p>
                                     <p class="text-gray-600">{!! Str::limit($post->content, 100) !!}</p>
                                 </div>
                                 <div class="flex flex-row items-center mt-4">
@@ -76,12 +76,12 @@
                             </a>
                             <div class="p-4 flex flex-col">
                                 <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
-                                <h5 class="text-md line-clamp-2">
+                                <p class="text-md line-clamp-2">
                                     <a href="{{ route('blogs.show', $post->slug) }}"
                                         class="text-black hover:underline">
                                         {{ $post->title }}
                                     </a>
-                                </h5>
+                                </p>
                             </div>
 
                         </div>
