@@ -7,7 +7,7 @@
     <div class="navbar max-w-7xl mx-auto">
         <div class="navbar-start">
             <div class="dropdown">
-                <div tabindex="0" role="button" aria-label="Open Menu" class="btn btn-ghost btn-outline mr-2 lg:hidden">
+                <div tabindex="0" role="button" aria-label="Open Menu" class="btn btn-ghost mr-2 lg:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -34,11 +34,12 @@
 
                 </ul>
             </div>
-
-
-            <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-
-
+            <div class="hidden lg:block">
+                <x-application-logo class="w-20 h-20  fill-current text-gray-500" />
+            </div>
+        </div>
+        <div class="navbar-center block lg:hidden">
+            <x-application-logo class="w-20 h-20  fill-current text-gray-500" />
         </div>
         <div class="navbar-center hidden lg:flex">
             <ul class="flex flex-row space-x-6">

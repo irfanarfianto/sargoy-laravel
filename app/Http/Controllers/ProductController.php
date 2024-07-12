@@ -72,20 +72,23 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
             'material' => 'nullable|string|max:255',
             'color' => 'nullable|string|max:255',
             'size' => 'nullable|string|max:255',
             'pattern' => 'nullable|string|max:255',
             'ecommerce_link' => 'nullable|string|max:255',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'required|array|max:3',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Format dan ukuran gambar
             'variants.*.variant_name' => 'required|string|max:255',
             'variants.*.variant_value' => 'required|string|max:255',
             'variants.*.price' => 'required|numeric|min:0',
             'variants.*.stock' => 'required|integer|min:0',
         ]);
-
+        // Check if slug already exists
+        $slug = Str::slug($validatedData['name']);
+        if (Product::where('slug', $slug)->exists()) {
+            return back()->withErrors(['name' => 'Nama produk sudah digunakan. Silakan gunakan nama yang lain.'])->withInput();
+        }
         DB::beginTransaction();
 
         try {
@@ -95,8 +98,6 @@ class ProductController extends Controller
                 'name' => $validatedData['name'],
                 'slug' => Str::slug($validatedData['name']),
                 'description' => $validatedData['description'],
-                'price' => $validatedData['price'],
-                'stock' => $validatedData['stock'],
                 'material' => $validatedData['material'],
                 'color' => $validatedData['color'],
                 'size' => $validatedData['size'],
@@ -106,16 +107,26 @@ class ProductController extends Controller
                 'is_verified' => false, // Product is not verified by default
             ]);
 
+            $count = 0;
+
             if ($request->hasFile('images')) {
                 foreach ($request->file('images') as $image) {
-                    $imagePath = $image->store('public/product_images');
+                    if ($count < 3) {
+                        $imagePath = $image->store('public/product_images');
 
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_url' => Storage::url($imagePath),
-                    ]);
+                        ProductImage::create([
+                            'product_id' => $product->id,
+                            'image_url' => Storage::url($imagePath),
+                        ]);
+
+                        $count++;
+                    } else {
+                        break; // Stop the loop after 3 images
+                    }
                 }
             }
+
+
 
             if (isset($validatedData['variants'])) {
                 foreach ($validatedData['variants'] as $variantData) {
@@ -123,8 +134,6 @@ class ProductController extends Controller
                         'product_id' => $product->id,
                         'variant_name' => $variantData['variant_name'],
                         'variant_value' => $variantData['variant_value'],
-                        'price' => $variantData['price'],
-                        'stock' => $variantData['stock'],
                     ]);
                 }
             }
@@ -169,19 +178,16 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
             'description' => 'required|string',
-            'price' => 'required|numeric|min:0',
-            'stock' => 'required|integer|min:0',
             'material' => 'nullable|string|max:255',
             'color' => 'nullable|string|max:255',
             'size' => 'nullable|string|max:255',
             'pattern' => 'nullable|string|max:255',
             'ecommerce_link' => 'nullable|string|max:255',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'required|array|max:3',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
             'variants.*.id' => 'sometimes|exists:product_variants,id',
             'variants.*.variant_name' => 'required|string|max:255',
             'variants.*.variant_value' => 'required|string|max:255',
-            'variants.*.price' => 'required|numeric|min:0',
-            'variants.*.stock' => 'required|integer|min:0',
             'status' => 'required|boolean',
         ]);
 
@@ -198,8 +204,6 @@ class ProductController extends Controller
                 'name' => $validatedData['name'],
                 'slug' => Str::slug($validatedData['name']),
                 'description' => $validatedData['description'],
-                'price' => $validatedData['price'],
-                'stock' => $validatedData['stock'],
                 'material' => $validatedData['material'],
                 'color' => $validatedData['color'],
                 'size' => $validatedData['size'],
@@ -217,13 +221,20 @@ class ProductController extends Controller
                     $oldImage->delete();
                 }
 
-                // Upload new images and associate them with the product
-                foreach ($request->file('images') as $image) {
-                    $imagePath = $image->store('public/product_images'); // Store in public/product_images directory
+                $newImages = $request->file('images');
+
+                // Memeriksa minimal 3 gambar baru
+                if (count($newImages) < 3) {
+                    return back()->withErrors(['images' => 'Anda harus mengunggah minimal 3 gambar.'])->withInput();
+                }
+
+                // Memproses dan menyimpan gambar baru
+                foreach ($newImages as $image) {
+                    $imagePath = $image->store('public/product_images');
 
                     ProductImage::create([
                         'product_id' => $product->id,
-                        'image_url' => Storage::url($imagePath), // Store URL in database
+                        'image_url' => Storage::url($imagePath),
                     ]);
                 }
             }
@@ -238,8 +249,7 @@ class ProductController extends Controller
                         $variant->update([
                             'variant_name' => $variantData['variant_name'],
                             'variant_value' => $variantData['variant_value'],
-                            'price' => $variantData['price'],
-                            'stock' => $variantData['stock'],
+
                         ]);
                     } else {
                         // If variant ID doesn't exist, create a new variant
@@ -247,8 +257,7 @@ class ProductController extends Controller
                             'product_id' => $product->id,
                             'variant_name' => $variantData['variant_name'],
                             'variant_value' => $variantData['variant_value'],
-                            'price' => $variantData['price'],
-                            'stock' => $variantData['stock'],
+
                         ]);
                     }
                 }

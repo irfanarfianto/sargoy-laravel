@@ -13,7 +13,7 @@
     <div class="mt-6 flex flex-col space-y-3 lg:space-y-0 lg:flex-row">
         <!-- Filter Section -->
         <div class="w-full lg:w-1/4 lg:pr-4">
-            <form action="{{ route('product.page') }}" method="GET" class="space-y-4">
+            <form action="{{ route('product.page') }}" method="GET" class="space-y-4 sticky top-28">
                 <div class="flex justify-between">
                     <div class="flex space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -119,7 +119,7 @@
             @else
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach ($products as $product)
-                        <div class="bg-white overflow-hidden">
+                        <div class="overflow-hidden">
                             <div class="relative overflow-hidden h-60 rounded-lg">
                                 <a href="{{ route('product.detail', $product->slug) }}">
                                     <img class="object-cover w-full h-full"

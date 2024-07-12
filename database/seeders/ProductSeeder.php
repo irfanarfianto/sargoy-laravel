@@ -39,8 +39,6 @@ class ProductSeeder extends Seeder
                 'name' => $faker->sentence(3),
                 'slug' => \Illuminate\Support\Str::slug($faker->sentence(3)),
                 'description' => $faker->paragraph(),
-                'price' => $faker->randomNumber(4),
-                'stock' => $faker->numberBetween(10, 100),
                 'material' => $faker->word,
                 'color' => $faker->safeColorName,
                 'size' => $faker->randomElement(['S', 'M', 'L', 'XL']),

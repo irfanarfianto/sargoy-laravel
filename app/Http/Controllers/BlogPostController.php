@@ -296,9 +296,9 @@ class BlogPostController extends Controller
             $extension = $request->file('upload')->getClientOriginalExtension();
             $fileName = $fileName . '_' . time() . '.' . $extension;
 
-            $request->file('upload')->move(public_path('media'), $fileName);
+            $request->file('upload')->storeAs('public/blog_images', $fileName);
 
-            $url = asset('media/' . $fileName);
+            $url = asset('storage/blog_images/' . $fileName);
             return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
         }
     }

@@ -18,8 +18,6 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug')->unique();
             $table->text('description');
-            $table->decimal('price', 10, 2);
-            $table->integer('stock');
             $table->string('material')->nullable();
             $table->string('color')->nullable();
             $table->string('size')->nullable();

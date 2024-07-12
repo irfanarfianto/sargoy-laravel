@@ -42,7 +42,7 @@
                                             {{ Str::limit($post->title, 50) }}
                                         </a>
                                     </p>
-                                    <p class="text-gray-600">{!! Str::limit($post->content, 100) !!}</p>
+                                    <p class="text-gray-600">{!! Str::limit(strip_tags($post->content), 100) !!}</p>
                                 </div>
                                 <div class="flex flex-row items-center mt-4">
                                     <img class="h-8 w-8 rounded-full object-cover"
