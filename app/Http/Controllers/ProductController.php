@@ -13,7 +13,7 @@ use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\Models\User;
 
 class ProductController extends Controller
 {
@@ -384,6 +384,8 @@ class ProductController extends Controller
 
 
 
+
+
     public function detailProduct($slug, Request $request)
     {
         // Mengambil data produk berdasarkan slug
@@ -409,6 +411,25 @@ class ProductController extends Controller
                 }
             }
         ]);
+
+        // Ambil penjual dari produk
+        $seller = $product->user;
+
+        // Pastikan ada data penjual
+        if (!$seller) {
+            abort(404, 'Penjual produk tidak ditemukan.');
+        }
+
+        // Ambil profil penjual
+        $sellerProfile = $seller->sellerProfile;
+
+        // Pastikan ada profil penjual
+        if (!$sellerProfile) {
+            abort(404, 'Profil penjual tidak ditemukan.');
+        }
+
+        // Ambil nomor WhatsApp dari seller_profile
+        $whatsappNumber = $sellerProfile->no_wa;
 
         // Hitung rata-rata rating dan jumlah ulasan
         $ratings = $product->reviews->groupBy('rating')->map->count();
@@ -460,8 +481,9 @@ class ProductController extends Controller
             }
         }
 
-        return view('pages.products.detail', compact('product', 'breadcrumbItems', 'recommendedProducts', 'ratings', 'totalReviews', 'averageRating', 'ratingPercentage'));
+        return view('pages.products.detail', compact('product', 'breadcrumbItems', 'recommendedProducts', 'ratings', 'totalReviews', 'averageRating', 'ratingPercentage', 'whatsappNumber'));
     }
+
 
 
 

@@ -7,7 +7,7 @@
     <div class="mt-6 flex flex-wrap">
         {{-- Gambar Produk --}}
         <div class="w-full lg:w-1/3">
-            <div class="bg-white overflow-hidden">
+            <div class="overflow-hidden">
                 <div class="flex flex-wrap gap-2">
                     {{-- Tampilkan gambar pertama --}}
                     <button onclick="my_modal_2.showModal()">
@@ -77,19 +77,28 @@
         </div>
         {{-- Detail Produk --}}
         <div class="w-full lg:w-4/6">
-            <div class="bg-white overflow-hidden">
+            <div class="overflow-hidden">
                 <div class="flex flex-row justify-between mt-2 lg:mt-0">
                     <div>
                         <span class="text-gray-600">Kategori: {{ $product->category->name }}</span>
                         <h2 class="text-2xl font-bold">{{ $product->name }}</h2>
                     </div>
 
-                    <a href="{{ $product->ecommerce_link }}">
-                        <button class="btn btn-primary">Beli Sekarang</button>
-                    </a>
+                    <div>
+                        @if ($whatsappNumber)
+                            <a href="https://wa.me/{{ $whatsappNumber }}" target="_blank" rel="noopener noreferrer">
+                                <button class="btn bg-[#25D366] text-base-100">
+                                    <i class="fa-brands fa-whatsapp"></i> Hubungi via WhatsApp</button>
+                            </a>
+                        @endif
+
+                        <a href="{{ $product->ecommerce_link }}" target="_blank" rel="noopener noreferrer">
+                            <button class="btn btn-primary">Beli Sekarang</button>
+                        </a>
+                    </div>
                 </div>
                 {{-- Rating --}}
-                <div class="flex items-center mt-2">
+                <div class="flex items-center mt-1">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
                         class="size-6 text-orange-400">
                         <path fill-rule="evenodd"
@@ -99,7 +108,8 @@
                     <p class="ml-1 text-xl">{{ number_format($averageRating, 1) }}</p>
                     <span class="ml-2 text-sm text-gray-500">({{ $product->reviews->count() }} ulasan)</span>
                 </div>
-                <p class="mt-2 text-sm text-gray-500">Deskripsi {{ $product->description }}</p>
+                <h3 class="text-lg font-semibold mt-2">Deskripsi</h3>
+                <p class="mt-2 text-sm text-gray-500"> {{ $product->description }}</p>
 
                 <!-- Open the modal using ID.showModal() method -->
                 <dialog id="my_modal_2" class="modal">
@@ -113,7 +123,7 @@
                 </dialog>
                 {{-- Variants --}}
                 <div class="mt-6">
-                    <h3 class="text-lg font-semibold">Variants:</h3>
+                    <h3 class="text-lg font-semibold">Variants</h3>
                     <ul class="mt-2">
                         @foreach ($product->variants as $variant)
                             <li class="text-sm text-gray-500">{{ $variant->variant_name }}:
@@ -233,7 +243,7 @@
         <h3 class="text-xl font-semibold">Produk Rekomendasi</h3>
         <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             @foreach ($recommendedProducts as $recommendedProduct)
-                <div class="bg-white overflow-hidden">
+                <div class=" overflow-hidden">
                     <div class=" relative overflow-hidden h-60 rounded-lg">
                         <a href="{{ route('product.detail', $recommendedProduct->slug) }}">
                             <img src="{{ $recommendedProduct->images->first()->image_url ?? 'https://placehold.co/400' }}"
