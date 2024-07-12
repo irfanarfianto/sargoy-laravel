@@ -99,7 +99,7 @@
 
                 <ul class="flex items-center space-x-3 mt-9">
                     <li>
-                        <a href="#" title=""
+                        <a href="#" title="Twitter" aria-label="Twitter"
                             class="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-7 h-7 hover:bg-blue-600 focus:bg-blue-600">
                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor">
@@ -109,9 +109,8 @@
                             </svg>
                         </a>
                     </li>
-
                     <li>
-                        <a href="#" title=""
+                        <a href="#" title="Facebook" aria-label="Facebook"
                             class="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-7 h-7 hover:bg-blue-600 focus:bg-blue-600">
                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor">
@@ -121,9 +120,8 @@
                             </svg>
                         </a>
                     </li>
-
                     <li>
-                        <a href="#" title=""
+                        <a href="#" title="Instagram" aria-label="Instagram"
                             class="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-7 h-7 hover:bg-blue-600 focus:bg-blue-600">
                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor">
@@ -137,19 +135,19 @@
                             </svg>
                         </a>
                     </li>
-
                     <li>
-                        <a href="#" title=""
+                        <a href="#" title="GitHub" aria-label="GitHub"
                             class="flex items-center justify-center text-white transition-all duration-200 bg-gray-800 rounded-full w-7 h-7 hover:bg-blue-600 focus:bg-blue-600">
                             <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
                                 fill="currentColor">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.481 0-.237-.008-.865-.011-1.696-2.775.602-3.361-1.338-3.361-1.338-.452-1.152-1.107-1.459-1.107-1.459-.905-.619.069-.605.069-.605 1.002.07 1.527 1.028 1.527 1.028.89 1.524 2.336 1.084 2.902.829.091-.645.351-1.085.635-1.334-2.214-.251-4.542-1.107-4.542-4.93 0-1.087.389-1.979 1.024-2.675-.101-.253-.446-1.268.099-2.64 0 0 .837-.269 2.742 1.021a9.582 9.582 0 0 1 2.496-.336 9.554 9.554 0 0 1 2.496.336c1.906-1.291 2.742-1.021 2.742-1.021.545 1.372.203 2.387.099 2.64.64.696 1.024 1.587 1.024 2.675 0 3.833-2.33 4.675-4.552 4.922.355.308.675.916.675 1.846 0 1.334-.012 2.41-.012 2.737 0 .267.178.577.687.479C19.146 20.115 22 16.379 22 11.974 22 6.465 17.535 2 12.026 2z">
+                                    d="M12.026 2c-5.509 0-9.974 4.465-9.974 9.974 0 4.406 2.857 8.145 6.821 9.465.499.09.679-.217.679-.482 0-.237-.008-.866-.013-1.699-2.775.603-3.362-1.338-3.362-1.338-.453-1.152-1.106-1.46-1.106-1.46-.905-.62.068-.607.068-.607 1.002.07 1.529 1.03 1.529 1.03.89 1.525 2.34 1.085 2.91.83.091-.645.35-1.084.635-1.334-2.216-.251-4.548-1.108-4.548-4.933 0-1.09.39-1.981 1.029-2.68-.103-.253-.447-1.272.098-2.65 0 0 .84-.269 2.75 1.024A9.562 9.562 0 0 1 12 6.844c.852.004 1.709.115 2.511.338 1.91-1.293 2.748-1.024 2.748-1.024.547 1.379.202 2.398.1 2.65.641.7 1.029 1.59 1.029 2.68 0 3.834-2.337 4.679-4.561 4.924.359.308.678.919.678 1.852 0 1.335-.012 2.415-.012 2.744 0 .268.179.577.684.48C19.145 20.114 22 16.374 22 11.974 22 6.465 17.535 2 12.026 2z">
                                 </path>
                             </svg>
                         </a>
                     </li>
                 </ul>
+
             </div>
         </div>
 

@@ -16,17 +16,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
-            RolePermissionSeeder::class, UserSeeder::class, CategorySeeder::class
-        ]);
+        $this->call([]);
 
-        Product::factory()->count(10)->create()->each(function ($product) {
-            $product->variants()->saveMany(ProductVariant::factory()->count(3)->make());
-            $product->images()->saveMany(ProductImage::factory()->count(3)->make());
-        });
+        // Product::factory()->count(10)->create()->each(function ($product) {
+        //     $product->variants()->saveMany(ProductVariant::factory()->count(3)->make());
+        //     $product->images()->saveMany(ProductImage::factory()->count(3)->make());
+        // });
 
         $this->call([
+            RolePermissionSeeder::class, 
+            UserSeeder::class, 
+            CategorySeeder::class,
             AdminProfileSeeder::class,
+            ProductSeeder::class,
             ProductReviewSeeder::class,
             SellerProfileSeeder::class,
             VisitorProfileSeeder::class,

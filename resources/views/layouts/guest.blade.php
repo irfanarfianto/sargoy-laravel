@@ -21,7 +21,7 @@
         <div class="w-full sm:max-w-md mt-6 p-8 bg-white shadow-none lg:shadow-md overflow-hidden sm:rounded-lg">
             {{ $slot }}
         </div>
-        <div class="mt-6 text-center">
+        <div class="mt-4 text-center">
             @if (request()->routeIs('login'))
                 <p class="text-sm text-gray-600">
                     Belum punya akun? <a class="text-sm link link-primary link-hover"

@@ -52,18 +52,24 @@
             </div>
 
             <div class="mb-4">
-                <label class="block text-sm font-medium text-gray-700">Status Produk</label>
-                <div class="mt-1 flex items-center">
-                    @if ($product->is_verified)
-                        <div class="form-control">
-                            <label class="label cursor-pointer">
-                                <span class="label-text">Aktif</span>
-                                <input type="checkbox" class="toggle" name="status"
-                                    {{ $product->status ? 'checked' : '' }}>
-                            </label>
-                        </div>
+                <label class="block text-sm font-medium text-gray-700">Status Produk saat ini @if ($product->status == 1)
+                        Aktif
                     @else
-                        <p class="text-sm text-gray-500">Produk belum diverifikasi</p>
+                        Nonaktif
+                    @endif </label>
+                <div class="mt-1 flex items-center space-x-3">
+                    <label>
+                        <input type="radio" name="status" class="radio radio-primary" value="1"
+                            {{ $product->status ? 'checked' : '' }}>
+                        Aktif
+                    </label>
+                    <label>
+                        <input type="radio" name="status" class="radio radio-primary" value="0"
+                            {{ !$product->status ? 'checked' : '' }}>
+                        Nonaktif
+                    </label>
+                    @if (!$product->is_verified)
+                        <p class="text-sm text-gray-500 ml-2">Produk belum diverifikasi</p>
                     @endif
                 </div>
                 @error('status')

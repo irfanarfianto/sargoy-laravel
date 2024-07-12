@@ -12,6 +12,7 @@
         "laravel/tinker": "^2.9",
         "php-flasher/flasher-laravel": "^2.0",
         "pusher/pusher-php-server": "*",
+        "silviolleite/laravelpwa": "^2.0",
         "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {

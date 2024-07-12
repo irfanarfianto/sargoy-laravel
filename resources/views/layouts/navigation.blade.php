@@ -7,20 +7,21 @@
     <div class="navbar max-w-7xl mx-auto">
         <div class="navbar-start">
             <div class="dropdown">
-                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                <div tabindex="0" role="button" aria-label="Open Menu" class="btn btn-ghost btn-outline mr-2 lg:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M4 6h16M4 12h8m-8 6h16" />
                     </svg>
                 </div>
+
                 <ul tabindex="0"
                     class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
                     <li><a href="{{ route('home') }}"
                             class="{{ Request::is('/') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Beranda</a>
                     </li>
-                    <li><a href="{{ route('products.page') }}"
-                            class="{{ Request::is('produk') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
+                    <li><a href="{{ route('product.page') }}"
+                            class="{{ Request::is('products') || Request::is('products/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
                     </li>
                     <li><a href="{{ route('blogs.page') }}"
                             class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
@@ -44,8 +45,8 @@
                 <li><a href="{{ route('home') }}"
                         class="{{ Request::is('/') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Beranda</a>
                 </li>
-                <li><a href="{{ route('products.page') }}"
-                        class="{{ Request::is('produk') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
+                <li><a href="{{ route('product.page') }}"
+                        class="{{ Request::is('products') || Request::is('products/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
                 </li>
                 <li><a href="{{ route('blogs.page') }}"
                         class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
@@ -59,7 +60,7 @@
             </ul>
         </div>
         <div class="navbar-end space-x-6">
-            
+
             @if (Route::has('login'))
                 @auth
                     <div class="dropdown dropdown-end">
@@ -95,10 +96,10 @@
                         </ul>
                     </div>
                 @else
-                    <div class="flex space-x-1">
-                        <a href="{{ route('login') }}" class="btn btn-ghost">Masuk</a>
-                        <a href="{{ route('register') }}" class="btn btn-primary">Daftar</a>
-                    </div>
+                    {{-- <div class="flex space-x-1"> --}}
+                    <a href="{{ route('login') }}" class="btn btn-ghost">Masuk</a>
+                    {{-- <a href="{{ route('register') }}" class="btn btn-primary">Daftar</a> --}}
+                    {{-- </div> --}}
                 @endauth
             @endif
         </div>

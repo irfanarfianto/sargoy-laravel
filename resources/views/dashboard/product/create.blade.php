@@ -118,14 +118,18 @@
                 @enderror
             </div>
 
+            <!-- Multiple File Upload for Images -->
             <div class="mb-4">
-                <label for="images" class="block text-sm font-medium text-gray-700">Gambar Produk</label>
+                <label for="images" class="block text-sm font-medium text-gray-700">Gambar Produk (Max 3)</label>
                 <input type="file" name="images[]" id="images" class="file-input file-input-bordered w-full"
                     multiple accept="image/*">
                 @error('images')
                     <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>
                 @enderror
             </div>
+
+            <!-- Container for Image Previews -->
+            <div id="image-previews" class="flex flex-wrap gap-4 mt-4"></div>
         </form>
     </div>
     <div class="btm-nav shadow-lg z-50 flex lg:hidden">
@@ -149,6 +153,32 @@
                 .substring(0, 50); // Limit to maximum 50 characters
 
             slugInput.value = slugValue;
+        });
+
+        // Function to handle file input change and show previews
+        const imagesInput = document.getElementById('images');
+        const imagePreviewsContainer = document.getElementById('image-previews');
+
+        imagesInput.addEventListener('change', function() {
+            // Loop through selected files
+            for (let i = 0; i < imagesInput.files.length; i++) {
+                const file = imagesInput.files[i];
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const imagePreview = document.createElement('img');
+                    imagePreview.classList.add('h-20', 'w-20', 'object-cover', 'rounded-md',
+                        'border', 'border-gray-200', 'cursor-pointer');
+                    imagePreview.src = e.target.result;
+                    imagePreview.title = file.name;
+                    imagePreview.addEventListener('click', function() {
+                        window.open(e.target.result, '_blank');
+                    });
+                    imagePreviewsContainer.appendChild(imagePreview);
+                };
+
+                reader.readAsDataURL(file);
+            }
         });
     });
 
