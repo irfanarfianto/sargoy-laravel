@@ -334,7 +334,7 @@ class ProductController extends Controller
         $sort = $request->get('sort', 'created_at');
         $direction = $request->get('direction', 'desc');
         $search = $request->get('search');
-        $filter = $request->get('filter', 'terbaru'); // Default filter is 'terbaru'
+        $filter = $request->get('filter', 'populer'); // Default filter is 'terbaru'
         $category = $request->get('category'); // Selected category ID
 
         // Mengambil semua produk yang sudah diverifikasi dengan relasi kategori dan gambar
@@ -371,7 +371,7 @@ class ProductController extends Controller
             $query->orderBy($sort, $direction);
         }
 
-        $products = $query->paginate(9);
+        $products = $query->paginate(12);
         foreach ($products as $product) {
             $product->status = 'Sudah Diverifikasi';
         }
@@ -384,7 +384,7 @@ class ProductController extends Controller
 
 
 
-    public function detailProduct($slug)
+    public function detailProduct($slug, Request $request)
     {
         // Mengambil data produk berdasarkan slug
         $product = Product::where('slug', $slug)->firstOrFail();
@@ -392,10 +392,29 @@ class ProductController extends Controller
             'category',
             'images',
             'variants',
-            'reviews' => function ($query) {
-                $query->orderBy('created_at', 'desc');
+            'reviews' => function ($query) use ($product, $request) {
+                // Menentukan urutan berdasarkan permintaan
+                if ($request->order === 'highest') {
+                    $query->where('product_id', $product->id)
+                        ->orderByDesc('rating')
+                        ->orderBy('created_at', 'desc');
+                } elseif ($request->order === 'lowest') {
+                    $query->where('product_id', $product->id)
+                        ->orderBy('rating')
+                        ->orderBy('created_at', 'desc');
+                } else {
+                    // Urutan default, berdasarkan yang terbaru
+                    $query->where('product_id', $product->id)
+                        ->orderBy('created_at', 'desc');
+                }
             }
         ]);
+
+        // Hitung rata-rata rating dan jumlah ulasan
+        $ratings = $product->reviews->groupBy('rating')->map->count();
+        $totalReviews = $product->reviews->count();
+        $averageRating = $totalReviews > 0 ? $product->reviews->avg('rating') : 0;
+        $ratingPercentage = $totalReviews > 0 ? ($ratings->sum() / ($totalReviews * 5)) * 100 : 0;
 
         // Breadcrumb
         $breadcrumbItems = [
@@ -417,8 +436,14 @@ class ProductController extends Controller
             ->limit(1)
             ->get();
 
-        // Menggabungkan kedua kategori produk untuk direkomendasikan
-        $recommendedProducts = $leastViewedProducts->merge($mostViewedProducts);
+        // Produk terbaru (kecuali produk yang sedang dibuka)
+        $latestProducts = Product::where('id', '<>', $product->id)
+            ->orderByDesc('created_at')
+            ->limit(2)
+            ->get();
+
+        // Menggabungkan produk terbaru dengan produk lainnya untuk direkomendasikan
+        $recommendedProducts = $leastViewedProducts->merge($mostViewedProducts)->merge($latestProducts);
 
         // Jika produk yang sedang dibuka ada dalam produk yang direkomendasikan, ganti dengan produk lainnya
         if ($recommendedProducts->contains('id', $product->id)) {
@@ -435,7 +460,7 @@ class ProductController extends Controller
             }
         }
 
-        return view('pages.products.detail', compact('product', 'breadcrumbItems', 'recommendedProducts'));
+        return view('pages.products.detail', compact('product', 'breadcrumbItems', 'recommendedProducts', 'ratings', 'totalReviews', 'averageRating', 'ratingPercentage'));
     }
 
 
@@ -444,7 +469,6 @@ class ProductController extends Controller
     {
         $request->validate([
             'rating' => 'required|integer|min:1|max:5',
-            'comment' => 'required|string|max:255',
         ]);
 
         $review = new ProductReview();

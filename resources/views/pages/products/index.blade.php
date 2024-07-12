@@ -117,7 +117,7 @@
                     </div>
                 </div>
             @else
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach ($products as $product)
                         <div class="bg-white overflow-hidden">
                             <div class="relative overflow-hidden h-60 rounded-lg">
@@ -128,7 +128,10 @@
                                 </a>
                             </div>
                             <div class="px-4 py-4">
-                                <div class="rating">
+                                <a href="{{ route('product.detail', $product->slug) }}" class="hover:underline">
+                                    <h2 class="text-md line-clamp-2">{{ $product->name }}</h2>
+                                </a>
+                                <div class="rating items-center">
                                     @php
                                         $rating = $product->average_rating;
                                         $maxRating = 5;
@@ -153,11 +156,9 @@
                                                 clip-rule="evenodd" />
                                         </svg>
                                     @endfor
+                                    <span class="ml-2 text-sm text-gray-500">({{ $product->reviews->count() }})</span>
+
                                 </div>
-                                <a href="{{ route('product.detail', $product->slug) }}" class="hover:underline">
-                                    <h2 class="text-xl font-bold line-clamp-2">{{ $product->name }}</h2>
-                                </a>
-                                <p class="text-gray-600">{{ $product->category->name }}</p>
                             </div>
                         </div>
                     @endforeach
