@@ -63,8 +63,6 @@ class ProductSeeder extends Seeder
                     'product_id' => $product->id,
                     'variant_name' => $faker->word,
                     'variant_value' => $faker->word,
-                    'price' => $faker->randomNumber(4),
-                    'stock' => $faker->numberBetween(5, 50),
                 ]);
             }
         }

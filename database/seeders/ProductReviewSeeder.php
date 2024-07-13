@@ -22,7 +22,7 @@ class ProductReviewSeeder extends Seeder
 
         foreach ($products as $product) {
 
-            $numReviews = rand(1, 20);
+            $numReviews = rand(1, 5);
 
             for ($i = 0; $i < $numReviews; $i++) {
                 $user = $users->random();

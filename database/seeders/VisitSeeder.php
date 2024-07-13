@@ -26,7 +26,7 @@ class VisitSeeder extends Seeder
         // Generate visits for each day in the period
         while ($startDate->lessThanOrEqualTo($endDate)) {
             // Generate a random number of visits for the day
-            $visitCount = rand(1, 50);
+            $visitCount = rand(1, 10);
             for ($i = 0; $i < $visitCount; $i++) {
                 Visit::create([
                     'created_at' => $faker->dateTimeBetween($startDate->toDateTimeString(), $startDate->endOfDay()->toDateTimeString()),

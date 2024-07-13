@@ -3,7 +3,7 @@
         <div class="grid grid-cols-2 md:col-span-3 lg:grid-cols-6 gap-y-16 gap-x-12">
             <div class="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
                 <a href="" class="flex flex-row space-x-2">
-                    <img src="logo.png" alt="" class="h-8 w-auto">
+                    <img src="{{ asset('logo.png') }}" alt="logo" class="h-8 w-auto">
                     <h3 class="w-auto h-9 text-3xl text-base-100">Sargoy</h3>
                 </a>
 

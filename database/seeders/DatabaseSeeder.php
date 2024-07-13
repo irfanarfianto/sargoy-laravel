@@ -32,7 +32,6 @@ class DatabaseSeeder extends Seeder
             ProductReviewSeeder::class,
             SellerProfileSeeder::class,
             VisitorProfileSeeder::class,
-            CategoryImageSeeder::class,
             FaqSeeder::class,
             VisitSeeder::class,
             BlogPostSeeder::class

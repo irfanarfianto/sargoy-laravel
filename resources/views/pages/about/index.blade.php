@@ -1,114 +1,174 @@
 <x-app-layout>
-    <h4 class="text-xl">
-        {{ __('Halaman Tentang Kami') }}
-    </h4>
-    <div class="container mx-auto my-10 p-5">
-        <div class="text-center mb-10">
-            <h1 class="text-4xl font-bold">Tentang Kami</h1>
-            <p class="mt-4 text-lg text-gray-600">Mengenal lebih dekat dengan Sarung Goyor Khas Desa Wanarejan Utara</p>
-        </div>
+    <div class="mt-6">
+        <section class="text-center py-24">
+            <h1 class="text-5xl font-bold mb-4">Tentang Sarung Goyor</h1>
+            <p class="text-xl">Menjaga Tradisi, Menggapai Dunia</p>
+        </section>
+        <section class="mt-6">
+            <div class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-0">
+                <!-- Item 1 -->
+                <div class="col-span-1">
+                    <div class="aspect-auto">
+                        <img class="object-cover w-full h-full" src="https://placehold.co/400x400"
+                            alt="Random Image 1" />
+                    </div>
+                </div>
 
-        <!-- Deskripsi Singkat -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-semibold">Deskripsi Singkat Sarung Goyor</h2>
-            <p class="mt-4 text-gray-700">
-                Sarung Goyor adalah sarung tradisional yang diproduksi di Desa Wanarejan Utara, Kabupaten Pemalang.
-                Dikenal dengan motifnya yang khas dan kualitasnya yang tinggi, Sarung Goyor telah menjadi bagian penting
-                dari budaya lokal dan warisan yang berharga sejak tahun 1822.
-            </p>
-        </div>
+                <!-- Item 2 -->
+                <div class="col-span-2">
+                    <div class="bg-orange-500 aspect-auto">
+                        <div class="p-3 sm:p-5 xl:py-6 2xl:py-8 2xl:px-5">
+                            <p class="text-sm font-semibold leading-tight text-white sm:text-lg sm:leading-tight">Floyd
+                                Miles</p>
+                            <p class="mt-2 text-sm text-white truncate">Designer</p>
+                        </div>
+                    </div>
+                </div>
 
-        <!-- Sejarah dan Asal-Usul -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-semibold">Sejarah dan Asal-Usul</h2>
-            <p class="mt-4 text-gray-700">
-                Sarung Goyor mulai diproduksi sejak tahun 1822 di Desa Wanarejan Utara. Awalnya, sarung ini dibuat oleh
-                pengrajin lokal sebagai sarung tradisional dengan motif khas yang diwariskan turun-temurun. Hingga tahun
-                2024, Sarung Goyor tetap eksis dan terus berkembang.
-            </p>
-        </div>
+                <!-- Item 3 -->
+                <div class="col-span-1">
+                    <div class="aspect-square">
+                        <img class="bg-gray-300"
+                            src="https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/3/avatar-5.jpg"
+                            alt="" />
+                    </div>
+                </div>
 
-        <!-- Keunikan dan Kualitas -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-semibold">Keunikan dan Kualitas</h2>
-            <p class="mt-4 text-gray-700">
-                Keunikan Sarung Goyor terletak pada bahan dan proses pembuatannya yang masih menggunakan teknik
-                tradisional. Kualitas yang tinggi membuat sarung ini tetap diminati hingga kini.
-            </p>
-        </div>
+                <!-- Item 4 -->
+                <div class="col-span-1">
+                    <div class="aspect-square">
+                        <img class="bg-gray-200"
+                            src="https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/3/avatar-6.jpg"
+                            alt="" />
+                    </div>
+                </div>
 
-        <!-- Visi dan Misi -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-semibold">Visi dan Misi</h2>
-            <p class="mt-4 text-gray-700">
-                <strong>Visi:</strong> Menjadi produsen Sarung Goyor terbaik yang mengangkat budaya lokal ke kancah
-                nasional dan internasional.
-            </p>
-            <p class="mt-2 text-gray-700">
-                <strong>Misi:</strong>
-            <ul class="list-disc ml-5 mt-2">
-                <li>Memproduksi sarung dengan kualitas terbaik.</li>
-                <li>Meningkatkan kesejahteraan pengrajin lokal.</li>
-                <li>Melestarikan dan mengembangkan motif-motif tradisional.</li>
-            </ul>
-            </p>
-        </div>
+                <!-- Item 5 -->
+                <div class="col-span-1">
+                    <div class="aspect-square">
+                        <img class="bg-gray-300"
+                            src="https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/3/avatar-7.jpg"
+                            alt="" />
+                    </div>
+                </div>
 
-        <!-- Profil Tim -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-semibold">Profil Tim</h2>
-            <p class="mt-4 text-gray-700">
-                Tim Sarung Goyor terdiri dari pengrajin berpengalaman dan desainer berbakat yang berdedikasi untuk
-                menghasilkan produk berkualitas tinggi. Kami bekerja sama untuk memastikan setiap sarung yang dihasilkan
-                memenuhi standar kualitas dan keindahan yang tinggi.
-            </p>
-        </div>
+                <!-- Item 6 -->
+                <div class="col-span-1">
+                    <div class="aspect-square">
+                        <img class="bg-gray-200"
+                            src="https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/3/avatar-8.jpg"
+                            alt="" />
+                    </div>
+                </div>
 
-        <!-- Galeri Produk -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-semibold">Galeri Produk</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 mt-4">
-                <!-- Contoh gambar produk -->
-                <img src="path/to/image1.jpg" alt="Sarung Goyor 1" class="w-full h-64 object-cover rounded-lg">
-                <img src="path/to/image2.jpg" alt="Sarung Goyor 2" class="w-full h-64 object-cover rounded-lg">
-                <img src="path/to/image3.jpg" alt="Sarung Goyor 3" class="w-full h-64 object-cover rounded-lg">
+                <!-- Item 7 -->
+                <div class="col-span-1">
+                    <div class="aspect-square">
+                        <img class="bg-gray-300"
+                            src="https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/3/avatar-9.jpg"
+                            alt="" />
+                    </div>
+                </div>
+
+                <!-- Item 8 -->
+                <div class="col-span-1">
+                    <div class="aspect-square">
+                        <img class="bg-gray-200"
+                            src="https://cdn.rareblocks.xyz/collection/celebration/images/testimonials/3/avatar-10.jpg"
+                            alt="" />
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
 
-        <!-- Kontak -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-semibold">Kontak</h2>
-            <p class="mt-4 text-gray-700">
-                Untuk informasi lebih lanjut, hubungi kami melalui:
-            </p>
-            <p class="mt-2 text-gray-700">
-                <strong>Email:</strong> info@sarunggoyor.com
-            </p>
-            <p class="mt-2 text-gray-700">
-                <strong>Telepon:</strong> +62 123 456 789
-            </p>
-            <p class="mt-2 text-gray-700">
-                <strong>Alamat:</strong> Jl. Raya Wanarejan Utara No. 123, Pemalang, Jawa Tengah, Indonesia
-            </p>
-        </div>
 
-        <!-- Cerita atau Testimoni -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-semibold">Cerita atau Testimoni</h2>
-            <p class="mt-4 text-gray-700">
-                "Sarung Goyor tidak hanya indah, tetapi juga nyaman dipakai. Saya bangga bisa mengenakan produk lokal
-                berkualitas ini." - Budi, Pelanggan
-            </p>
-        </div>
 
-        <!-- Sosial Media -->
-        <div class="mb-10">
-            <h2 class="text-3xl font-semibold">Ikuti Kami di Sosial Media</h2>
-            <p class="mt-4 text-gray-700">
-                <a href="https://facebook.com/sarunggoyor" target="_blank" class="text-blue-600">Facebook</a> |
-                <a href="https://instagram.com/sarunggoyor" target="_blank" class="text-pink-600">Instagram</a> |
-                <a href="https://twitter.com/sarunggoyor" target="_blank" class="text-blue-400">Twitter</a>
-            </p>
-        </div>
+
+
+        <section class="py-12">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-4">Sejarah dan Asal Usul</h2>
+                <p class="text-lg">Sarung Goyor berasal dari Desa Wanarejan Utara, dikenal sejak tahun 1822. Teknik
+                    tenun yang khas diwariskan dari generasi ke generasi.</p>
+            </div>
+        </section>
+
+        <section class="py-12 bg-gray-200">
+            <div class="container mx-auto px-6">
+                <div class="flex flex-wrap -mx-6 text-center">
+                    <div class="w-full md:w-1/3 px-6 mb-12">
+                        <img src="path/to/image1.jpg" alt="Keunikan Sarung Goyor"
+                            class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-2xl font-semibold mb-2">Keunikan dan Keistimewaan</h3>
+                        <p>Sarung Goyor memiliki motif khas dan teknik tenun yang unik, membuatnya berbeda dari sarung
+                            lainnya.</p>
+                    </div>
+                    <div class="w-full md:w-1/3 px-6 mb-12">
+                        <img src="path/to/image2.jpg" alt="Proses Pembuatan"
+                            class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-2xl font-semibold mb-2">Proses Pembuatan</h3>
+                        <p>Proses pembuatan Sarung Goyor melibatkan pemilihan bahan baku berkualitas, teknik tenun
+                            tradisional, dan pengerjaan yang teliti.</p>
+                    </div>
+                    <div class="w-full md:w-1/3 px-6 mb-12">
+                        <img src="path/to/image3.jpg" alt="Komunitas Pengrajin"
+                            class="w-full h-48 object-cover rounded-lg mb-4">
+                        <h3 class="text-2xl font-semibold mb-2">Komunitas dan Pengrajin</h3>
+                        <p>Pengrajin di Desa Wanarejan Utara memiliki keterampilan khusus dalam membuat Sarung Goyor,
+                            menjadikannya bagian penting dari warisan budaya lokal.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-12">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-4">Visi dan Misi</h2>
+                <p class="text-lg">Visi kami adalah memperkenalkan Sarung Goyor ke pasar internasional dan
+                    memberdayakan
+                    masyarakat lokal. Misi kami adalah menjaga tradisi, meningkatkan kualitas produk, dan memperluas
+                    jangkauan pasar.</p>
+            </div>
+        </section>
+
+        <section class="py-12 bg-gray-200">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-4">Penghargaan dan Prestasi</h2>
+                <p class="text-lg">Sarung Goyor telah menerima berbagai penghargaan, baik lokal maupun internasional,
+                    sebagai pengakuan atas kualitas dan keunikan produk kami.</p>
+            </div>
+        </section>
+
+        <section class="py-12">
+            <div class="container mx-auto px-6">
+                <h2 class="text-4xl font-bold mb-4 text-center">Testimoni Pelanggan</h2>
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-lg italic">"Sarung Goyor sangat nyaman dipakai dan memiliki motif yang indah.
+                            Saya sangat merekomendasikan!" - <strong>Ali</strong></p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md">
+                        <p class="text-lg italic">"Produk yang luar biasa dengan kualitas tinggi. Sarung Goyor sangat
+                            cocok untuk koleksi pribadi maupun hadiah." - <strong>Budi</strong></p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-12 bg-gray-200">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-4xl font-bold mb-4">Hubungi Kami</h2>
+                <p class="text-lg mb-6">Jika Anda tertarik untuk memesan atau ingin menjalin kerjasama, silakan hubungi
+                    kami melalui informasi di bawah ini:</p>
+                <ul class="text-lg mb-6">
+                    <li>Alamat: Desa Wanarejan Utara, Kabupaten Pemalang</li>
+                    <li>Telepon: +62 123 456 789</li>
+                    <li>Email: info@sarunggoyor.id</li>
+                </ul>
+                <a href="/contact"
+                    class="bg-green-500 text-white px-6 py-3 rounded-lg shadow-md hover:bg-green-600">Formulir
+                    Kontak</a>
+            </div>
+        </section>
     </div>
 </x-app-layout>

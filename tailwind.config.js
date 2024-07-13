@@ -13,7 +13,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Figtree", ...defaultTheme.fontFamily.sans],
+                sans: ["Roboto", "Open Sans", ...defaultTheme.fontFamily.sans],
             },
         },
     },
@@ -22,11 +22,11 @@ export default {
         themes: [
             {
                 mytheme: {
-                    primary: "#9700ff",
+                    primary: "#4339f2",
                     secondary: "#004eff",
                     accent: "#0000ff",
-                    neutral: "#312620",
-                    "base-100": "#fff9fd",
+                    neutral: "#171d45",
+                    "base-100": "#ebecf2",
                     info: "#00edff",
                     success: "#00d088",
                     warning: "#ffa400",
