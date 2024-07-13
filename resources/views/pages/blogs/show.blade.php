@@ -12,12 +12,15 @@
         <div class="flex flex-col lg:flex-row">
             <div class="flex-1">
                 @isset($post)
-                    <img class="h-56 w-full rounded-lg object-cover mb-4"
+                    <img class="aspect-video rounded-lg object-cover mb-4"
                         src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
                         alt="{{ $post->title }}" loading="lazy" />
                     <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
                     <h2 class="text-xl font-bold mb-2">{{ $post->title }}</h2>
                     <p class="text-gray-600 text-xs mb-2">By: {{ $post->author }}</p>
+                    @if (Auth::user() && Auth::user()->role == 'admin')
+                        <a href="{{ route('blogs.edit', $post->slug) }}" class="link link-primary link-hover">Edit</a>
+                    @endif
                     <p class="text-gray-600">{!! $post->content !!}</p>
                     @if ($post->tags)
                         @php

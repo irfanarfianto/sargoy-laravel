@@ -19,6 +19,7 @@ Route::get('/products/{slug}', [ProductController::class, 'detailProduct'])->nam
 Route::get('/products/load-more', [ProductController::class, 'loadMore'])->name('product.loadMore');
 
 
+Route::get('faqs', [FAQController::class, 'publicIndex'])->name('faqs.page');
 Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
 Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');
 

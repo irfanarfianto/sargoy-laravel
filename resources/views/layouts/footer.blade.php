@@ -35,19 +35,19 @@
             </div>
 
             <div>
-                <p class="text-sm font-semibold tracking-widest text-gray-400 uppercase">Company</p>
+                <p class="text-sm font-semibold tracking-widest text-gray-400 uppercase">Menu</p>
 
                 <ul class="mt-6 space-y-4">
                     <li>
-                        <a href="#" title=""
+                        <a href="{{ route('product.page') }}"
                             class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
-                            About </a>
+                            Produk </a>
                     </li>
 
                     <li>
-                        <a href="#" title=""
+                        <a href="{{ route('blogs.page') }}"
                             class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
-                            Features </a>
+                            Blogs </a>
                     </li>
 
                     <li>
@@ -69,17 +69,10 @@
 
                 <ul class="mt-6 space-y-4">
                     <li>
-                        <a href="#" title=""
+                        <a href="{{ route('faqs.page') }}"
                             class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
-                            Customer Support </a>
+                            FAQs </a>
                     </li>
-
-                    <li>
-                        <a href="#" title=""
-                            class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
-                            Delivery Details </a>
-                    </li>
-
                     <li>
                         <a href="#" title=""
                             class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
@@ -155,4 +148,4 @@
 
         <p class="text-sm text-center text-base-300">© Copyright 2024, All Rights Reserved by Team BDT24-FS007</p>
     </div>
-</section>
+    </section>
