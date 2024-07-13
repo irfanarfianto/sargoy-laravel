@@ -1,8 +1,8 @@
 <x-app-layout>
-    <div class="mt-6 flex flex-col space-y-3 lg:space-y-0 lg:flex-row">
+    <div class="mt-3 flex flex-col space-y-3 lg:space-y-0 lg:flex-row">
         <!-- Filter Section -->
         <div class="w-full lg:w-1/4 lg:pr-4">
-            <form action="{{ route('product.page') }}" method="GET" class="lg:space-y-4 sticky top-24">
+            <form action="{{ route('product.page') }}" method="GET" class="lg:space-y-4 sticky top-20">
                 <div class="flex justify-between">
                     <div class="hidden lg:flex space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -72,7 +72,7 @@
         @include('pages.products.partials.sorting')
         <!-- Products Section -->
         <div class="w-full lg:w-3/4">
-            <div class="flex space-x-3 mb-2 lg:mb-0 sticky top-20 z-20 bg-base-100 py-3 lg:px-0 overflow-x-auto">
+            <div class="flex space-x-3 mb-2 lg:mb-0 sticky top-16 z-20 bg-base-100 py-3 lg:px-0 overflow-x-auto">
                 <a href="{{ route('product.page', ['search' => $search, 'filter' => $filter]) }}"
                     class="btn btn-sm  {{ $category === null ? 'btn-primary' : '' }}">
                     Semua Kategori

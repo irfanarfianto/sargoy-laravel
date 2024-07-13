@@ -21,9 +21,6 @@ Route::get('/products/load-more', [ProductController::class, 'loadMore'])->name(
 
 Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
 Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');
-Route::get('tentang-kami', function () {
-    return view('pages.about.index');
-})->name('about.page');
 
 
 Route::get('/send-announcement', [NotificationController::class, 'sendAnnouncement']);
@@ -36,6 +33,7 @@ Route::middleware(['auth', 'verified'])->prefix('dashboard')->group(function () 
         Route::resource('users', UserController::class);
         Route::resource('categories', CategoryController::class);
         Route::resource('blogs', BlogPostController::class)->except(['show']);
+        Route::get('/blogs/autocomplete/tags', [BlogPostController::class, 'autocompleteTags'])->name('blogs.autocomplete.tags');
         Route::post('ckeditor/upload', [BlogPostController::class, 'upload'])->name('ckeditor.upload');
         Route::post('blogs/{id}/mark-as-recommended', [BlogPostController::class, 'markAsRecommended'])->name('blogs.markAsRecommended');
         Route::post('blogs/{id}/unmark-as-recommended', [BlogPostController::class, 'unmarkAsRecommended'])->name('blogs.unmarkAsRecommended');

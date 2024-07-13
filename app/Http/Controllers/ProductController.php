@@ -380,7 +380,7 @@ class ProductController extends Controller
             $query->orderBy($sort, $direction);
         }
 
-        $products = $query->paginate(12);
+        $products = $query->paginate(21);
         foreach ($products as $product) {
             $product->status = 'Sudah Diverifikasi';
         }

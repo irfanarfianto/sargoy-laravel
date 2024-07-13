@@ -1,5 +1,5 @@
-<section class="pb-3 mt-5 pt-10 bg-[#240750] sm:pt-16 lg:pt-24">
-    <div class="px-4 mx-auto sm:px-6 lg:px-0 max-w-7xl">
+<footer class="pb-3 mt-5 pt-10 bg-[#240750] sm:pt-16 lg:pt-24">
+    <div class="mx-auto px-3 lg:px-[8px] max-w-7xl">
         <div class="grid grid-cols-2 md:col-span-3 lg:grid-cols-6 gap-y-16 gap-x-12">
             <div class="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
                 <a href="" class="flex flex-row space-x-2">

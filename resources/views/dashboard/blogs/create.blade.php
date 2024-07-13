@@ -36,19 +36,21 @@
                             <label for="title" class="block text-gray-700 mb-2">Title <span
                                     class="text-red-500">*</span></label>
                             <input type="text" class="input input-bordered w-full" id="title" name="title"
-                                value="{{ old('title') }}" required>
+                                value="{{ old('title') }}" placeholder="Enter title here" required>
                         </div>
                         <div class="form-group mt-4">
                             <label for="author" class="block text-gray-700 mb-2">Author <span
                                     class="text-red-500">*</span></label>
                             <input type="text" class="input input-bordered w-full" id="author" name="author"
-                                value="{{ old('author') }}" required>
+                                value="{{ old('author') }}" placeholder="Enter author here" required>
                         </div>
                         <div class="form-group mt-4">
                             <label for="tags" class="block text-gray-700 mb-2">Tags (comma-separated)</label>
                             <input type="text" class="input input-bordered w-full" id="tags" name="tags"
-                                value="{{ old('tags') }}" placeholder="Enter tags separated by commas">
+                                value="{{ old('tags') }}"
+                                placeholder="Enter tags separated by commas (e.g. tag1, tag2)">
                         </div>
+
                     </div>
 
                 </div>

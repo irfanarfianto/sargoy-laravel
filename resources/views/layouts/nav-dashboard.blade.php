@@ -12,7 +12,10 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
             </svg>
         </label>
-        <a href="{{ route('home') }}" class="text-base-100 text-xl">Sargoy</a>
+        <a href="{{ route('home') }}" class="flex items-center text-base-100 text-xl">
+            <img src="{{ asset('logo.png') }}" alt="Logo Sargoy" class="w-5 h-5 object-contain mr-2">
+            Sargoy Dashboard
+        </a>
     </div>
     <div class="navbar-end space-x-6">
         <div>

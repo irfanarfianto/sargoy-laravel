@@ -61,7 +61,7 @@
                 <form action="{{ route('blogs.page') }}" method="GET">
                     <label for="tags" class="text-xl font-semibold mb-2">Tags</label>
                     <div class="flex flex-wrap gap-2">
-                        @foreach ($uniqueTags as $tag)
+                        @foreach ($frequentlyUsedTags as $tag)
                             <button type="submit" name="tags" value="{{ $tag }}"
                                 class="btn btn-sm btn-ghost">#{{ $tag }}</button>
                         @endforeach
