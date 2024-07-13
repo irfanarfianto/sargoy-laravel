@@ -200,11 +200,11 @@
         <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
             @foreach ($recommendedProducts as $recommendedProduct)
                 <div class="overflow-hidden">
-                    <div class=" relative overflow-hidden h-60 rounded-lg">
+                    <div class=" relative overflow-hidden rounded-lg">
                         <a href="{{ route('product.detail', $recommendedProduct->slug) }}">
                             <img src="{{ $recommendedProduct->images->first()->image_url ?? 'https://placehold.co/400' }}"
                                 loading="lazy" alt="{{ $recommendedProduct->name }}"
-                                class="object-cover h-full w-full">
+                                class="object-cover aspect-square">
                         </a>
                     </div>
                     <div class="px-4 py-4">

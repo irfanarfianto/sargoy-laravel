@@ -60,7 +60,8 @@
                             'numberedList',
                             'blockQuote', 'uploadImage', '|', 'imageStyle:full', 'imageStyle:alignLeft',
                             'imageStyle:alignCenter', 'imageStyle:alignRight'
-                        ]
+                        ],
+                        shouldNotGroupWhenFull: true
                     },
                     image: {
                         resizeUnit: 'px',

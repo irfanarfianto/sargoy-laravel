@@ -456,18 +456,24 @@ class ProductController extends Controller
 
         // Produk dengan views_count terendah, kecuali produk yang sedang dibuka
         $leastViewedProducts = Product::where('id', '<>', $product->id)
+            ->where('is_verified', true) // Hanya produk yang sudah diverifikasi
+            ->where('status', true) // Hanya produk dengan status aktif
             ->orderBy('views_count')
             ->limit(3)
             ->get();
 
         // Produk dengan views_count tertinggi, kecuali produk yang sedang dibuka
         $mostViewedProducts = Product::where('id', '<>', $product->id)
+            ->where('is_verified', true) // Hanya produk yang sudah diverifikasi
+            ->where('status', true) // Hanya produk dengan status aktif
             ->orderByDesc('views_count')
             ->limit(1)
             ->get();
 
         // Produk terbaru (kecuali produk yang sedang dibuka)
         $latestProducts = Product::where('id', '<>', $product->id)
+            ->where('is_verified', true) // Hanya produk yang sudah diverifikasi
+            ->where('status', true) // Hanya produk dengan status aktif
             ->orderByDesc('created_at')
             ->limit(2)
             ->get();

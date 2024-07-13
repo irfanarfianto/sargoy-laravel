@@ -120,9 +120,9 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     @foreach ($products as $product)
                         <div class="overflow-hidden">
-                            <div class="relative overflow-hidden h-60 rounded-lg">
+                            <div class="relative overflow-hidden rounded-lg">
                                 <a href="{{ route('product.detail', $product->slug) }}">
-                                    <img class="object-cover w-full h-full"
+                                    <img class="object-cover aspect-square"
                                         src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}"
                                         loading="lazy" alt="{{ $product->name }}" />
                                 </a>
