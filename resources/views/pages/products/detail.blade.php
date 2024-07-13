@@ -6,13 +6,13 @@
 
     <div class="mt-6 flex flex-wrap">
         {{-- Gambar Produk --}}
-        <div class="w-full lg:w-1/3">
+        <div class="w-full lg:w-1/3 lg:pr-3">
             <div class="overflow-hidden">
                 <div class="flex flex-wrap gap-2">
                     {{-- Tampilkan gambar pertama --}}
                     <button onclick="my_modal_2.showModal()">
                         <img id="mainImage" src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}"
-                            loading="lazy" alt="{{ $product->name }}" class="object-cover h-96 w-96 rounded-md">
+                            loading="lazy" alt="{{ $product->name }}" class="object-cover aspect-square rounded-md">
                     </button>
                     {{-- Tampilkan gambar-gambar lainnya --}}
                     @foreach ($product->images->slice(1) as $image)
@@ -148,7 +148,7 @@
                                         @endif
                                     </span>
                                 </div>
-                                <p class="text-sm text-gray-500">{{ $review->comment }}</p>
+                                <p class="text-sm text-gray-500 line-clamp-4">{{ $review->comment }}</p>
                             </li>
                         @empty
                             <p class="text-sm text-gray-500">Belum ada ulasan untuk produk ini.</p>
@@ -158,7 +158,8 @@
                     {{-- Form Ulasan --}}
                     <div class="mt-6">
                         <h3 class="text-lg font-semibold">Buat Ulasan Baru</h3>
-                        <form action="{{ route('product.review.store', ['product' => $product->id]) }}" method="POST">
+                        <form action="{{ route('product.review.store', ['product' => $product->id]) }}"
+                            method="POST">
                             @csrf
                             <div class="mt-4">
                                 <label for="rating" class="block text-sm font-medium text-gray-700">Pilih
@@ -197,7 +198,7 @@
     </div>
     <div class="mt-8">
         <h3 class="text-xl font-semibold">Produk Rekomendasi</h3>
-        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
             @foreach ($recommendedProducts as $recommendedProduct)
                 <div class="overflow-hidden">
                     <div class=" relative overflow-hidden rounded-lg">

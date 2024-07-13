@@ -25,7 +25,7 @@
     </div>
 </div>
 <div class="text-sm text-gray-500">{{ $totalReviews }} ulasan</div>
-<div class="mt-2 pr-0 lg:pr-10">
+<div class="mt-2 pr-0 lg:pr-2">
     @for ($i = 5; $i >= 1; $i--)
         <div class="flex items-center">
             <div class="ml-1 text-sm">{{ $i }}</div>

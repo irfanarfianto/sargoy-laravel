@@ -36,7 +36,7 @@
                     </div>
                     <div class="flex flex-wrap items-center gap-2">
                         <button type="submit" name="filter" value="terbaru"
-                            class="btn btn-sm {{ $filter == 'terbaru' ? 'btn-ghost btn-outline' : 'btn-ghost' }}">
+                            class="btn btn-sm {{ $filter == 'terbaru' ? 'btn-primary btn-outline' : 'btn-ghost' }}">
                             @if ($filter == 'terbaru')
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -46,7 +46,7 @@
                             Terbaru
                         </button>
                         <button type="submit" name="filter" value="rating_tertinggi"
-                            class="btn btn-sm {{ $filter == 'rating_tertinggi' ? 'btn-ghost btn-outline' : 'btn-ghost' }}">
+                            class="btn btn-sm {{ $filter == 'rating_tertinggi' ? 'btn-primary btn-outline' : 'btn-ghost' }}">
                             @if ($filter == 'rating_tertinggi')
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -56,7 +56,7 @@
                             Rating Tertinggi
                         </button>
                         <button type="submit" name="filter" value="populer"
-                            class="btn btn-sm {{ $filter == 'populer' ? 'btn-ghost btn-outline' : 'btn-ghost' }}">
+                            class="btn btn-sm {{ $filter == 'populer' ? 'btn-primary btn-outline' : 'btn-ghost' }}">
                             @if ($filter == 'populer')
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
