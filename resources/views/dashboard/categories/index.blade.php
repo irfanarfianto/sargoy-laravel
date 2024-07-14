@@ -29,19 +29,17 @@
                 <p>{{ __('No categories available at the moment.') }}</p>
             </div>
         @else
-                <x-table :headers="['Name', 'Slug', 'Actions']" :rows="$categories
+                <x-table :headers="['Name', 'Slug', 'Deskripsi', 'Actions']" :rows="$categories
                     ->map(function ($category) {
                         return [
                             'name' => $category->name,
                             'slug' => $category->slug,
+                            'description' => $category->description,
                             'actions' => view('components.category-actions', compact('category')),
                         ];
                     })
                     ->toArray()" />
                 @include('dashboard.categories.partials.modal')
-            <div class="mt-4">
-                {{ $categories->links('vendor.pagination.custom') }}
-            </div>
         @endif
     </div>
 </x-dashboard-layout>

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
@@ -13,12 +15,18 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::paginate(10);
-        $breadcrumbItems = [
-            ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
-            ['name' => 'Category'],
-        ];
-        return view('dashboard.categories.index', compact('categories', 'breadcrumbItems'));
+        try {
+            $categories = Category::all();
+            $breadcrumbItems = [
+                ['name' => 'Dashboard', 'url' => auth()->user()->hasRole('seller') ? route('seller') : route('admin')],
+                ['name' => 'Category'],
+            ];
+            return view('dashboard.categories.index', compact('categories', 'breadcrumbItems'));
+        } catch (\Exception $e) {
+            Log::error('Error displaying categories: ' . $e->getMessage());
+            flash()->error('Failed to display categories.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -26,7 +34,13 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('dashboard.categories.create');
+        try {
+            return view('dashboard.categories.create');
+        } catch (\Exception $e) {
+            Log::error('Error showing create form: ' . $e->getMessage());
+            flash()->error('Failed to show create form.');
+            return redirect()->back();
+        }
     }
 
     /**
@@ -36,29 +50,49 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
             'slug' => 'required|string|max:255|unique:categories',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $data = $request->only(['name', 'slug']);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images', 'public');
-            $data['image'] = $imagePath;
+            $imagePath = $request->file('image')->store('public/categories');
+            $data['image'] = Storage::url($imagePath);
+        } else {
+            flash()->error('Gambar kategori harus diisi.');
+            return redirect()->back()->withInput();
         }
 
-        Category::create($data);
+        try {
+            Category::create($data);
+            flash()->success('Category created successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error creating category: ' . $e->getMessage());
+            flash()->error('Failed to create category.');
+        }
 
-        flash()->success('Category created successfully.');
         return redirect()->route('categories.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($slug)
     {
-        return view('dashboard.categories.show', compact('category'));
+        $category = Category::where('slug', $slug)->firstOrFail();
+        $products = Product::where('category_id', $category->id)->get();
+        $breadcrumbItems = [
+            ['name' => 'Beranda', 'url' => route('home.page')],
+            ['name' => 'Kategori'],
+            ['name' => $category->name],
+        ];
+        return view('pages.categories.show', [
+            'category' => $category,
+            'products' => $products,
+            'breadcrumbItems' => $breadcrumbItems
+        ]);
     }
 
     /**
@@ -66,46 +100,80 @@ class CategoryController extends Controller
      */
     public function edit(Category $category)
     {
-        return view('dashboard.categories.edit', compact('category'));
+        try {
+            return view('dashboard.categories.edit', compact('category'));
+        } catch (\Exception $e) {
+            Log::error('Error showing edit form: ' . $e->getMessage());
+            flash()->error('Failed to show edit form.');
+            return redirect()->back();
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $slug)
     {
+        $category = Category::where('slug', $slug)->firstOrFail();
+
         $request->validate([
             'name' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
             'slug' => 'required|string|max:255|unique:categories,slug,' . $category->id,
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
         $data = $request->only(['name', 'slug']);
 
         if ($request->hasFile('image')) {
             // Delete old image if exists
-            if ($category->image) {
-                Storage::disk('public')->delete($category->image);
+            if ($category->image && Storage::exists('public/' . $category->image)) {
+                Storage::delete('public/' . $category->image);
             }
 
-            $imagePath = $request->file('image')->store('images', 'public');
-            $data['image'] = $imagePath;
+            // Store new image
+            try {
+                $imagePath = $request->file('image')->store('public/categories');
+                $data['image'] = str_replace('public/', '', $imagePath);
+            } catch (\Exception $e) {
+                Log::error('Error uploading new image: ' . $e->getMessage());
+                flash()->error('Failed to upload new image.');
+                return redirect()->route('categories.index');
+            }
         }
 
-        $category->update($data);
+        try {
+            $category->update($data);
+            flash()->success('Category updated successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error updating category: ' . $e->getMessage());
+            flash()->error('Failed to update category.');
+        }
 
-        flash()->success('Category updated successfully.');
         return redirect()->route('categories.index');
     }
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy($slug)
     {
-        $category->delete();
+        try {
+            $category = Category::where('slug', $slug)->firstOrFail();
 
-        flash()->success('Category deleted successfully.');
+            // Delete category image if exists
+            if ($category->image) {
+                Storage::delete('public/' . $category->image);
+            }
+
+            $category->delete();
+            flash()->success('Category deleted successfully.');
+        } catch (\Exception $e) {
+            Log::error('Error deleting category: ' . $e->getMessage());
+            flash()->error('Failed to delete category.');
+        }
+
         return redirect()->route('categories.index');
     }
 }
