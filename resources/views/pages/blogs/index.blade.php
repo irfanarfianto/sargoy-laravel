@@ -29,7 +29,7 @@
                     @forelse ($posts as $post)
                         <div class="flex flex-col overflow-hidden hover:bg-neutral-200 rounded-lg">
                             <a href="{{ route('blogs.show', $post->slug) }}" class="p-4 ">
-                                <img class="h-48 w-full rounded-lg object-cover"
+                                <img class="aspect-video rounded-lg object-cover"
                                     src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
                                     alt="{{ $post->title }}" loading="lazy" />
                             </a>
@@ -42,7 +42,7 @@
                                             {{ Str::limit($post->title, 50) }}
                                         </a>
                                     </p>
-                                    <p class="text-gray-600">{!! Str::limit($post->content, 100) !!}</p>
+                                    <p class="text-gray-600">{!! Str::limit(strip_tags($post->content), 100) !!}</p>
                                 </div>
                                 <div class="flex flex-row items-center mt-4">
                                     <img class="h-8 w-8 rounded-full object-cover"
@@ -91,11 +91,10 @@
                     <form action="{{ route('blogs.page') }}" method="GET">
                         <label for="tags" class="text-xl font-semibold mb-2">Tags</label>
                         <div class="flex flex-wrap gap-2">
-                            @foreach ($uniqueTags as $tag)
+                            @foreach ($frequentlyUsedTags as $tag)
                                 <button type="submit" name="tags" value="{{ $tag }}"
                                     class="btn btn-sm btn-ghost">#{{ $tag }}</button>
                             @endforeach
-
                         </div>
                     </form>
                 </div>

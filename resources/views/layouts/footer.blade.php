@@ -1,9 +1,9 @@
-<section class="pb-3 mt-5 pt-10 bg-[#240750] sm:pt-16 lg:pt-24">
-    <div class="px-4 mx-auto sm:px-6 lg:px-0 max-w-7xl">
+<footer class="pb-3 mt-5 pt-10 bg-[#240750] sm:pt-16 lg:pt-24">
+    <div class="mx-auto px-3 lg:px-[8px] max-w-7xl">
         <div class="grid grid-cols-2 md:col-span-3 lg:grid-cols-6 gap-y-16 gap-x-12">
             <div class="col-span-2 md:col-span-3 lg:col-span-2 lg:pr-8">
                 <a href="" class="flex flex-row space-x-2">
-                    <img src="logo.png" alt="" class="h-8 w-auto">
+                    <img src="{{ asset('logo.png') }}" alt="logo" class="h-8 w-auto">
                     <h3 class="w-auto h-9 text-3xl text-base-100">Sargoy</h3>
                 </a>
 
@@ -35,19 +35,19 @@
             </div>
 
             <div>
-                <p class="text-sm font-semibold tracking-widest text-gray-400 uppercase">Company</p>
+                <p class="text-sm font-semibold tracking-widest text-gray-400 uppercase">Menu</p>
 
                 <ul class="mt-6 space-y-4">
                     <li>
-                        <a href="#" title=""
+                        <a href="{{ route('product.page') }}"
                             class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
-                            About </a>
+                            Produk </a>
                     </li>
 
                     <li>
-                        <a href="#" title=""
+                        <a href="{{ route('blogs.page') }}"
                             class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
-                            Features </a>
+                            Blogs </a>
                     </li>
 
                     <li>
@@ -69,17 +69,10 @@
 
                 <ul class="mt-6 space-y-4">
                     <li>
-                        <a href="#" title=""
+                        <a href="{{ route('faqs.page') }}"
                             class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
-                            Customer Support </a>
+                            FAQs </a>
                     </li>
-
-                    <li>
-                        <a href="#" title=""
-                            class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
-                            Delivery Details </a>
-                    </li>
-
                     <li>
                         <a href="#" title=""
                             class="flex text-base-300 transition-all duration-200 hover:text-blue-600 focus:text-blue-600">
@@ -155,4 +148,4 @@
 
         <p class="text-sm text-center text-base-300">© Copyright 2024, All Rights Reserved by Team BDT24-FS007</p>
     </div>
-</section>
+    </section>

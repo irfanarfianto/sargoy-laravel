@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <h1 class="text-3xl font-bold text-center mb-2">{{ __('Daftar Akun') }}</h1>
+    <h1 class="text-3xl font-bold text-center mb-2">{{ __('Buat Akun') }}</h1>
     <p class="text-sm text-center text-gray-600 mb-4">
         Selamat datang di Official Store Sarung Goyor.
     </p>

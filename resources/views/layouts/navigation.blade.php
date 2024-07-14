@@ -3,11 +3,11 @@
     $initials = strtoupper(substr($userName, 0, 1));
 @endphp
 
-<nav class="bg-base-100 shadow h-20 items-center flex">
+<nav class="bg-base-100 shadow h-16 items-center flex">
     <div class="navbar max-w-7xl mx-auto">
         <div class="navbar-start">
             <div class="dropdown">
-                <div tabindex="0" role="button" aria-label="Open Menu" class="btn btn-ghost btn-outline mr-2 lg:hidden">
+                <div tabindex="0" role="button" aria-label="Open Menu" class="btn btn-ghost mr-2 lg:hidden">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -24,43 +24,46 @@
                             class="{{ Request::is('products') || Request::is('products/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
                     </li>
                     <li><a href="{{ route('blogs.page') }}"
-                            class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
+                            class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blogs</a>
                     </li>
-
+                    {{-- 
                     <li><a href="{{ route('about.page') }}"
                             class="{{ Request::is('tentang-kami') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Tentang
                             Kami</a>
-                    </li>
+                    </li> --}}
 
                 </ul>
             </div>
-
-
-            <x-application-logo class="w-20 h-20 fill-current text-gray-500" />
-
-
+            <div class="hidden lg:block">
+                <x-application-logo class="w-20 h-20  fill-current text-gray-500" />
+            </div>
         </div>
-        <div class="navbar-center hidden lg:flex">
-            <ul class="flex flex-row space-x-6">
-                <li><a href="{{ route('home') }}"
-                        class="{{ Request::is('/') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Beranda</a>
-                </li>
-                <li><a href="{{ route('product.page') }}"
-                        class="{{ Request::is('products') || Request::is('products/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
-                </li>
-                <li><a href="{{ route('blogs.page') }}"
-                        class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blog</a>
-                </li>
+        <div class="navbar-center block lg:hidden">
+            <x-application-logo class="w-20 h-20  fill-current text-gray-500" />
+        </div>
+        <div class="navbar-center ">
 
-                <li><a href="{{ route('about.page') }}"
-                        class="{{ Request::is('tentang-kami') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Tentang
-                        Kami</a>
-                </li>
-
-            </ul>
         </div>
         <div class="navbar-end space-x-6">
+            <div class="hidden lg:flex">
+                <ul class="flex flex-row space-x-6">
+                    <li><a href="{{ route('home') }}"
+                            class="{{ Request::is('/') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Beranda</a>
+                    </li>
+                    <li><a href="{{ route('product.page') }}"
+                            class="{{ Request::is('products') || Request::is('products/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Produk</a>
+                    </li>
+                    <li><a href="{{ route('blogs.page') }}"
+                            class="{{ Request::is('blogs') || Request::is('blogs/*') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Blogs</a>
+                    </li>
 
+                    {{-- <li><a href="{{ route('about.page') }}"
+                        class="{{ Request::is('tentang-kami') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Tentang
+                        Kami</a>
+                </li> --}}
+
+                </ul>
+            </div>
             @if (Route::has('login'))
                 @auth
                     <div class="dropdown dropdown-end">

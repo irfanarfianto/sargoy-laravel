@@ -10,7 +10,7 @@
     @laravelPWA
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
         .ck-editor__editable_inline {
             min-height: 450px;
@@ -46,7 +46,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/38.1.0/classic/ckeditor.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             ClassicEditor
@@ -58,8 +58,10 @@
                         items: [
                             'heading', 'undo', 'redo', '|', 'bold', 'italic', 'link', 'bulletedList',
                             'numberedList',
-                            'blockQuote', 'uploadImage'
-                        ]
+                            'blockQuote', 'uploadImage', '|', 'imageStyle:full', 'imageStyle:alignLeft',
+                            'imageStyle:alignCenter', 'imageStyle:alignRight'
+                        ],
+                        shouldNotGroupWhenFull: true
                     },
                     image: {
                         resizeUnit: 'px',

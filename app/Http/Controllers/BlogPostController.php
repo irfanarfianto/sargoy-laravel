@@ -26,15 +26,23 @@ class BlogPostController extends Controller
         try {
             $query = BlogPost::orderBy('created_at', 'desc');
 
-            // Get unique tags from database
-            $uniqueTags = BlogPost::distinct()
+            // Get frequently used tags from database
+            $frequentlyUsedTags = BlogPost::select('tags')
+                ->whereNotNull('tags')
                 ->pluck('tags')
                 ->map(function ($item, $key) {
                     return json_decode($item, true);
                 })
                 ->flatten(1)
-                ->unique()
-                ->filter()
+                ->groupBy(function ($tag) {
+                    return $tag;
+                })
+                ->map(function ($tags, $key) {
+                    return count($tags);
+                })
+                ->sortDesc()
+                ->keys()
+                ->take(10) // Ambil 10 tags yang paling sering digunakan
                 ->toArray();
 
             // Handle tag filter
@@ -53,7 +61,7 @@ class BlogPostController extends Controller
                 ->limit(5)
                 ->get();
 
-            return view('pages.blogs.index', compact('posts', 'recommendedPosts', 'uniqueTags', 'selectedTag'));
+            return view('pages.blogs.index', compact('posts', 'recommendedPosts', 'frequentlyUsedTags', 'selectedTag'));
         } catch (\Exception $e) {
             Log::error('Error fetching blog posts: ' . $e->getMessage());
             flash()->error('An error occurred while fetching blog posts.');
@@ -63,20 +71,29 @@ class BlogPostController extends Controller
 
 
 
+
     public function show($slug, Request $request)
     {
         try {
             $post = BlogPost::where('slug', $slug)->firstOrFail();
 
-            // Get unique tags from database
-            $uniqueTags = BlogPost::distinct()
+            // Get frequently used tags from database
+            $frequentlyUsedTags = BlogPost::select('tags')
+                ->whereNotNull('tags')
                 ->pluck('tags')
                 ->map(function ($item, $key) {
                     return json_decode($item, true);
                 })
                 ->flatten(1)
-                ->unique()
-                ->filter()
+                ->groupBy(function ($tag) {
+                    return $tag;
+                })
+                ->map(function ($tags, $key) {
+                    return count($tags);
+                })
+                ->sortDesc()
+                ->keys()
+                ->take(10) // Ambil 10 tags yang paling sering digunakan
                 ->toArray();
 
             // Handle tag filter
@@ -102,7 +119,7 @@ class BlogPostController extends Controller
                 ['name' => Str::limit($post->title, 30)]
             ];
 
-            return view('pages.blogs.show', compact('post', 'recommendedPosts', 'breadcrumbItems', 'selectedTags', 'uniqueTags'));
+            return view('pages.blogs.show', compact('post', 'recommendedPosts', 'breadcrumbItems', 'selectedTags', 'frequentlyUsedTags'));
         } catch (ModelNotFoundException $e) {
             Log::error('Blog post not found for slug: ' . $slug);
             flash()->error('Blog post not found.');
@@ -113,6 +130,7 @@ class BlogPostController extends Controller
             return redirect()->route('home');
         }
     }
+
 
 
 
@@ -296,9 +314,9 @@ class BlogPostController extends Controller
             $extension = $request->file('upload')->getClientOriginalExtension();
             $fileName = $fileName . '_' . time() . '.' . $extension;
 
-            $request->file('upload')->move(public_path('media'), $fileName);
+            $request->file('upload')->storeAs('public/blog_images', $fileName);
 
-            $url = asset('media/' . $fileName);
+            $url = asset('storage/blog_images/' . $fileName);
             return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
         }
     }

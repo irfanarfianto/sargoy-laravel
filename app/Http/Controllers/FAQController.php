@@ -27,6 +27,11 @@ class FAQController extends Controller
         return view('dashboard.faqs.index', compact('faqs', 'breadcrumbItems', 'error'));
     }
 
+    public function publicIndex() {
+        $faqs = FAQ::all();
+        return view('pages.faqs.index', compact('faqs'));
+    }
+
 
     public function create()
     {

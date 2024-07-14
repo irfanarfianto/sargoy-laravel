@@ -6,13 +6,13 @@
 
     <div class="mt-6 flex flex-wrap">
         {{-- Gambar Produk --}}
-        <div class="w-full lg:w-1/3">
+        <div class="w-full lg:w-1/3 lg:pr-3">
             <div class="overflow-hidden">
                 <div class="flex flex-wrap gap-2">
                     {{-- Tampilkan gambar pertama --}}
                     <button onclick="my_modal_2.showModal()">
                         <img id="mainImage" src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}"
-                            loading="lazy" alt="{{ $product->name }}" class="object-cover h-96 w-96 rounded-md">
+                            loading="lazy" alt="{{ $product->name }}" class="object-cover aspect-square rounded-md">
                     </button>
                     {{-- Tampilkan gambar-gambar lainnya --}}
                     @foreach ($product->images->slice(1) as $image)
@@ -22,69 +22,21 @@
                     @endforeach
                 </div>
             </div>
-            <div class="review-summary mt-10 sticky top-24">
+            <div class="review-summary mt-10 hidden lg:block sticky top-24">
                 <h3 class="text-lg font-semibold">Ulasan Pembeli</h3>
-                <div class="flex flex-col items-center">
-                    <div class="flex items-center space-x-3">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="size-6 text-orange-400">
-                            <path fill-rule="evenodd"
-                                d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <h2 class=" text-5xl font-bold">
-                            {{ number_format($averageRating, 1) }}
-                            <span class="text-xl text-gray-500">/5.0</span>
-                        </h2>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <div class="ml-2 text-sm text-gray-500">
-                            {{ $ratingPercentage }}% pembeli merasa puas
-                        </div>
-                        <div class="tooltip"
-                            data-tip="Dihitung dari jumlah rating positif (bintang 4 dan 5) dibagi dengan total rating.">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M12 9v3.75m9-.75a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9 3.75h.008v.008H12v-.008Z" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-sm text-gray-500">{{ $totalReviews }} ulasan</div>
-                <div class="mt-2 pr-0 lg:pr-10">
-                    @for ($i = 5; $i >= 1; $i--)
-                        <div class="flex items-center">
-                            <div class="ml-1 text-sm">{{ $i }}</div>
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                                class="size-3 text-orange-400">
-                                <path fill-rule="evenodd"
-                                    d="M10.788 3.21c.448-1.077 1.976-1.077 2.424 0l2.082 5.006 5.404.434c1.164.093 1.636 1.545.749 2.305l-4.117 3.527 1.257 5.273c.271 1.136-.964 2.033-1.96 1.425L12 18.354 7.373 21.18c-.996.608-2.231-.29-1.96-1.425l1.257-5.273-4.117-3.527c-.887-.76-.415-2.212.749-2.305l5.404-.434 2.082-5.005Z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <div class="ml-1 w-full bg-gray-200 rounded-full h-2.5">
-                                <div class="bg-green-500 h-2.5 rounded-full"
-                                    style="width: {{ $totalReviews > 0 ? (($ratings[$i] ?? 0) / $totalReviews) * 100 : 0 }}%">
-                                </div>
-                            </div>
-                            <div class="ml-2 text-sm">{{ $ratings[$i] ?? 0 }}</div>
-                        </div>
-                    @endfor
-                </div>
+                @include('pages.products.partials.ringkasan_ulasan')
             </div>
-
-
         </div>
         {{-- Detail Produk --}}
         <div class="w-full lg:w-4/6">
             <div class="overflow-hidden">
                 <div class="flex flex-row justify-between mt-2 lg:mt-0">
-                    <div>
+                    <div class="lg:w-1/2">
                         <span class="text-gray-600">Kategori: {{ $product->category->name }}</span>
                         <h2 class="text-2xl font-bold">{{ $product->name }}</h2>
                     </div>
 
-                    <div>
+                    <div class="hidden lg:block">
                         @if ($whatsappNumber)
                             <a href="https://wa.me/{{ $whatsappNumber }}" target="_blank" rel="noopener noreferrer">
                                 <button class="btn bg-[#25D366] text-base-100">
@@ -96,6 +48,7 @@
                             <button class="btn btn-primary">Beli Sekarang</button>
                         </a>
                     </div>
+
                 </div>
                 {{-- Rating --}}
                 <div class="flex items-center mt-1">
@@ -132,7 +85,11 @@
                     </ul>
                 </div>
                 <div class="mt-6">
-                    <div class="flex justify-between">
+                    <div class="review-summary mt-10 block lg:hidden">
+                        <h3 class="text-lg font-semibold">Ulasan Pembeli</h3>
+                        @include('pages.products.partials.ringkasan_ulasan')
+                    </div>
+                    <div class="flex justify-between mt-6">
                         <h3 class="text-lg font-semibold">Ulasan Pilihan</h3>
                         <div class="dropdown">
                             <div tabindex="0" role="button" class="btn btn-sm btn-ghost">
@@ -191,7 +148,7 @@
                                         @endif
                                     </span>
                                 </div>
-                                <p class="text-sm text-gray-500">{{ $review->comment }}</p>
+                                <p class="text-sm text-gray-500 line-clamp-4">{{ $review->comment }}</p>
                             </li>
                         @empty
                             <p class="text-sm text-gray-500">Belum ada ulasan untuk produk ini.</p>
@@ -241,22 +198,20 @@
     </div>
     <div class="mt-8">
         <h3 class="text-xl font-semibold">Produk Rekomendasi</h3>
-        <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div class="mt-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
             @foreach ($recommendedProducts as $recommendedProduct)
-                <div class=" overflow-hidden">
-                    <div class=" relative overflow-hidden h-60 rounded-lg">
+                <div class="overflow-hidden">
+                    <div class=" relative overflow-hidden rounded-lg">
                         <a href="{{ route('product.detail', $recommendedProduct->slug) }}">
                             <img src="{{ $recommendedProduct->images->first()->image_url ?? 'https://placehold.co/400' }}"
                                 loading="lazy" alt="{{ $recommendedProduct->name }}"
-                                class="object-cover h-full w-full">
+                                class="object-cover aspect-square">
                         </a>
                     </div>
                     <div class="px-4 py-4">
-
-                        <a href="{{ route('product.detail', $recommendedProduct->slug) }}">
-                            <h4 class="text-lg font-semibold text-gray-800">{{ $recommendedProduct->name }}</h4>
+                        <a href="{{ route('product.detail', $recommendedProduct->slug) }}" class="hover:underline">
+                            <h2 class="text-md line-clamp-2">{{ $recommendedProduct->name }}</h2>
                         </a>
-
                         <div class="flex items-center">
                             @php
                                 $averageRating = $recommendedProduct->reviews->avg('rating');
@@ -288,7 +243,21 @@
             @endforeach
         </div>
     </div>
-
+    <div class="btm-nav shadow-lg z-50 flex lg:hidden">
+        <div class="flex flex-row px-4">
+            @if ($whatsappNumber)
+                <a href="https://wa.me/{{ $whatsappNumber }}" class="btn bg-[#25D366] text-base-100 w-1/6"
+                    target="_blank" rel="noopener noreferrer">
+                    <i class="fa-brands fa-whatsapp"></i> <span class="hidden lg:block">Hubungi via WhatsApp
+                    </span>
+                </a>
+            @endif
+            <a href="{{ $product->ecommerce_link }}" class="btn btn-primary w-5/6" target="_blank"
+                rel="noopener noreferrer">
+                Beli Sekarang
+            </a>
+        </div>
+    </div>
     <script>
         function openModal(imageUrl) {
             var modalImage = document.getElementById('modalImage');

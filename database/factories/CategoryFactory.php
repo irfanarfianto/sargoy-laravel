@@ -4,10 +4,8 @@ namespace Database\Factories;
 
 use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
- */
 class CategoryFactory extends Factory
 {
     /**
@@ -24,9 +22,15 @@ class CategoryFactory extends Factory
      */
     public function definition()
     {
+        $categories = ['sarung', 'fashion', 'aksesories'];
+        $name = $this->faker->randomElement($categories);
+
+        // Generate slug with prefix 'kategori-'
+        $slug = 'kategori-' . Str::slug($name);
+
         return [
-            'name' => $this->faker->word, // Nama kategori menggunakan kata acak
-            'slug' => $this->faker->slug, // Slug kategori, bisa digunakan untuk URL
+            'name' => ucfirst($name), // Uppercase the first letter
+            'slug' => $slug,
         ];
     }
 }

@@ -6,12 +6,12 @@
                 {{ __('Daftar Produk') }}
             </h4>
         </div>
-        <div class="flex items-center justify-between mb-2 w-full md:w-auto">
+        <div class="flex items-center justify-between mb-2 w-full md:w-auto space-x-2">
             <div class="hidden lg:block">
                 @include('dashboard.product.partials.sorting')
             </div>
             <!-- Form Pencarian -->
-            <form action="{{ route('dashboard.product.index') }}" method="GET" class="flex items-center w-full lg:mr-2">
+            <form action="{{ route('dashboard.product.index') }}" method="GET" class="flex items-center w-full">
                 <div class="relative flex-grow">
                     <input type="text" class="rounded-l-md input input-bordered w-full py-2 px-4" name="search"
                         value="{{ $search }}" placeholder="Search" />
@@ -55,7 +55,7 @@
                         <tr>
                             <th class="py-3 px-6 text-left">
                                 <label>
-                                    <input type="checkbox" id="select-all-checkbox" class="checkbox checkbox-primary" />
+                                    <input type="checkbox" id="select-all-checkbox" class="checkbox checkbox-sm checkbox-primary" />
                                 </label>
                             </th>
                             <th class="py-3 px-6 text-left">Nama</th>
@@ -72,7 +72,7 @@
                             <tr class="border-b border-gray-200 hover:bg-gray-100">
                                 <td class="py-3 px-6 text-left align-center">
                                     <label>
-                                        <input type="checkbox" class="checkbox checkbox-primary" />
+                                        <input type="checkbox" class="checkbox checkbox-sm checkbox-primary" />
                                     </label>
                                 </td>
                                 <td class="py-3 px-6 text-left">

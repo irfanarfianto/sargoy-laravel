@@ -6,7 +6,7 @@
                 {{ __('Create New Blog Post') }}
             </h4>
         </div>
-        <div class="mt-4 hidden lg:flex flex-wrap-reverse w-full md:w-auto space-x-2">
+        <div class=" hidden lg:flex flex-wrap-reverse w-full md:w-auto space-x-2">
             <a href="{{ route('blogs.index') }}" class="btn btn-ghost w-full md:w-auto">Kembali</a>
             <button type="submit" form="blogForm" class="btn btn-primary w-full md:w-auto">Create</button>
         </div>
@@ -30,23 +30,27 @@
             @endif
 
             <div class="flex flex-wrap">
-                <div class="w-full lg:w-2/3 shadow bg-white rounded-lg py-4 px-5">
-                    <div class="form-group">
-                        <label for="title" class="block text-gray-700 mb-2">Title <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" class="input input-bordered w-full" id="title" name="title"
-                            value="{{ old('title') }}" required>
-                    </div>
-                    <div class="form-group mt-4">
-                        <label for="author" class="block text-gray-700 mb-2">Author <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" class="input input-bordered w-full" id="author" name="author"
-                            value="{{ old('author') }}" required>
-                    </div>
-                    <div class="form-group mt-4">
-                        <label for="tags" class="block text-gray-700 mb-2">Tags (comma-separated)</label>
-                        <input type="text" class="input input-bordered w-full" id="tags" name="tags"
-                            value="{{ old('tags') }}" placeholder="Enter tags separated by commas">
+                <div class="w-full lg:w-2/3 lg:pr-5">
+                    <div class="shadow bg-white rounded-lg py-4 px-5 ">
+                        <div class="form-group">
+                            <label for="title" class="block text-gray-700 mb-2">Title <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" class="input input-bordered w-full" id="title" name="title"
+                                value="{{ old('title') }}" placeholder="Enter title here" required>
+                        </div>
+                        <div class="form-group mt-4">
+                            <label for="author" class="block text-gray-700 mb-2">Author <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" class="input input-bordered w-full" id="author" name="author"
+                                value="{{ old('author') }}" placeholder="Enter author here" required>
+                        </div>
+                        <div class="form-group mt-4">
+                            <label for="tags" class="block text-gray-700 mb-2">Tags (comma-separated)</label>
+                            <input type="text" class="input input-bordered w-full" id="tags" name="tags"
+                                value="{{ old('tags') }}"
+                                placeholder="Enter tags separated by commas (e.g. tag1, tag2)">
+                        </div>
+
                     </div>
 
                 </div>
@@ -80,7 +84,7 @@
             <div class="form-group mt-6 shadow bg-white rounded-lg py-4 px-5">
                 <label for="content" class="block text-gray-700 mb-2">Content <span
                         class="text-red-500">*</span></label>
-                <textarea class="input ckeditor input-bordered w-full" id="content" name="content" rows="5" >{{ old('content') }}</textarea>
+                <textarea class="input ckeditor input-bordered w-full" id="content" name="content" rows="5">{{ old('content') }}</textarea>
             </div>
 
             <!-- Tombol Submit (sembunyikan, digunakan untuk trigger) -->

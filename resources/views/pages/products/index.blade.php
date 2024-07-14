@@ -1,21 +1,10 @@
 <x-app-layout>
-    <div class="mt-8 flex flex-wrap justify-between ">
-        <h3 class="text-2xl">
-            {{ __('Produk') }}
-        </h3>
-        @if ($search && !$products->isEmpty())
-            <h5 class="text-gray-700">
-                {{ $products->total() }} {{ __('produk ditemukan, berdasarkan pencarian') }}
-                <strong>{{ "'$search'" }}</strong>
-            </h5>
-        @endif
-    </div>
-    <div class="mt-6 flex flex-col space-y-3 lg:space-y-0 lg:flex-row">
+    <div class="mt-3 flex flex-col space-y-3 lg:space-y-0 lg:flex-row">
         <!-- Filter Section -->
         <div class="w-full lg:w-1/4 lg:pr-4">
-            <form action="{{ route('product.page') }}" method="GET" class="space-y-4">
+            <form action="{{ route('product.page') }}" method="GET" class="lg:space-y-4 sticky top-20">
                 <div class="flex justify-between">
-                    <div class="flex space-x-2">
+                    <div class="hidden lg:flex space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -30,7 +19,12 @@
 
                 <input type="text" name="search" placeholder="Cari produk..." value="{{ $search }}"
                     class="input input-bordered w-full" />
-
+                @if ($search && !$products->isEmpty())
+                    <h5 class="text-gray-700">
+                        {{ $products->total() }} {{ __('produk ditemukan, berdasarkan pencarian') }}
+                        <strong>{{ "'$search'" }}</strong>
+                    </h5>
+                @endif
                 <div class="hidden lg:block lg:space-y-5">
                     <div class="flex space-x-2">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -38,11 +32,11 @@
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25" />
                         </svg>
-                        <h3 class="">Urutkan</h3>
+                        <h3 class="">Filter Berdasarkan</h3>
                     </div>
                     <div class="flex flex-wrap items-center gap-2">
                         <button type="submit" name="filter" value="terbaru"
-                            class="btn btn-sm {{ $filter == 'terbaru' ? 'btn-ghost btn-outline' : 'btn-ghost' }}">
+                            class="btn btn-sm {{ $filter == 'terbaru' ? 'btn-primary btn-outline' : 'btn-ghost' }}">
                             @if ($filter == 'terbaru')
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -52,7 +46,7 @@
                             Terbaru
                         </button>
                         <button type="submit" name="filter" value="rating_tertinggi"
-                            class="btn btn-sm {{ $filter == 'rating_tertinggi' ? 'btn-ghost btn-outline' : 'btn-ghost' }}">
+                            class="btn btn-sm {{ $filter == 'rating_tertinggi' ? 'btn-primary btn-outline' : 'btn-ghost' }}">
                             @if ($filter == 'rating_tertinggi')
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -62,7 +56,7 @@
                             Rating Tertinggi
                         </button>
                         <button type="submit" name="filter" value="populer"
-                            class="btn btn-sm {{ $filter == 'populer' ? 'btn-ghost btn-outline' : 'btn-ghost' }}">
+                            class="btn btn-sm {{ $filter == 'populer' ? 'btn-primary btn-outline' : 'btn-ghost' }}">
                             @if ($filter == 'populer')
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
@@ -72,35 +66,26 @@
                             Populer
                         </button>
                     </div>
-
-
-                    <div class="flex space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 0 0 5.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 0 0 9.568 3Z" />
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
-                        </svg>
-                        <h3 class="">Kategori</h3>
-                    </div>
-                    <div>
-                        @foreach ($categories as $cat)
-                            <a href="{{ route('product.page', ['category' => $cat->slug, 'search' => $search, 'filter' => $filter]) }}"
-                                class="btn btn-ghost btn-sm {{ $category === $cat->slug ? 'btn-primary' : '' }}">
-                                {{ $cat->name }}
-                            </a>
-                        @endforeach
-                        <a href="{{ route('product.page', ['search' => $search, 'filter' => $filter]) }}"
-                            class="btn btn-ghost btn-sm  {{ $category === null ? 'btn-primary' : '' }}">
-                            Semua Kategori
-                        </a>
-                    </div>
                 </div>
             </form>
         </div>
         @include('pages.products.partials.sorting')
         <!-- Products Section -->
         <div class="w-full lg:w-3/4">
+            <div class="flex space-x-3 mb-2 lg:mb-0 sticky top-16 z-20 bg-base-100 py-3 lg:px-0 overflow-x-auto">
+                <a href="{{ route('product.page', ['search' => $search, 'filter' => $filter]) }}"
+                    class="btn btn-sm  {{ $category === null ? 'btn-primary' : '' }}">
+                    Semua Kategori
+                </a>
+                @foreach ($categories as $cat)
+                    <a href="{{ route('product.page', ['category' => $cat->slug, 'search' => $search, 'filter' => $filter]) }}"
+                        class="btn btn-sm {{ $category === $cat->slug ? 'btn-primary' : '' }}">
+                        {{ $cat->name }}
+                    </a>
+                @endforeach
+
+            </div>
+
             @if ($products->isEmpty())
                 <div role="alert" class="alert">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -117,12 +102,12 @@
                     </div>
                 </div>
             @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 lg:gap-6">
                     @foreach ($products as $product)
-                        <div class="bg-white overflow-hidden">
-                            <div class="relative overflow-hidden h-60 rounded-lg">
+                        <div class="overflow-hidden">
+                            <div class="relative overflow-hidden rounded-lg">
                                 <a href="{{ route('product.detail', $product->slug) }}">
-                                    <img class="object-cover w-full h-full"
+                                    <img class="object-cover aspect-square"
                                         src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}"
                                         loading="lazy" alt="{{ $product->name }}" />
                                 </a>

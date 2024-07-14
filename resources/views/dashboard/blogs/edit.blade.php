@@ -33,26 +33,28 @@
             @endif
 
             <div class="flex flex-wrap">
-                <div class="w-full lg:w-2/3 shadow bg-white rounded-lg py-4 px-5">
-                    <div class="form-group">
-                        <label for="title" class="block text-gray-700 mb-2">Title <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" class="input input-bordered w-full" id="title" name="title"
-                            value="{{ old('title', $post->title) }}" required>
-                    </div>
-                    <div class="form-group mt-4">
-                        <label for="author" class="block text-gray-700 mb-2">Author <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" class="input input-bordered w-full" id="author" name="author"
-                            value="{{ old('author', $post->author) }}" required>
-                    </div>
-                    <div class="form-group mt-4">
-                        <label for="tags" class="block text-gray-700 mb-2">Tags <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" class="input input-bordered w-full" id="tags" name="tags"
-                            value="{{ $post->tags ? implode(', ', json_decode($post->tags)) : '' }}"
-                            placeholder="Enter tags separated by commas" required>
+                <div class="w-full lg:w-2/3 lg:pr-5">
+                    <div class=" shadow bg-white rounded-lg py-4 px-5">
+                        <div class="form-group">
+                            <label for="title" class="block text-gray-700 mb-2">Title <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" class="input input-bordered w-full" id="title" name="title"
+                                value="{{ old('title', $post->title) }}" required>
+                        </div>
+                        <div class="form-group mt-4">
+                            <label for="author" class="block text-gray-700 mb-2">Author <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" class="input input-bordered w-full" id="author" name="author"
+                                value="{{ old('author', $post->author) }}" required>
+                        </div>
+                        <div class="form-group mt-4">
+                            <label for="tags" class="block text-gray-700 mb-2">Tags <span
+                                    class="text-red-500">*</span></label>
+                            <input type="text" class="input input-bordered w-full" id="tags" name="tags"
+                                value="{{ $post->tags ? implode(', ', json_decode($post->tags)) : '' }}"
+                                placeholder="Enter tags separated by commas" required>
 
+                        </div>
                     </div>
                 </div>
 
