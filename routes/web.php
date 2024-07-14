@@ -9,16 +9,17 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\BlogPostController;
+use App\Http\Controllers\CarouselController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductReviewController;
-
+use App\Http\Controllers\SearchController;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home.page');
 Route::get('products', [ProductController::class, 'publicIndex'])->name('product.page');
 Route::get('products/{slug}', [ProductController::class, 'detailProduct'])->name('product.detail');
 Route::get('products/load-more', [ProductController::class, 'loadMore'])->name('product.loadMore');
-
+Route::get('search', [SearchController::class, 'index'])->name('search');
 
 Route::get('faqs', [FAQController::class, 'publicIndex'])->name('faqs.page');
 Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
@@ -43,6 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::middleware('role:admin')->group(function () {
             Route::get('admin', [AdminController::class, 'index'])->name('admin');
             Route::resource('users', UserController::class);
+            Route::resource('carousels', CarouselController::class);
             Route::resource('categories', CategoryController::class);
             Route::resource('blogs', BlogPostController::class)->except(['show']);
             Route::get('/blogs/autocomplete/tags', [BlogPostController::class, 'autocompleteTags'])->name('blogs.autocomplete.tags');

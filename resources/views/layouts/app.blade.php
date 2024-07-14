@@ -31,6 +31,9 @@
             @include('layouts.navigation')
         </header>
 
+        @if (request()->is('/'))
+            @include('components.carousel')
+        @endif
 
 
 
@@ -40,6 +43,7 @@
         </main>
         @include('layouts.footer')
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 </body>
 
 </html>
