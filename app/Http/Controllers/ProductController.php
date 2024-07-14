@@ -391,10 +391,6 @@ class ProductController extends Controller
         return view('pages.products.index', compact('products', 'search', 'filter', 'categories', 'category'));
     }
 
-
-
-
-
     public function detailProduct($slug, Request $request)
     {
         // Mengambil data produk berdasarkan slug
@@ -448,7 +444,7 @@ class ProductController extends Controller
 
         // Breadcrumb
         $breadcrumbItems = [
-            ['name' => 'Beranda', 'url' => route('home')],
+            ['name' => 'Beranda', 'url' => route('home.page')],
             ['name' => 'Produk', 'url' => route('product.page')],
             ['name' => 'Detail Produk'],
             ['name' => Str::limit($product->name, 30)],

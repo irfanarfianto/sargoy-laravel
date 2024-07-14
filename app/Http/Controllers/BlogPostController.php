@@ -65,7 +65,7 @@ class BlogPostController extends Controller
         } catch (\Exception $e) {
             Log::error('Error fetching blog posts: ' . $e->getMessage());
             flash()->error('An error occurred while fetching blog posts.');
-            return redirect()->route('home');
+            return redirect()->route('home.page');
         }
     }
 
@@ -114,7 +114,7 @@ class BlogPostController extends Controller
                 ->get();
 
             $breadcrumbItems = [
-                ['name' => 'Beranda', 'url' => route('home')],
+                ['name' => 'Beranda', 'url' => route('home.page')],
                 ['name' => 'Blogs', 'url' => route('blogs.page')],
                 ['name' => Str::limit($post->title, 30)]
             ];
@@ -123,11 +123,11 @@ class BlogPostController extends Controller
         } catch (ModelNotFoundException $e) {
             Log::error('Blog post not found for slug: ' . $slug);
             flash()->error('Blog post not found.');
-            return redirect()->route('home');
+            return redirect()->route('home.page');
         } catch (\Exception $e) {
             Log::error('Error fetching blog post: ' . $e->getMessage());
             flash()->error('An error occurred while fetching blog post.');
-            return redirect()->route('home');
+            return redirect()->route('home.page');
         }
     }
 

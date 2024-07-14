@@ -17,7 +17,7 @@
 
                 <ul tabindex="0"
                     class="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-                    <li><a href="{{ route('home') }}"
+                    <li><a href="/"
                             class="{{ Request::is('/') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Beranda</a>
                     </li>
                     <li><a href="{{ route('product.page') }}"
@@ -47,7 +47,7 @@
         <div class="navbar-end space-x-6">
             <div class="hidden lg:flex">
                 <ul class="flex flex-row space-x-6">
-                    <li><a href="{{ route('home') }}"
+                    <li><a href="/"
                             class="{{ Request::is('/') ? 'font-bold text-primary' : 'text-neutral hover:text-primary' }}">Beranda</a>
                     </li>
                     <li><a href="{{ route('product.page') }}"
@@ -79,28 +79,31 @@
                             </div>
                         </button>
                         <ul tabindex="0" class="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                            @unless (Auth::user()->hasRole('admin') || Auth::user()->hasRole('seller'))
-                                <li><a href="{{ route('profile.index') }}">Profile</a></li>
-                            @endunless
+                            @if (Auth::user()->hasRole('visitor'))
+                                <li><a href="{{ route('profile.page') }}">Profile</a></li>
+                            @endif
                             <li>
                                 @if (Auth::user()->hasRole('admin'))
                                     <a href="{{ route('admin') }}">Dashboard Admin</a>
-                                @else
-                                    <a href="{{ route('seller') }}">Dahsboard Seller</a>
+                                @endif
+                                @if (Auth::user()->hasRole('seller'))
+                                    <a href="{{ route('seller') }}">Dashboard Seller</a>
                                 @endif
                             </li>
                             <li>
-                                <form method="POST" action="{{ route('logout') }}" class="m-0">
-                                    @csrf
-                                    <a href="{{ route('logout') }}" class="text-error"
-                                        onclick="event.preventDefault(); this.closest('form').submit();">Keluar</a>
-                                </form>
+                                <button onclick="document.getElementById('keluar').showModal()"
+                                    class="text-error">Keluar</button>
                             </li>
                         </ul>
                     </div>
                 @else
                     {{-- <div class="flex space-x-1"> --}}
-                    <a href="{{ route('login') }}" class="btn btn-ghost">Masuk</a>
+                    <a href="{{ route('login') }}" class="btn btn-ghost">Masuk <svg xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
+                        </svg>
+                    </a>
                     {{-- <a href="{{ route('register') }}" class="btn btn-primary">Daftar</a> --}}
                     {{-- </div> --}}
                 @endauth
@@ -108,3 +111,5 @@
         </div>
     </div>
 </nav>
+
+@include('components.modal-logout')

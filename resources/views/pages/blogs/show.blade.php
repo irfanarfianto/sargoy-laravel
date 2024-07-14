@@ -1,4 +1,9 @@
 <x-app-layout>
+    <!-- Dynamic Title Injection -->
+    <x-slot name="pageTitle">
+        {{ __('Detail Blog') }} | {{ config('app.name', 'Sargoy') }}
+    </x-slot>
+    
     <x-breadcrumb :items="$breadcrumbItems" />
     <div class="mt-8 text-2xl">
         @isset($post)

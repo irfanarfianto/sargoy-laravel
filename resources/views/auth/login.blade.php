@@ -1,9 +1,17 @@
 <x-guest-layout>
+    <!-- Dynamic Title Injection -->
+    <x-slot name="pageTitle">
+        {{ __('Login') }} | {{ config('app.name', 'Sargoy') }}
+    </x-slot>
+
     <x-auth-session-status class="mb-4" :status="session('status')" />
     <h1 class="text-3xl font-bold text-center mb-2">{{ __('Login') }}</h1>
     <p class="text-sm text-center text-gray-600 mb-4">
         Selamat datang di Official Store Sarung Goyor.
     </p>
+
+
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
         <!-- Email Address -->
@@ -47,5 +55,5 @@
         </div>
     </form>
 
-    
+
 </x-guest-layout>

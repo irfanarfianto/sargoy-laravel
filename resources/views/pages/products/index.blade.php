@@ -1,4 +1,9 @@
 <x-app-layout>
+    <!-- Dynamic Title Injection -->
+    <x-slot name="pageTitle">
+        {{ __('Produk') }} | {{ config('app.name', 'Sargoy') }}
+    </x-slot>
+
     <div class="mt-3 flex flex-col space-y-3 lg:space-y-0 lg:flex-row">
         <!-- Filter Section -->
         <div class="w-full lg:w-1/4 lg:pr-4">

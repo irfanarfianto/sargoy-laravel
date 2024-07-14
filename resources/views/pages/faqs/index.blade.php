@@ -1,5 +1,8 @@
 <x-app-layout>
-
+    <!-- Dynamic Title Injection -->
+    <x-slot name="pageTitle">
+        {{ __('FAQs') }} | {{ config('app.name', 'Sargoy') }}
+    </x-slot>
     <div class="container max-w-4xl mx-auto flex flex-col">
         <div class="py-10 text-2xl text-start font-bold">
             {{ __('FAQs') }}

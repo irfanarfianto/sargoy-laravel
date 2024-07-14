@@ -26,9 +26,11 @@ class AppServiceProvider extends ServiceProvider
         View::composer('*', function ($view) {
             $user = auth()->user();
 
-            if (auth()->check() && auth()->user()->hasRole('admin')) {
+            $unverifiedProductCount = 0;
+            $newReviewCount = 0;
+
+            if (auth()->check() && $user->hasRole('admin')) {
                 $unverifiedProductCount = Product::where('is_verified', false)->count();
-                $view->with('unverifiedProductCount', $unverifiedProductCount);
             }
 
             if ($user && $user->hasRole(['admin', 'seller'])) {
@@ -40,9 +42,10 @@ class AppServiceProvider extends ServiceProvider
                     ->where('created_at', '>', Carbon::now()->subDays(7))
                     ->where('is_read', false) // Only count new reviews
                     ->count();
-
-                $view->with('newReviewCount', $newReviewCount);
             }
+
+            $view->with('unverifiedProductCount', $unverifiedProductCount);
+            $view->with('newReviewCount', $newReviewCount);
         });
     }
 }

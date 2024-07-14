@@ -1,4 +1,10 @@
 <x-guest-layout>
+
+    <!-- Dynamic Title Injection -->
+    <x-slot name="pageTitle">
+        {{ __('Register') }} | {{ config('app.name', 'Sargoy') }}
+    </x-slot>
+
     <h1 class="text-3xl font-bold text-center mb-2">{{ __('Buat Akun') }}</h1>
     <p class="text-sm text-center text-gray-600 mb-4">
         Selamat datang di Official Store Sarung Goyor.

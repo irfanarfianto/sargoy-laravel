@@ -1,4 +1,10 @@
 <x-app-layout>
+
+    <!-- Dynamic Title Injection -->
+    <x-slot name="pageTitle">
+        {{ __('Blogs') }} | {{ config('app.name', 'Sargoy') }}
+    </x-slot>
+
     <div class="mt-8 text-2xl">
         {{ __('Blogs') }}
     </div>

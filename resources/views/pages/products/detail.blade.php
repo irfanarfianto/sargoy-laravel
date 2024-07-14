@@ -1,4 +1,8 @@
 <x-app-layout>
+    <!-- Dynamic Title Injection -->
+    <x-slot name="pageTitle">
+        {{ __('Detail Produk') }} | {{ config('app.name', 'Sargoy') }}
+    </x-slot>
     <x-breadcrumb :items="$breadcrumbItems" />
     <div class="mt-8 text-2xl">
         {{ __('Detail Produk') }}
@@ -43,12 +47,12 @@
                                     <i class="fa-brands fa-whatsapp"></i> Hubungi via WhatsApp</button>
                             </a>
                         @endif
-
-                        <a href="{{ $product->ecommerce_link }}" target="_blank" rel="noopener noreferrer">
-                            <button class="btn btn-primary">Beli Sekarang</button>
-                        </a>
+                        @if ($product->ecommerce_link)
+                            <a href="{{ $product->ecommerce_link }}" target="_blank" rel="noopener noreferrer">
+                                <button class="btn btn-primary">Beli Sekarang</button>
+                            </a>
+                        @endif
                     </div>
-
                 </div>
                 {{-- Rating --}}
                 <div class="flex items-center mt-1">
@@ -91,7 +95,7 @@
                     </div>
                     <div class="flex justify-between mt-6">
                         <h3 class="text-lg font-semibold">Ulasan Pilihan</h3>
-                        <div class="dropdown">
+                        <div class="dropdown dropdown-left">
                             <div tabindex="0" role="button" class="btn btn-sm btn-ghost">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -197,7 +201,7 @@
         </div>
     </div>
     <div class="mt-8">
-        <h3 class="text-xl font-semibold">Produk Rekomendasi</h3>
+        <h3 class="text-xl font-semibold">Rekomendasi Untukmu</h3>
         <div class="mt-4 grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 lg:gap-4">
             @foreach ($recommendedProducts as $recommendedProduct)
                 <div class="overflow-hidden">

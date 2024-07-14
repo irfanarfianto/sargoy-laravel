@@ -29,13 +29,22 @@ class ProfileController extends Controller
             $profile = Admin::where('user_id', $user->id)->first();
         } elseif ($user->hasRole('seller')) {
             $profile = Seller::where('user_id', $user->id)->first();
-        } elseif ($user->hasRole('visitor')) {
-            $profile = Visitor::where('user_id', $user->id)->first();
         } else {
-            $profile = null; // Handle other types of users or roles here
+            $profile = null;
         }
 
         return view('dashboard.profile.index', compact('user', 'profile', 'breadcrumbItems'));
+    }
+
+    /**
+     * Show the visitor's profile.
+     */
+    public function publicIndex(Request $request): View
+    {
+        $user = $request->user();
+        $profile = Visitor::where('user_id', $user->id)->first();
+
+        return view('pages.profile.index', compact('user', 'profile'));
     }
 
 
