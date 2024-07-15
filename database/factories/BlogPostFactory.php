@@ -40,7 +40,7 @@ class BlogPostFactory extends Factory
         $image = json_decode($response->getBody()->getContents(), true);
 
         // Save the image to storage
-        $coverPath = 'blog_images/' . $this->faker->uuid . '.jpg'; // generate a unique filename
+        $coverPath = 'public/blog_images/' . $this->faker->uuid . '.jpg'; // generate a unique filename
         $imageContent = file_get_contents($image['urls']['regular']);
         Storage::put($coverPath, $imageContent);
 
