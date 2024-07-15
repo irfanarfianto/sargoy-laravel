@@ -17,6 +17,7 @@ class UserSeeder extends Seeder
             'name' => 'Admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('password'),
+            'email_verified_at' => now(),
         ]);
         $admin->assignRole('admin');
 
@@ -24,20 +25,23 @@ class UserSeeder extends Seeder
             'name' => 'Seller',
             'email' => 'seller@gmail.com',
             'password' => bcrypt('password'),
+            'email_verified_at' => now(),
         ]);
         $user->assignRole('seller');
-        
+
         $user = User::create([
-            'name' => 'Seller2',
+            'name' => 'Seller ke 2',
             'email' => 'seller2@gmail.com',
             'password' => bcrypt('password'),
+            'email_verified_at' => now(),
         ]);
         $user->assignRole('seller');
 
         $user2 = User::create([
-            'name' => 'User',
+            'name' => 'User Biasa',
             'email' => 'user@gmail.com',
             'password' => bcrypt('password'),
+            'email_verified_at' => now(),
         ]);
         $user2->assignRole('visitor');
 
