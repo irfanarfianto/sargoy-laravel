@@ -30,11 +30,11 @@ Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.pag
 Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');
 Route::get('{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
-    $request->fulfill();
+// Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+//     $request->fulfill();
 
-    return redirect('/');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+//     return redirect('/');
+// })->middleware(['auth', 'signed'])->name('verification.verify');
 Route::post('/email/verification-notification', function (Request $request) {
     $request->user()->sendEmailVerificationNotification();
 
