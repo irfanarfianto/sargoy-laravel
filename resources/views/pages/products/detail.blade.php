@@ -36,7 +36,9 @@
             <div class="overflow-hidden">
                 <div class="flex flex-row justify-between mt-2 lg:mt-0">
                     <div class="lg:w-1/2">
-                        <span class="text-gray-600">Kategori: {{ $product->category->name }}</span>
+                        <a href="{{ route('categories.show', $product->category->slug) }}" class="text-gray-600">
+                            Kategori: {{ $product->category->name }}
+                        </a>
                         <h2 class="text-2xl font-bold">{{ $product->name }}</h2>
                     </div>
 

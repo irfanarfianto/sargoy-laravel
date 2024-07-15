@@ -28,6 +28,7 @@ Route::get('search', [SearchController::class, 'index'])->name('search');
 Route::get('faqs', [FAQController::class, 'publicIndex'])->name('faqs.page');
 Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
 Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');
+Route::get('{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
@@ -62,7 +63,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
             Route::get('admin', [AdminController::class, 'index'])->name('admin');
             Route::resource('users', UserController::class);
             Route::resource('carousels', CarouselController::class);
-            Route::resource('categories', CategoryController::class);
+            Route::resource('categories', CategoryController::class)->except(['show']);
             Route::resource('blogs', BlogPostController::class)->except(['show']);
             Route::get('/blogs/autocomplete/tags', [BlogPostController::class, 'autocompleteTags'])->name('blogs.autocomplete.tags');
             Route::post('ckeditor/upload', [BlogPostController::class, 'upload'])->name('ckeditor.upload');

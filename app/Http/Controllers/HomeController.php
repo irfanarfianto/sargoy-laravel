@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\FAQ;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -20,6 +21,9 @@ class HomeController extends Controller
         // Ambil semua kategori
         $categories = Category::all();
 
-        return view('pages.home.index', compact('newProducts', 'featuredProducts', 'allProducts', 'categories'));
+        // amil semua faqs
+        $faqs = FAQ::take(5)->get();
+
+        return view('pages.home.index', compact('newProducts', 'featuredProducts', 'allProducts', 'categories', 'faqs'));
     }
 }
