@@ -26,7 +26,7 @@ class BlogPostFactory extends Factory
         $unsplashBaseUrl = 'https://api.unsplash.com/photos/random';
         $unsplashParams = [
             'client_id' => $unsplashAccessKey,
-            'query' => 'nature', // example query to get nature-related images
+            'query' => 'fashion', // example query to get nature-related images
             'orientation' => 'landscape', // optional: set image orientation
             'w' => 1200, // width of the image
             'h' => 800, // height of the image

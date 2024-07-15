@@ -17,9 +17,11 @@ use App\Http\Controllers\SearchController;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 
-Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home.page');
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home.page')->middleware('record.visit');
 Route::get('products', [ProductController::class, 'publicIndex'])->name('product.page');
-Route::get('products/{slug}', [ProductController::class, 'detailProduct'])->name('product.detail');
+Route::get('products/{slug}', [ProductController::class, 'detailProduct'])
+    ->name('product.detail')
+    ->middleware('record.product.view');
 Route::get('products/load-more', [ProductController::class, 'loadMore'])->name('product.loadMore');
 Route::get('search', [SearchController::class, 'index'])->name('search');
 

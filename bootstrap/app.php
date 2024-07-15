@@ -15,7 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
-            \App\Http\Middleware\RecordVisit::class,
+            'record.visit' =>   \App\Http\Middleware\RecordVisit::class,
+            'record.product.view' => \App\Http\Middleware\RecordProductVisit::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
