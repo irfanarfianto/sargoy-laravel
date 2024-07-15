@@ -81,10 +81,10 @@
             @if (Route::has('login'))
                 @auth
                     <div class="dropdown dropdown-end">
-                        <button tabindex="0" role="button" class="flex items-center gap-3">
-                            <div class="flex flex-col items-end">
+                        <button tabindex="0" role="button" class="flex items-center">
+                            {{-- <div class="flex flex-col items-end">
                                 <span class="hidden md:block">{{ $userName }}</span>
-                            </div>
+                            </div> --}}
                             <div class="avatar">
                                 <div class="mask mask-squircle h-10 w-10">
                                     <img src="https://ui-avatars.com/api/?name={{ urlencode($initials) }}"
@@ -112,11 +112,7 @@
                     </div>
                 @else
                     {{-- <div class="flex space-x-1"> --}}
-                    <a href="{{ route('login') }}" class="btn btn-ghost">Masuk <svg xmlns="http://www.w3.org/2000/svg"
-                            fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15M12 9l3 3m0 0-3 3m3-3H2.25" />
-                        </svg>
+                    <a href="{{ route('login') }}" class="btn btn-ghost">Masuk
                     </a>
                     {{-- <a href="{{ route('register') }}" class="btn btn-primary">Daftar</a> --}}
                     {{-- </div> --}}

@@ -96,7 +96,7 @@ class ProfileController extends Controller
             flash()->error('An error occurred while updating the profile.');
         }
 
-        return Redirect::route('profile.index');
+        return Redirect::back();
     }
 
     /**

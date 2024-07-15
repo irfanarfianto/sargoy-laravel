@@ -29,8 +29,7 @@ class AuthenticatedSessionController extends Controller
 
         // Check if the user's email is verified
         if (!Auth::user()->hasVerifiedEmail()) {
-            Auth::logout();
-            return redirect()->route('login')->withErrors(['email' => 'Email Anda belum diverifikasi.']);
+            return redirect()->route('verification.notice');
         }
 
         // Regenerate the session to prevent session fixation attacks
