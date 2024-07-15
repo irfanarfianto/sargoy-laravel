@@ -14,6 +14,8 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProductReviewController;
 use App\Http\Controllers\SearchController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home.page');
 Route::get('products', [ProductController::class, 'publicIndex'])->name('product.page');
@@ -25,6 +27,19 @@ Route::get('faqs', [FAQController::class, 'publicIndex'])->name('faqs.page');
 Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
 Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');
 
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+
+    return redirect('/');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+
+    return back()->with('message', 'Verification link sent!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+Route::get('/email/verify', function () {
+    return view('auth.verify-email');
+})->middleware('auth')->name('verification.notice');
 
 Route::get('/send-announcement', [NotificationController::class, 'sendAnnouncement']);
 Route::get('/send-alert', [NotificationController::class, 'sendAlert']);

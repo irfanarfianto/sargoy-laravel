@@ -24,8 +24,16 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        // Attempt to authenticate the user
         $request->authenticate();
 
+        // Check if the user's email is verified
+        if (!Auth::user()->hasVerifiedEmail()) {
+            Auth::logout();
+            return redirect()->route('login')->withErrors(['email' => 'Email Anda belum diverifikasi.']);
+        }
+
+        // Regenerate the session to prevent session fixation attacks
         $request->session()->regenerate();
 
         if (Auth::user()->hasRole('admin')) {

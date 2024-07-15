@@ -43,8 +43,12 @@ class RegisteredUserController extends Controller
         $user->assignRole('visitor');
         event(new Registered($user));
 
+        // Send verification email
+        $user->sendEmailVerificationNotification();
+
+
         Auth::login($user);
 
-        return redirect()->intended(url('/'));
+        return redirect()->route('verification.notice');
     }
 }
