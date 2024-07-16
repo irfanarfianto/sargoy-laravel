@@ -51,17 +51,26 @@ class CategoryController extends Controller
         ]);
 
         try {
-            $data = $request->only(['name', 'slug', 'description']);
+            // Get the image file from request
+            $imageFile = $request->file('image');
 
-            // Store image to storage
-            $fileName = Str::uuid() . '.jpg'; // generate a unique filename
-            $imagePath = $request->file('image')->storeAs('public/categories', $fileName);
+            // Generate a unique filename
+            $fileName = Str::uuid() . '.jpg';
 
-            // Set image path in data
-            $data['image'] = 'public/categories/' . $fileName;
+            // Store the image using Storage::put()
+            Storage::put('public/categories/' . $fileName, file_get_contents($imageFile));
+
+            // Set the image path in data to save in database
+            $data = [
+                'name' => $request->input('name'),
+                'slug' => $request->input('slug'),
+                'description' => $request->input('description'),
+                'image' => 'public/categories/' . $fileName,
+            ];
 
             // Create category
             Category::create($data);
+
             flash()->success('Category created successfully.');
         } catch (\Exception $e) {
             Log::error('Error creating category: ' . $e->getMessage());
@@ -113,22 +122,35 @@ class CategoryController extends Controller
         ]);
 
         try {
+            // Find the category by slug
             $category = Category::where('slug', $slug)->firstOrFail();
-            $data = $request->only(['name', 'slug', 'description']);
 
+            // Get updated data from request
+            $data = [
+                'name' => $request->input('name'),
+                'slug' => $request->input('slug'),
+                'description' => $request->input('description'),
+            ];
+
+            // Handle image update
             if ($request->hasFile('image')) {
                 // Delete old image if exists
-                if ($category->image && Storage::exists('public/' . $category->image)) {
-                    Storage::delete('public/' . $category->image);
+                if ($category->image && Storage::exists($category->image)) {
+                    Storage::delete($category->image);
                 }
 
                 // Store new image
-                $fileName = Str::uuid() . '.jpg'; // generate a unique filename
-                $imagePath = $request->file('image')->storeAs('public/categories', $fileName);
+                $imageFile = $request->file('image');
+                $fileName = Str::uuid() . '.jpg';
+                Storage::put('public/categories/' . $fileName, file_get_contents($imageFile));
+
+                // Update image path in data
                 $data['image'] = 'public/categories/' . $fileName;
             }
 
+            // Update category with new data
             $category->update($data);
+
             flash()->success('Category updated successfully.');
         } catch (\Exception $e) {
             Log::error('Error updating category: ' . $e->getMessage());
@@ -142,14 +164,17 @@ class CategoryController extends Controller
     public function destroy($slug)
     {
         try {
+            // Find the category by slug
             $category = Category::where('slug', $slug)->firstOrFail();
 
             // Delete category image if exists
-            if ($category->image && Storage::exists('public/categories/' . $category->image)) {
-                Storage::delete('public/categories/' . $category->image);
+            if ($category->image && Storage::exists($category->image)) {
+                Storage::delete($category->image);
             }
 
+            // Delete the category
             $category->delete();
+
             flash()->success('Category deleted successfully.');
         } catch (\Exception $e) {
             Log::error('Error deleting category: ' . $e->getMessage());
