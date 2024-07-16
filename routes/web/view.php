@@ -33,12 +33,6 @@ Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.pag
 Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');
 Route::get('{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
-
-
-
-
-
-
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('profile-saya', [ProfileController::class, 'publicIndex'])->name('profile.page');
     Route::post('/products/{product}/review', [ProductController::class, 'storeReview'])->name('product.review.store');
