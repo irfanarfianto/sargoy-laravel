@@ -2,15 +2,17 @@
 
 namespace Database\Seeders;
 
-use App\Models\Category;
+use App\Models\User;
+use GuzzleHttp\Client;
 use App\Models\Product;
+use App\Models\Category;
+use Faker\Factory as Faker;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
-use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Faker\Factory as Faker;
-use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 
 class ProductSeeder extends Seeder
 {
@@ -27,7 +29,6 @@ class ProductSeeder extends Seeder
         // Define categories
         $categories = Category::pluck('id');
         if ($categories->isEmpty()) {
-            // Handle case when categories are empty
             $this->command->info('No categories found. Please create categories first.');
             return;
         }
@@ -35,13 +36,12 @@ class ProductSeeder extends Seeder
         // Define users who are sellers (assuming you have this role logic implemented)
         $sellers = User::role('seller')->pluck('id');
         if ($sellers->isEmpty()) {
-            // Handle case when sellers are empty
             $this->command->info('No sellers found. Please create sellers first.');
             return;
         }
 
         // Unsplash API configuration
-        $unsplashAccessKey = 'iRn6hoVxynx1gNiRLmIaNy8Q4AgjTh_LXX9LPgKbntQ';
+        $unsplashAccessKey = 'YOUR_UNSPLASH_CLIENT_ID';
         $unsplashBaseUrl = 'https://api.unsplash.com/photos/random';
         $unsplashParams = [
             'client_id' => $unsplashAccessKey,
@@ -72,21 +72,36 @@ class ProductSeeder extends Seeder
                 'is_verified' => $faker->boolean(80), // 80% chance of true (verified)
             ]);
 
-            // Seed product images from Unsplash API
-            $response = $client->request('GET', $unsplashBaseUrl, [
-                'query' => $unsplashParams,
-            ]);
-            $images = json_decode($response->getBody()->getContents(), true);
-
-            foreach ($images as $index => $image) {
-                $imagePath = 'public/product_images/' . $product->id . '_image_' . $index . '.jpg';
-                $imageContent = file_get_contents($image['urls']['regular']);
-                Storage::put($imagePath, $imageContent);
-
-                ProductImage::create([
-                    'product_id' => $product->id,
-                    'image_url' => Storage::url($imagePath),
+            try {
+                // Seed product images from Unsplash API
+                $response = $client->request('GET', $unsplashBaseUrl, [
+                    'query' => $unsplashParams,
                 ]);
+                $images = json_decode($response->getBody()->getContents(), true);
+
+                foreach ($images as $index => $image) {
+                    $imagePath = 'public/product_images/' . $product->id . '_image_' . $index . '.jpg';
+                    $imageContent = file_get_contents($image['urls']['regular']);
+                    Storage::put($imagePath, $imageContent);
+
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => Storage::url($imagePath),
+                    ]);
+                }
+            } catch (ClientException $e) {
+                if ($e->getCode() == 403) {
+                    // Handle rate limit exceeded error
+                    // Log the error or show a message to the user
+                    Log::error('Unsplash API rate limit exceeded: ' . $e->getMessage());
+                    // Since seeding is not critical for the application, continue with remaining seeds
+                    continue;
+                } else {
+                    // Handle other client exceptions
+                    Log::error('Error fetching images from Unsplash: ' . $e->getMessage());
+                    // Optionally throw or log an error for further investigation
+                    continue;
+                }
             }
 
             // Seed product variants
