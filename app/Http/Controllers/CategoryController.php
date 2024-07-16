@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -39,28 +40,27 @@ class CategoryController extends Controller
         }
     }
 
+    // Store a newly created resource in storage.
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'description' => 'nullable|string|max:255',
             'slug' => 'required|string|max:255|unique:categories',
+            'description' => 'nullable|string|max:255',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $data = $request->only(['name', 'slug', 'description']);
-
         try {
-            if ($request->hasFile('image')) {
-                $imagePath = $request->file('image')->store('public/categories');
+            $data = $request->only(['name', 'slug', 'description']);
 
-                // Simpan path relatif di database
-                $data['image'] = str_replace('public/categories/', '', $imagePath);
-            } else {
-                flash()->error('Gambar kategori harus diisi.');
-                return redirect()->back()->withInput();
-            }
+            // Store image to storage
+            $fileName = Str::uuid() . '.jpg'; // generate a unique filename
+            $imagePath = $request->file('image')->storeAs('public/categories', $fileName);
 
+            // Set image path in data
+            $data['image'] = 'categories/' . $fileName;
+
+            // Create category
             Category::create($data);
             flash()->success('Category created successfully.');
         } catch (\Exception $e) {
@@ -105,27 +105,27 @@ class CategoryController extends Controller
     // Update the specified resource in storage.
     public function update(Request $request, $slug)
     {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'slug' => 'required|string|max:255|unique:categories,slug,' . $slug . ',slug',
+            'description' => 'nullable|string|max:255',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
         try {
             $category = Category::where('slug', $slug)->firstOrFail();
-
-            $request->validate([
-                'name' => 'required|string|max:255',
-                'description' => 'nullable|string|max:255',
-                'slug' => 'required|string|max:255|unique:categories,slug,' . $category->id,
-                'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            ]);
-
             $data = $request->only(['name', 'slug', 'description']);
 
             if ($request->hasFile('image')) {
                 // Delete old image if exists
-                if ($category->image && Storage::exists('public/categories/' . $category->image)) {
-                    Storage::delete('public/categories/' . $category->image);
+                if ($category->image && Storage::exists('public/' . $category->image)) {
+                    Storage::delete('public/' . $category->image);
                 }
 
                 // Store new image
-                $imagePath = $request->file('image')->store('public/categories');
-                $data['image'] = str_replace('public/categories/', '', $imagePath);
+                $fileName = Str::uuid() . '.jpg'; // generate a unique filename
+                $imagePath = $request->file('image')->storeAs('public/categories', $fileName);
+                $data['image'] = 'categories/' . $fileName;
             }
 
             $category->update($data);
