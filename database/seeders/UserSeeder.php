@@ -22,29 +22,29 @@ class UserSeeder extends Seeder
         $admin->assignRole('admin');
 
         $user = User::create([
-            'name' => 'Seller',
-            'email' => 'seller@gmail.com',
+            'name' => 'Susanti',
+            'email' => 'susanti@gmail.com',
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
         ]);
         $user->assignRole('seller');
 
-        $user = User::create([
-            'name' => 'Seller ke 2',
-            'email' => 'seller2@gmail.com',
-            'password' => bcrypt('password'),
-            'email_verified_at' => now(),
-        ]);
-        $user->assignRole('seller');
+        // $user = User::create([
+        //     'name' => 'Seller ke 2',
+        //     'email' => 'seller2@gmail.com',
+        //     'password' => bcrypt('password'),
+        //     'email_verified_at' => now(),
+        // ]);
+        // $user->assignRole('seller');
 
         $user2 = User::create([
-            'name' => 'User Biasa',
-            'email' => 'user@gmail.com',
+            'name' => 'Jhon',
+            'email' => 'jhon@gmail.com',
             'password' => bcrypt('password'),
             'email_verified_at' => now(),
         ]);
         $user2->assignRole('visitor');
 
-        User::factory()->count(15)->create();
+        // User::factory()->count(15)->create();
     }
 }
