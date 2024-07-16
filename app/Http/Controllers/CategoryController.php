@@ -125,7 +125,7 @@ class CategoryController extends Controller
                 // Store new image
                 $fileName = Str::uuid() . '.jpg'; // generate a unique filename
                 $imagePath = $request->file('image')->storeAs('public/categories', $fileName);
-                $data['image'] = 'categories/' . $fileName;
+                $data['image'] = 'public/categories/' . $fileName;
             }
 
             $category->update($data);
