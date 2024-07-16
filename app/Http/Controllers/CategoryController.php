@@ -58,7 +58,7 @@ class CategoryController extends Controller
             $imagePath = $request->file('image')->storeAs('public/categories', $fileName);
 
             // Set image path in data
-            $data['image'] = 'categories/' . $fileName;
+            $data['image'] = 'public/categories/' . $fileName;
 
             // Create category
             Category::create($data);
