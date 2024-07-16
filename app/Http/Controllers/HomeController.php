@@ -11,19 +11,21 @@ class HomeController extends Controller
 {
     public function index()
     {
-        // Ambil 5 produk terbaru
-        $newProducts = Product::latest()->take(5)->get();
-        // Ambil semua produk secara acak, lalu ambil 10 produk pertama
-        $allProducts = Product::inRandomOrder()->take(10)->get();
-        // Ambil 5 produk unggulan berdasarkan views_count terbanyak
-        $featuredProducts = Product::orderBy('views_count', 'desc')->take(5)->get();
+        // Ambil 5 produk terbaru yang sudah terverifikasi
+        $newProducts = Product::latest()->where('is_verified', true)->take(5)->get();
+
+        // Ambil 5 produk unggulan berdasarkan views_count terbanyak yang sudah terverifikasi
+        $featuredProducts = Product::where('is_verified', true)
+            ->orderBy('views_count', 'desc')
+            ->take(5)
+            ->get();
 
         // Ambil semua kategori
         $categories = Category::all();
 
-        // amil semua faqs
+        // Ambil 5 pertanyaan yang sering ditanyakan
         $faqs = FAQ::take(5)->get();
 
-        return view('pages.home.index', compact('newProducts', 'featuredProducts', 'allProducts', 'categories', 'faqs'));
+        return view('pages.home.index', compact('newProducts', 'featuredProducts', 'categories', 'faqs'));
     }
 }
