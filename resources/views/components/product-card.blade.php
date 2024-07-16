@@ -2,7 +2,7 @@
     <div class="relative overflow-hidden rounded-lg">
         <a href="{{ route('product.detail', $product->slug) }}">
             <img class="object-cover aspect-square"
-                src="{{ Storage::url($product->images->first()->image_url) ?? 'https://placehold.co/400' }}" loading="lazy"
+                src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}" loading="lazy"
                 alt="{{ $product->name }}" />
         </a>
     </div>
