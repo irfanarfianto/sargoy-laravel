@@ -53,7 +53,7 @@
     <!-- Bagian Full Story -->
     <div class="mt-12 flex flex-col lg:flex-row">
         <div class="w-full lg:w-1/2 mb-4 md:mb-0 lg:mr-4">
-            <img src="{{ asset('images/image2.png') }}" alt="Full Story Sarung Goyor" class="rounded-lg w-full h-auto">
+            <img src="{{ asset('images/image3.png') }}" alt="Full Story Sarung Goyor" class="rounded-lg w-full h-auto">
         </div>
         <div class="w-full lg:w-1/2 flex flex-col">
             <h3 class="text-2xl font-bold mb-4">Keunikan Sarung Goyor</h3>
