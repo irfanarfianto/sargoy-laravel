@@ -56,8 +56,7 @@
                         @if ($category->image)
                             <div class="avatar mt-5">
                                 <div class="w-24 rounded">
-                                    <img src="{{ asset('storage/' . $category->image) }}"
-                                        alt="{{ $category->name }}" />
+                                    <img src="{{ $category->image }}" alt="{{ $category->name }}" />
                                 </div>
                             </div>
                         @endif
@@ -66,7 +65,8 @@
                         @enderror
                     </div>
                     <div class="flex justify-end space-x-2">
-                        <button type="button" class="btn btn-ghost" onclick="closeModal('editModal{{ $category->slug }}')">Batal</button>
+                        <button type="button" class="btn btn-ghost"
+                            onclick="closeModal('editModal{{ $category->slug }}')">Batal</button>
                         <button type="submit" class="btn btn-primary">Simpan</button>
                     </div>
                 </form>

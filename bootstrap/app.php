@@ -1,8 +1,11 @@
 <?php
 
+use Symfony\Component\Routing\Route;
 use Illuminate\Foundation\Application;
+use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Spatie\Permission\Exceptions\UnauthorizedException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -30,5 +33,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
-    })->create();
+        $exceptions->render(function (UnauthorizedException $e, $request) {
+            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        });
+    })
+    ->create();

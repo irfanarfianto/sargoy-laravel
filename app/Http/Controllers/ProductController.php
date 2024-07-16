@@ -184,7 +184,7 @@ class ProductController extends Controller
             'pattern' => 'nullable|string|max:255',
             'ecommerce_link' => 'nullable|string|max:255',
             'images' => 'required|array|max:3',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', 
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'variants.*.id' => 'sometimes|exists:product_variants,id',
             'variants.*.variant_name' => 'required|string|max:255',
             'variants.*.variant_value' => 'required|string|max:255',
@@ -471,7 +471,7 @@ class ProductController extends Controller
             ->where('is_verified', true) // Hanya produk yang sudah diverifikasi
             ->where('status', true) // Hanya produk dengan status aktif
             ->orderByDesc('created_at')
-            ->limit(2)
+            ->limit(1)
             ->get();
 
         // Menggabungkan produk terbaru dengan produk lainnya untuk direkomendasikan
