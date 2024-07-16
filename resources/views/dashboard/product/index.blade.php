@@ -38,7 +38,7 @@
 
 
     <!-- Daftar Produk -->
-    <div class="container mx-auto shadow bg-white rounded-lg py-4 px-5">
+    <div class="container mx-auto shadow bg-white rounded-lg">
         @if ($products->isEmpty())
             @if ($search)
                 <p class="text-center text-gray-600 mt-8">Produk {{ $search }} yang Anda cari tidak ditemukan.
@@ -175,7 +175,7 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4">
+            <div class="mt-4 mb-8 lg:mb-2">
                 {{ $products->links('vendor.pagination.custom') }}
             </div>
 

@@ -217,7 +217,7 @@ class ProductController extends Controller
                 // Delete old images associated with the product
                 $oldImages = ProductImage::where('product_id', $product->id)->get();
                 foreach ($oldImages as $oldImage) {
-                    Storage::delete('public/' . $oldImage->image_url); // Delete old image from storage
+                    Storage::delete('public/' . $oldImage->image_url);
                     $oldImage->delete();
                 }
 
