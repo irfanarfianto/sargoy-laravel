@@ -11,7 +11,8 @@
             <div class="flex flex-col items-center">
                 <a href="{{ route('categories.show', $category->slug) }}"
                     class="relative h-20 lg:h-24 rounded-lg overflow-hidden">
-                    <img src="{{ Storage::url($category->image) }}" class="object-cover aspect-auto object-center">
+                    <img src="{{ str_replace('public', 'storage', $category->image) }}"
+                        class="object-cover aspect-auto object-center">
                     <div class="absolute inset-0 bg-black opacity-50"></div>
                     <div class="flex flex-col items-center justify-center absolute inset-0 text-white">
                         <h3 class="text-2xl lg:text-3xl">{{ $category->name }}</h3>
