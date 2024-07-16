@@ -56,7 +56,7 @@
                         @if ($category->image)
                             <div class="avatar mt-5">
                                 <div class="w-24 rounded">
-                                    <img src="{{ $category->image }}" alt="{{ $category->name }}" />
+                                    <img src="{{ Storage::url($category->image) }}" alt="{{ $category->name }}" />
                                 </div>
                             </div>
                         @endif
