@@ -59,7 +59,7 @@ class CategoryController extends Controller
                 $imagePath = $request->file('image')->store('public/categories');
 
                 // Simpan path relatif di database
-                $data['image'] = str_replace('public/', '', $imagePath);
+                $data['image'] = str_replace('public/categories/', '', $imagePath);
             } else {
                 flash()->error('Gambar kategori harus diisi.');
                 return redirect()->back()->withInput();
@@ -135,7 +135,7 @@ class CategoryController extends Controller
 
                 // Store new image
                 $imagePath = $request->file('image')->store('public/categories');
-                $data['image'] = str_replace('public/', '', $imagePath);
+                $data['image'] = str_replace('public/categories/', '', $imagePath);
             }
 
             $category->update($data);
