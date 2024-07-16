@@ -2,8 +2,8 @@
     <div class="relative overflow-hidden rounded-lg">
         <a href="{{ route('product.detail', $product->slug) }}">
             <img class="object-cover aspect-square"
-                src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}" loading="lazy"
-                alt="{{ $product->name }}" />
+                src="{{ str_replace('public', 'storage', $product->images->first()->image_url) ?? 'https://placehold.co/400' }}"
+                loading="lazy" alt="{{ $product->name }}" />
         </a>
     </div>
     <div class="px-4 py-4">
@@ -12,7 +12,7 @@
         </a>
         <div class="rating items-center">
             @php
-                $rating = $product->average_rating; 
+                $rating = $product->average_rating;
                 $maxRating = 5;
                 $filledStars = intval($rating);
                 $emptyStars = $maxRating - $filledStars;

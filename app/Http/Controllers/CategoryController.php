@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -49,21 +49,17 @@ class CategoryController extends Controller
         ]);
 
         try {
-            // Get the image file from request
-            $imageFile = $request->file('image');
+            // Store image in storage
+            $imagePath = $request->file('image')->store('public/categories');
 
-            // Convert image to base64
-            $imageData = base64_encode(file_get_contents($imageFile));
-
-            // Set the image path in data to save in database
+            // Save category data to database
             $data = [
                 'name' => $request->input('name'),
                 'slug' => $request->input('slug'),
                 'description' => $request->input('description'),
-                'image' => $imageData, // Save image as base64 encoded string
+                'image' => $imagePath,
             ];
 
-            // Create category
             Category::create($data);
 
             flash()->success('Category created successfully.');
@@ -80,15 +76,12 @@ class CategoryController extends Controller
     {
         try {
             $category = Category::where('slug', $slug)->firstOrFail();
-            // Decode base64 image data for display if needed
-            $category->image = base64_decode($category->image);
-            $products = $category->products; // Assuming Category has products relationship
             $breadcrumbItems = [
                 ['name' => 'Beranda', 'url' => route('home.page')],
                 ['name' => 'Kategori'],
                 ['name' => $category->name],
             ];
-            return view('pages.categories.show', compact('category', 'products', 'breadcrumbItems'));
+            return view('pages.categories.show', compact('category', 'breadcrumbItems'));
         } catch (\Exception $e) {
             Log::error('Error displaying category: ' . $e->getMessage());
             flash()->error('Failed to display category.');
@@ -113,7 +106,7 @@ class CategoryController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'slug' => 'required|string|max:255|unique:categories,slug,' . $slug . ',slug',
+            'slug' => 'required|string|max:255|unique:categories,slug,' . Category::where('slug', $slug)->firstOrFail()->id . ',id',
             'description' => 'nullable|string|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
@@ -122,7 +115,7 @@ class CategoryController extends Controller
             // Find the category by slug
             $category = Category::where('slug', $slug)->firstOrFail();
 
-            // Get updated data from request
+            // Update category data
             $data = [
                 'name' => $request->input('name'),
                 'slug' => $request->input('slug'),
@@ -131,15 +124,14 @@ class CategoryController extends Controller
 
             // Handle image update
             if ($request->hasFile('image')) {
-                // Convert image to base64
-                $imageFile = $request->file('image');
-                $imageData = base64_encode(file_get_contents($imageFile));
+                // Delete old image
+                Storage::delete($category->image);
 
-                // Update image path in data
-                $data['image'] = $imageData;
+                // Store new image
+                $imagePath = $request->file('image')->store('public/categories');
+                $data['image'] = $imagePath;
             }
 
-            // Update category with new data
             $category->update($data);
 
             flash()->success('Category updated successfully.');
@@ -157,6 +149,9 @@ class CategoryController extends Controller
         try {
             // Find the category by slug
             $category = Category::where('slug', $slug)->firstOrFail();
+
+            // Delete category image
+            Storage::delete($category->image);
 
             // Delete the category
             $category->delete();

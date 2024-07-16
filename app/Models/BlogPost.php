@@ -10,7 +10,7 @@ class BlogPost extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'slug', 'content', 'author', 'tags'];
+    protected $fillable = ['title', 'slug', 'content', 'author', 'tags', 'cover'];
 
     public static function boot()
     {

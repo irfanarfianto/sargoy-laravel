@@ -64,6 +64,9 @@
                             <input type="file" id="cover" name="cover"
                                 class="absolute z-50 inset-0 w-full h-full opacity-0 cursor-pointer" required
                                 onchange="previewImage(event)">
+                            <img id="image-preview"
+                                class="{{ old('cover') ? 'block' : 'hidden' }} absolute top-0 left-0 w-full h-full object-cover rounded-lg"
+                                src="{{ old('cover') ? asset('storage/' . old('cover')) : '' }}">
                             <div id="upload-label"
                                 class="flex flex-col items-center justify-center text-gray-500 pointer-events-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mb-2" viewBox="0 0 20 20"
@@ -74,8 +77,6 @@
                                 </svg>
                                 <span>Upload Cover</span>
                             </div>
-                            <img id="image-preview"
-                                class="hidden absolute top-0 left-0 w-full h-full object-cover rounded-lg">
                         </div>
                     </div>
                 </div>
@@ -123,3 +124,4 @@
         }
     </script>
 </x-dashboard-layout>
+

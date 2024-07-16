@@ -6,6 +6,7 @@ use App\Models\BlogPost;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -69,54 +70,54 @@ class BlogPostController extends Controller
         }
     }
 
-
-
-
     public function show($slug, Request $request)
     {
         try {
             $post = BlogPost::where('slug', $slug)->firstOrFail();
 
-            // Get frequently used tags from database
-            $frequentlyUsedTags = BlogPost::select('tags')
-                ->whereNotNull('tags')
-                ->pluck('tags')
-                ->map(function ($item, $key) {
-                    return json_decode($item, true);
-                })
-                ->flatten(1)
-                ->groupBy(function ($tag) {
-                    return $tag;
-                })
-                ->map(function ($tags, $key) {
-                    return count($tags);
-                })
-                ->sortDesc()
-                ->keys()
-                ->take(10) // Ambil 10 tags yang paling sering digunakan
-                ->toArray();
+            // Get frequently used tags from cached or pre-stored data
+            $frequentlyUsedTags = Cache::remember('frequently_used_tags', now()->addHours(1), function () {
+                return BlogPost::whereNotNull('tags')
+                    ->pluck('tags')
+                    ->map(function ($item, $key) {
+                        return json_decode($item, true);
+                    })
+                    ->flatten(1)
+                    ->groupBy(function ($tag) {
+                        return $tag;
+                    })
+                    ->map(function ($tags, $key) {
+                        return count($tags);
+                    })
+                    ->sortDesc()
+                    ->keys()
+                    ->take(10)
+                    ->toArray();
+            });
 
             // Handle tag filter
             $selectedTags = [];
             if ($request->filled('tags')) {
                 $tags = array_map('trim', explode(',', $request->tags));
                 foreach ($tags as $tag) {
-                    if ($post->tags && in_array($tag, $post->tags)) {
+                    if ($post->tags && in_array($tag, json_decode($post->tags))) {
                         $selectedTags[] = $tag;
                     }
                 }
             }
 
+            // Get recommended posts
             $recommendedPosts = BlogPost::where('recommended', true)
                 ->where('id', '!=', $post->id)
-                ->orderBy('created_at', 'desc')
+                ->orderByDesc('created_at')
                 ->take(5)
                 ->get();
 
+            // Breadcrumb items
             $breadcrumbItems = [
                 ['name' => 'Beranda', 'url' => route('home.page')],
                 ['name' => 'Blogs', 'url' => route('blogs.page')],
-                ['name' => Str::limit($post->title, 30)]
+                ['name' => Str::limit($post->title, 30)],
             ];
 
             return view('pages.blogs.show', compact('post', 'recommendedPosts', 'breadcrumbItems', 'selectedTags', 'frequentlyUsedTags'));
@@ -132,8 +133,6 @@ class BlogPostController extends Controller
     }
 
 
-
-
     public function create()
     {
         $breadcrumbItems = [
@@ -146,7 +145,6 @@ class BlogPostController extends Controller
 
     public function store(Request $request)
     {
-
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
@@ -162,26 +160,21 @@ class BlogPostController extends Controller
             return redirect()->back()->withInput();
         }
 
-        // Simpan post ke dalam database
+        // Save post to the database
         $post = new BlogPost();
         $post->title = $validatedData['title'];
         $post->content = $validatedData['content'];
         $post->author = $validatedData['author'];
 
-        // Mengelola gambar yang diunggah
+        // Manage cover image
         if ($request->hasFile('cover')) {
-            $image = $request->file('cover');
-            $imageName = time() . '_' . $image->getClientOriginalName();
-            $image->storeAs('public/blog_images', $imageName); // Menyimpan gambar di storage
-
-            // Simpan nama file gambar ke dalam database
-            $post->cover = $imageName;
+            $post->cover = $request->file('cover')->store('public/blog_images');
         }
 
-        // Mengelola tags
+        // Manage tags
         if ($request->filled('tags')) {
-            $tags = array_map('trim', explode(',', $validatedData['tags'])); // Pisahkan string tags menjadi array
-            $post->tags = json_encode($tags); // Simpan tags sebagai JSON string
+            $tags = array_map('trim', explode(',', $validatedData['tags']));
+            $post->tags = json_encode($tags);
         }
 
         $post->save();
@@ -189,9 +182,6 @@ class BlogPostController extends Controller
         flash()->success('Blog post created successfully.');
         return redirect()->route('blogs.index');
     }
-
-
-
 
     public function edit($slug)
     {
@@ -206,7 +196,6 @@ class BlogPostController extends Controller
 
     public function update(Request $request, $slug)
     {
-
         $request->validate([
             'title' => 'required|max:255',
             'content' => 'required',
@@ -227,29 +216,24 @@ class BlogPostController extends Controller
                 return redirect()->back()->withInput();
             }
 
+            // Update post details
             $post->title = $request->title;
             $post->content = $request->content;
             $post->author = $request->author;
 
-            // Mengelola gambar yang diunggah
+            // Handle image update
             if ($request->hasFile('cover')) {
-                $image = $request->file('cover');
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $image->storeAs('public/blog_images', $imageName); // Menyimpan gambar di storage
+                // Delete old image
+                Storage::delete('public/blog_images/' . $post->cover);
 
-                // Hapus gambar lama jika ada
-                if ($post->cover) {
-                    Storage::delete('public/blog_images/' . $post->cover);
-                }
-
-                // Simpan nama file gambar baru ke dalam database
-                $post->cover = $imageName;
+                // Store new image
+                $post->cover = $request->file('cover')->store('public/blog_images');
             }
 
-            // Mengelola tags
+            // Manage tags
             if ($request->filled('tags')) {
-                $tags = array_map('trim', explode(',', $request->tags)); // Pisahkan string tags menjadi array
-                $post->tags = json_encode($tags); // Simpan tags sebagai JSON string
+                $tags = array_map('trim', explode(',', $request->tags));
+                $post->tags = json_encode($tags);
             }
 
             $post->save();
@@ -267,22 +251,29 @@ class BlogPostController extends Controller
         }
     }
 
-
-
-
     public function destroy($slug)
     {
-        $post = BlogPost::where('slug', $slug)->firstOrFail();
+        try {
+            $post = BlogPost::where('slug', $slug)->firstOrFail();
 
-        // Hapus gambar terkait jika ada
-        if ($post->cover) {
-            Storage::delete('public/blog_images/' . $post->cover);
+            // Hapus gambar terkait jika ada
+            if ($post->cover) {
+                Storage::delete('public/blog_images/' . $post->cover);
+            }
+
+            $post->delete();
+
+            flash()->success('Blog post deleted successfully.');
+            return redirect()->route('blogs.index');
+        } catch (ModelNotFoundException $e) {
+            Log::error('Blog post not found for slug: ' . $slug);
+            flash()->error('Blog post not found.');
+            return redirect()->route('blogs.index');
+        } catch (\Exception $e) {
+            Log::error('Error deleting blog post: ' . $e->getMessage());
+            flash()->error('An error occurred while deleting blog post.');
+            return redirect()->route('blogs.index');
         }
-
-        $post->delete();
-
-        flash()->success('Blog post deleted successfully.');
-        return redirect()->route('blogs.index');
     }
 
 

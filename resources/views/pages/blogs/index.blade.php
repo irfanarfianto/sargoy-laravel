@@ -34,9 +34,9 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
                     @forelse ($posts as $post)
                         <div class="flex flex-col overflow-hidden hover:bg-neutral-200 rounded-lg">
-                            <a href="{{ route('blogs.show', $post->slug) }}" class="p-4 ">
+                            <a href="{{ route('blogs.show', $post->slug) }}" class="p-4">
                                 <img class="aspect-video rounded-lg object-cover"
-                                    src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
+                                    src="{{ str_replace('public', 'storage', $post->cover) ?? 'https://placehold.co/400' }}"
                                     alt="{{ $post->title }}" loading="lazy" />
                             </a>
                             <div class="p-4 flex flex-col justify-between">
@@ -77,7 +77,7 @@
                         <div class="flex flex-row h-24 overflow-hidden hover:bg-neutral-200 rounded-lg">
                             <a href="{{ route('blogs.show', $post->slug) }}" class="p-2">
                                 <img class="h-full  min-w-24 max-w-24 rounded-lg object-cover"
-                                    src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
+                                    src="{{ str_replace('public', 'storage', $post->cover) ?? 'https://placehold.co/400' }}"
                                     alt="{{ $post->title }}" loading="lazy" />
                             </a>
                             <div class="p-4 flex flex-col">

@@ -77,18 +77,13 @@ class ProductController extends Controller
             'size' => 'nullable|string|max:255',
             'pattern' => 'nullable|string|max:255',
             'ecommerce_link' => 'nullable|string|max:255',
-            'images' => 'required|array|max:3',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Format dan ukuran gambar
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048', // Validasi images perlu diperbaiki
             'variants.*.variant_name' => 'required|string|max:255',
             'variants.*.variant_value' => 'required|string|max:255',
             'variants.*.price' => 'required|numeric|min:0',
             'variants.*.stock' => 'required|integer|min:0',
         ]);
-        // Check if slug already exists
-        $slug = Str::slug($validatedData['name']);
-        if (Product::where('slug', $slug)->exists()) {
-            return back()->withErrors(['name' => 'Nama produk sudah digunakan. Silakan gunakan nama yang lain.'])->withInput();
-        }
+
         DB::beginTransaction();
 
         try {
@@ -107,23 +102,24 @@ class ProductController extends Controller
                 'is_verified' => false, // Product is not verified by default
             ]);
 
-            foreach ($request->file('images') as $index => $image) {
-                if ($index < 3) { // Hanya simpan maksimal 3 gambar
-                    $imagePath = 'public/product_images/' . $product->id . '_image_' . $index . '.jpg';
+            $count = 0;
 
-                    $image->storeAs('public/product_images', $product->id . '_image_' . $index . '.jpg');
+            if ($request->hasFile('images')) {
+                foreach ($request->file('images') as $image) {
+                    if ($count < 3) {
+                        $imagePath = $image->store('public/product_images');
 
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_url' => Storage::url($imagePath),
-                    ]);
-                } else {
-                    break; // Berhenti loop setelah 3 gambar
+                        ProductImage::create([
+                            'product_id' => $product->id,
+                            'image_url' => Storage::url($imagePath),
+                        ]);
+
+                        $count++;
+                    } else {
+                        break; // Stop the loop after 3 images
+                    }
                 }
             }
-
-
-
 
             if (isset($validatedData['variants'])) {
                 foreach ($validatedData['variants'] as $variantData) {
@@ -131,6 +127,8 @@ class ProductController extends Controller
                         'product_id' => $product->id,
                         'variant_name' => $variantData['variant_name'],
                         'variant_value' => $variantData['variant_value'],
+                        'price' => $variantData['price'],
+                        'stock' => $variantData['stock'],
                     ]);
                 }
             }
@@ -145,6 +143,7 @@ class ProductController extends Controller
             return back()->withInput();
         }
     }
+
 
     public function show(Product $product)
     {
@@ -170,7 +169,6 @@ class ProductController extends Controller
 
     public function update(Request $request, $slug)
     {
-        // Validate incoming request data
         $validatedData = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required|string|max:255',
@@ -180,7 +178,6 @@ class ProductController extends Controller
             'size' => 'nullable|string|max:255',
             'pattern' => 'nullable|string|max:255',
             'ecommerce_link' => 'nullable|string|max:255',
-            'images' => 'required|array|max:3',
             'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
             'variants.*.id' => 'sometimes|exists:product_variants,id',
             'variants.*.variant_name' => 'required|string|max:255',
@@ -188,14 +185,11 @@ class ProductController extends Controller
             'status' => 'required|boolean',
         ]);
 
-        // Begin a database transaction to ensure data integrity
         DB::beginTransaction();
 
         try {
-            // Find the product by slug
             $product = Product::where('slug', $slug)->firstOrFail();
 
-            // Update the main product details
             $product->update([
                 'category_id' => $validatedData['category_id'],
                 'name' => $validatedData['name'],
@@ -209,42 +203,30 @@ class ProductController extends Controller
                 'status' => $validatedData['status'],
             ]);
 
-            // Handle product images update
             if ($request->hasFile('images')) {
-                // Delete old images associated with the product
+                // Delete old images
                 $oldImages = ProductImage::where('product_id', $product->id)->get();
                 foreach ($oldImages as $oldImage) {
-                    Storage::delete('public/' . $oldImage->image_url);
+                    Storage::delete($oldImage->image_url);
                     $oldImage->delete();
                 }
 
-                // Process and store new images
-                foreach ($request->file('images') as $index => $image) {
-                    if ($index < 3) { // Hanya simpan maksimal 3 gambar
-                        $imagePath = 'public/product_images/' . $product->id . '_image_' . $index . '.jpg';
+                // Save new images
+                foreach ($request->file('images') as $image) {
+                    $imagePath = $image->store('public/product_images');
 
-                        $image->storeAs(
-                            'public/product_images',
-                            $product->id . '_image_' . $index . '.jpg'
-                        );
-
-                        ProductImage::create([
-                            'product_id' => $product->id,
-                            'image_url' => Storage::url($imagePath),
-                        ]);
-                    } else {
-                        break; // Berhenti loop setelah 3 gambar
-                    }
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => Storage::url($imagePath),
+                    ]);
                 }
             }
 
-
-
-            // Handle product variants
+            // Update variants
             if (isset($validatedData['variants'])) {
                 foreach ($validatedData['variants'] as $variantData) {
                     if (isset($variantData['id'])) {
-                        // If variant ID exists, update the existing variant
+                        // Update existing variant
                         $variant = ProductVariant::findOrFail($variantData['id']);
                         $variant->update([
                             'variant_name' => $variantData['variant_name'],
@@ -252,7 +234,7 @@ class ProductController extends Controller
 
                         ]);
                     } else {
-                        // If variant ID doesn't exist, create a new variant
+                        // Create new variant
                         ProductVariant::create([
                             'product_id' => $product->id,
                             'variant_name' => $variantData['variant_name'],
@@ -263,27 +245,17 @@ class ProductController extends Controller
                 }
             }
 
-            // Commit the transaction
             DB::commit();
-
-            // Log success
-            Log::info('Product updated: ' . $product->name);
-
-            // Flash success message and redirect to product index page
             flash()->success('Product updated successfully.');
             return redirect()->route('dashboard.product.index');
         } catch (Exception $e) {
-            // Rollback the transaction on exception
             DB::rollBack();
-
-            // Log the error and flash an error message
-            Log::error('Error updating product: ' . $e->getMessage());
             flash()->error('Failed to update product: ' . $e->getMessage());
-
-            // Redirect back with input data
+            Log::error('Error updating product: ' . $e->getMessage());
             return back()->withInput();
         }
     }
+
 
 
     public function destroy($slug)
@@ -494,6 +466,9 @@ class ProductController extends Controller
 
         return view('pages.products.detail', compact('product', 'breadcrumbItems', 'recommendedProducts', 'ratings', 'totalReviews', 'averageRating', 'ratingPercentage', 'whatsappNumber'));
     }
+
+
+
 
     public function storeReview(Request $request, Product $product)
     {
