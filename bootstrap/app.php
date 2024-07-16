@@ -1,11 +1,11 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use Illuminate\Http\Request;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
-use Spatie\Permission\Exceptions\UnauthorizedException;
+use Mockery\Exception\InvalidOrderException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -27,8 +27,8 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (UnauthorizedException $e, $request) {
-            return redirect()->back()->withErrors(['error' => $e->getMessage()]);
+        $exceptions->render(function (InvalidOrderException $e, Request $request) {
+            return response()->view('errors.invalid-order', [], 500);
         });
     })
     ->create();
