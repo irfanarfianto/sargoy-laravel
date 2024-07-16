@@ -49,6 +49,20 @@
                                 @enderror
                             </div>
                         </div>
+                        <div class="mb-4">
+                            <label for="status" class="block text-sm font-medium mb-2 text-gray-700">Status
+                                Produk<span class="text-red-500">*</span></label>
+                            <select name="status" id="status" class="select select-bordered w-full">
+                                <option value="0" {{ old('status', $product->status) !== '1' ? 'selected' : '' }}>
+                                    Nonaktif
+                                </option>
+                                <option value="1" {{ old('status', $product->status) == '1' ? 'selected' : '' }}>
+                                    Aktif</option>
+                            </select>
+                            @error('status')
+                                <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>
+                            @enderror
+                        </div>
 
                         <div class="mb-4">
                             <label for="description" class="block text-sm font-medium mb-2 text-gray-700">Deskripsi<span
@@ -97,7 +111,8 @@
                                                 d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                                         </svg>
                                         <p id="uploadText{{ $index }}"
-                                            class="text-sm text-gray-500 mt-2 hidden">Klik atau seret file ke sini untuk
+                                            class="text-sm text-gray-500 mt-2 hidden">Klik atau seret file ke sini
+                                            untuk
                                             mengunggah</p>
                                     </div>
                                 @endforeach

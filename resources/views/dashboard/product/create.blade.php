@@ -49,14 +49,19 @@
                             </div>
                         </div>
 
-                        {{-- <div class="mb-4">
-                            <label for="slug" class="block text-sm font-medium mb-2 text-gray-700">Slug</label>
-                            <input type="text" name="slug" id="slug" class="input input-bordered w-full"
-                                disabled readonly value="{{ old('slug') }}" required>
-                            @error('slug')
+                        <div class="mb-4">
+                            <label for="status" class="block text-sm font-medium mb-2 text-gray-700">Status
+                                Produk<span class="text-red-500">*</span></label>
+                            <select name="status" id="status" class="select select-bordered w-full" disabled>
+                                <option value="false" {{ old('status') !== 'true' ? 'selected' : '' }}>Nonaktif
+                                </option>
+                                <option value="true" {{ old('status') == 'true' ? 'selected' : '' }}>Aktif</option>
+                            </select>
+                            <input type="hidden" name="status" value="false">
+                            @error('status')
                                 <p class="text-red-500 mt-1 text-sm">{{ $message }}</p>
                             @enderror
-                        </div> --}}
+                        </div>
 
                         <div class="mb-4">
                             <label for="description" class="block text-sm font-medium mb-2 text-gray-700">Deskripsi<span
@@ -170,7 +175,7 @@
                     </div>
                 </div>
                 <!-- Variant Product Details -->
-                <div class="mb-20 w-full lg:w-1/3">
+                <div class="mb-20 w-full lg:w-1/3 mt-6 lg:mt-0">
                     <div class="shadow bg-white rounded-lg py-4 px-5 w-full">
                         <h3 class="text-sm font-normal mb-4">Detail Varian</h3>
                         <div class="mb-4">

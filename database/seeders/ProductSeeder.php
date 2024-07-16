@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\ProductVariant;
 use App\Models\User;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 use Faker\Factory as Faker;
 use GuzzleHttp\Client;
@@ -26,9 +26,19 @@ class ProductSeeder extends Seeder
 
         // Define categories
         $categories = Category::pluck('id');
+        if ($categories->isEmpty()) {
+            // Handle case when categories are empty
+            $this->command->info('No categories found. Please create categories first.');
+            return;
+        }
 
         // Define users who are sellers (assuming you have this role logic implemented)
         $sellers = User::role('seller')->pluck('id');
+        if ($sellers->isEmpty()) {
+            // Handle case when sellers are empty
+            $this->command->info('No sellers found. Please create sellers first.');
+            return;
+        }
 
         // Unsplash API configuration
         $unsplashAccessKey = 'iRn6hoVxynx1gNiRLmIaNy8Q4AgjTh_LXX9LPgKbntQ';
