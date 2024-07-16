@@ -10,9 +10,7 @@ use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // Display a listing of the resource.
     public function index()
     {
         try {
@@ -29,9 +27,7 @@ class CategoryController extends Controller
         }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
+    // Show the form for creating a new resource.
     public function create()
     {
         try {
@@ -75,9 +71,7 @@ class CategoryController extends Controller
         return redirect()->route('categories.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
+    // Display the specified resource.
     public function show($slug)
     {
         try {
@@ -96,9 +90,7 @@ class CategoryController extends Controller
         }
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
+    // Show the form for editing the specified resource.
     public function edit(Category $category)
     {
         try {
@@ -110,9 +102,7 @@ class CategoryController extends Controller
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+    // Update the specified resource in storage.
     public function update(Request $request, $slug)
     {
         try {
@@ -129,8 +119,8 @@ class CategoryController extends Controller
 
             if ($request->hasFile('image')) {
                 // Delete old image if exists
-                if ($category->image && Storage::exists('public/' . $category->image)) {
-                    Storage::delete('public/' . $category->image);
+                if ($category->image && Storage::exists('public/categories/' . $category->image)) {
+                    Storage::delete('public/categories/' . $category->image);
                 }
 
                 // Store new image
@@ -148,17 +138,15 @@ class CategoryController extends Controller
         return redirect()->route('categories.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
+    // Remove the specified resource from storage.
     public function destroy($slug)
     {
         try {
             $category = Category::where('slug', $slug)->firstOrFail();
 
             // Delete category image if exists
-            if ($category->image && Storage::exists('public/' . $category->image)) {
-                Storage::delete('public/' . $category->image);
+            if ($category->image && Storage::exists('public/categories/' . $category->image)) {
+                Storage::delete('public/categories/' . $category->image);
             }
 
             $category->delete();
