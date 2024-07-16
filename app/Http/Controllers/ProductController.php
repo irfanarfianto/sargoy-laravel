@@ -107,24 +107,21 @@ class ProductController extends Controller
                 'is_verified' => false, // Product is not verified by default
             ]);
 
-            $count = 0;
+            foreach ($request->file('images') as $index => $image) {
+                if ($index < 3) { // Hanya simpan maksimal 3 gambar
+                    $imagePath = 'public/product_images/' . $product->id . '_image_' . $index . '.jpg';
 
-            if ($request->hasFile('images')) {
-                foreach ($request->file('images') as $image) {
-                    if ($count < 3) {
-                        $imagePath = $image->store('public/product_images');
+                    $image->storeAs('public/product_images', $product->id . '_image_' . $index . '.jpg');
 
-                        ProductImage::create([
-                            'product_id' => $product->id,
-                            'image_url' => Storage::url($imagePath),
-                        ]);
-
-                        $count++;
-                    } else {
-                        break; // Stop the loop after 3 images
-                    }
+                    ProductImage::create([
+                        'product_id' => $product->id,
+                        'image_url' => Storage::url($imagePath),
+                    ]);
+                } else {
+                    break; // Berhenti loop setelah 3 gambar
                 }
             }
+
 
 
 
@@ -212,7 +209,7 @@ class ProductController extends Controller
                 'status' => $validatedData['status'],
             ]);
 
-            // Handle product images
+            // Handle product images update
             if ($request->hasFile('images')) {
                 // Delete old images associated with the product
                 $oldImages = ProductImage::where('product_id', $product->id)->get();
@@ -221,23 +218,26 @@ class ProductController extends Controller
                     $oldImage->delete();
                 }
 
-                $newImages = $request->file('images');
+                // Process and store new images
+                foreach ($request->file('images') as $index => $image) {
+                    if ($index < 3) { // Hanya simpan maksimal 3 gambar
+                        $imagePath = 'public/product_images/' . $product->id . '_image_' . $index . '.jpg';
 
-                // Memeriksa minimal 3 gambar baru
-                if (count($newImages) < 3) {
-                    return back()->withErrors(['images' => 'Anda harus mengunggah minimal 3 gambar.'])->withInput();
-                }
+                        $image->storeAs(
+                            'public/product_images',
+                            $product->id . '_image_' . $index . '.jpg'
+                        );
 
-                // Memproses dan menyimpan gambar baru
-                foreach ($newImages as $image) {
-                    $imagePath = $image->store('public/product_images');
-
-                    ProductImage::create([
-                        'product_id' => $product->id,
-                        'image_url' => Storage::url($imagePath),
-                    ]);
+                        ProductImage::create([
+                            'product_id' => $product->id,
+                            'image_url' => Storage::url($imagePath),
+                        ]);
+                    } else {
+                        break; // Berhenti loop setelah 3 gambar
+                    }
                 }
             }
+
 
 
             // Handle product variants
