@@ -1,8 +1,8 @@
 <?php
 
-use Symfony\Component\Routing\Route;
+use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
-use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Spatie\Permission\Exceptions\UnauthorizedException;
@@ -11,12 +11,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         commands: __DIR__ . '/../routes/console.php',
         using: function () {
-            // Route::middleware('api')
-            //     ->prefix('apis')
-            //     ->group(
-            //         glob(base_path('routes/api/*.php'))
-            //     );
-
             Route::middleware('web')
                 ->group(glob(base_path('routes/web/*.php')));
         },
