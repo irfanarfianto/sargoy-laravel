@@ -3,11 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Product;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class CategoryController extends Controller
 {
@@ -54,18 +53,15 @@ class CategoryController extends Controller
             // Get the image file from request
             $imageFile = $request->file('image');
 
-            // Generate a unique filename
-            $fileName = Str::uuid() . '.jpg';
-
-            // Store the image using Storage::put()
-            Storage::put('public/categories/' . $fileName, file_get_contents($imageFile));
+            // Convert image to base64
+            $imageData = base64_encode(file_get_contents($imageFile));
 
             // Set the image path in data to save in database
             $data = [
                 'name' => $request->input('name'),
                 'slug' => $request->input('slug'),
                 'description' => $request->input('description'),
-                'image' => 'public/categories/' . $fileName,
+                'image' => $imageData, // Save image as base64 encoded string
             ];
 
             // Create category
@@ -85,7 +81,9 @@ class CategoryController extends Controller
     {
         try {
             $category = Category::where('slug', $slug)->firstOrFail();
-            $products = Product::where('category_id', $category->id)->get();
+            // Decode base64 image data for display if needed
+            // $category->image = base64_decode($category->image);
+            $products = $category->products; // Assuming Category has products relationship
             $breadcrumbItems = [
                 ['name' => 'Beranda', 'url' => route('home.page')],
                 ['name' => 'Kategori'],
@@ -134,18 +132,17 @@ class CategoryController extends Controller
 
             // Handle image update
             if ($request->hasFile('image')) {
-                // Delete old image if exists
-                if ($category->image && Storage::exists($category->image)) {
-                    Storage::delete($category->image);
-                }
-
-                // Store new image
+                // Convert image to base64
                 $imageFile = $request->file('image');
-                $fileName = Str::uuid() . '.jpg';
-                Storage::put('public/categories/' . $fileName, file_get_contents($imageFile));
+                $imageData = base64_encode(file_get_contents($imageFile));
 
                 // Update image path in data
-                $data['image'] = 'public/categories/' . $fileName;
+                $data['image'] = $imageData;
+
+                // You may want to delete old image data if necessary
+                $oldImageData = $category->image;
+                unset($category->image);
+                Storage::delete($oldImageData); // Delete old image if stored separately
             }
 
             // Update category with new data
@@ -166,11 +163,6 @@ class CategoryController extends Controller
         try {
             // Find the category by slug
             $category = Category::where('slug', $slug)->firstOrFail();
-
-            // Delete category image if exists
-            if ($category->image && Storage::exists($category->image)) {
-                Storage::delete($category->image);
-            }
 
             // Delete the category
             $category->delete();
