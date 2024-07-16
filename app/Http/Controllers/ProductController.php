@@ -495,9 +495,6 @@ class ProductController extends Controller
         return view('pages.products.detail', compact('product', 'breadcrumbItems', 'recommendedProducts', 'ratings', 'totalReviews', 'averageRating', 'ratingPercentage', 'whatsappNumber'));
     }
 
-
-
-
     public function storeReview(Request $request, Product $product)
     {
         $request->validate([

@@ -26,7 +26,7 @@ class BlogPostFactory extends Factory
         $unsplashBaseUrl = 'https://api.unsplash.com/photos/random';
         $unsplashParams = [
             'client_id' => $unsplashAccessKey,
-            'query' => 'fashion', // example query to get nature-related images
+            'query' => 'fashion', // example query to get fashion-related images
             'orientation' => 'landscape', // optional: set image orientation
             'w' => 1200, // width of the image
             'h' => 800, // height of the image
@@ -37,12 +37,19 @@ class BlogPostFactory extends Factory
         $response = $client->request('GET', $unsplashBaseUrl, [
             'query' => $unsplashParams,
         ]);
-        $image = json_decode($response->getBody()->getContents(), true);
+        $imageData = json_decode($response->getBody()->getContents(), true);
+
+        // Handle case when there is no valid image data
+        if (!$imageData || !isset($imageData['urls']['regular'])) {
+            return [];
+        }
 
         // Save the image to storage
-        $coverPath = 'public/blog_images/' . $this->faker->uuid . '.jpg'; // generate a unique filename
-        $imageContent = file_get_contents($image['urls']['regular']);
+        $coverPath = '';
+        $imageContent = file_get_contents($imageData['urls']['regular']);
+        $coverPath = 'public/blog_images/' . uniqid() . '_image.jpg'; // Generate a unique filename
         Storage::put($coverPath, $imageContent);
+
 
         return [
             'title' => $title,
