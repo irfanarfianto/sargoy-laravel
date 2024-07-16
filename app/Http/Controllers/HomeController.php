@@ -14,6 +14,8 @@ class HomeController extends Controller
         // Ambil 5 produk terbaru yang sudah terverifikasi
         $newProducts = Product::latest()->where('is_verified', true)->take(5)->get();
 
+        $allProducts = Product::inRandomOrder()->where('is_verified', true)->take(10)->get();
+
         // Ambil 5 produk unggulan berdasarkan views_count terbanyak yang sudah terverifikasi
         $featuredProducts = Product::where('is_verified', true)
             ->orderBy('views_count', 'desc')
@@ -26,6 +28,6 @@ class HomeController extends Controller
         // Ambil 5 pertanyaan yang sering ditanyakan
         $faqs = FAQ::take(5)->get();
 
-        return view('pages.home.index', compact('newProducts', 'featuredProducts', 'categories', 'faqs'));
+        return view('pages.home.index', compact('newProducts', 'featuredProducts', 'categories', 'faqs', 'allProducts'));
     }
 }
