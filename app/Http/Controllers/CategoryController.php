@@ -6,7 +6,6 @@ use App\Models\Category;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -82,7 +81,7 @@ class CategoryController extends Controller
         try {
             $category = Category::where('slug', $slug)->firstOrFail();
             // Decode base64 image data for display if needed
-            // $category->image = base64_decode($category->image);
+            $category->image = base64_decode($category->image);
             $products = $category->products; // Assuming Category has products relationship
             $breadcrumbItems = [
                 ['name' => 'Beranda', 'url' => route('home.page')],
@@ -138,11 +137,6 @@ class CategoryController extends Controller
 
                 // Update image path in data
                 $data['image'] = $imageData;
-
-                // You may want to delete old image data if necessary
-                $oldImageData = $category->image;
-                unset($category->image);
-                Storage::delete($oldImageData); // Delete old image if stored separately
             }
 
             // Update category with new data
