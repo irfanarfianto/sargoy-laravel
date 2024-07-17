@@ -2,7 +2,7 @@
 <div class="flex flex-col overflow-hidden hover:bg-neutral-200 rounded-lg">
     <a href="{{ route('blogs.show', $post->slug) }}" class="p-4">
         <img class="aspect-video rounded-lg object-cover"
-            src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
+            src="{{ $post->cover ? str_replace('public', 'storage', $post->cover) : 'https://placehold.co/400' }}"
             alt="{{ $post->title }}" loading="lazy" />
     </a>
     <div class="p-4 flex flex-col justify-between">

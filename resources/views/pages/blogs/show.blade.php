@@ -23,7 +23,7 @@
                     <p class="text-gray-600 text-xs">{{ $post->created_at->format('M d, Y') }}</p>
                     <h2 class="text-xl font-bold mb-2">{{ $post->title }}</h2>
                     <p class="text-gray-600 text-xs mb-2">By: {{ $post->author }}</p>
-                    @if (Auth::user()->hasRole('admin'))
+                    @if (auth()->check() && Auth::user()->hasRole('admin'))
                         <a href="{{ route('blogs.edit', $post->slug) }}" class="link link-primary link-hover">Edit
                             Blog</a>
                     @endif
