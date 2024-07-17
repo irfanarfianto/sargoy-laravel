@@ -28,9 +28,9 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         // Check if the user's email is verified
-        if (!Auth::user()->hasVerifiedEmail()) {
-            return redirect()->route('verification.notice');
-        }
+        // if (!Auth::user()->hasVerifiedEmail()) {
+        //     return redirect()->route('verification.notice');
+        // }
 
         // Regenerate the session to prevent session fixation attacks
         $request->session()->regenerate();
