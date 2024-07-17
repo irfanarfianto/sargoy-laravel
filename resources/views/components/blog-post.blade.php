@@ -1,9 +1,13 @@
 <!-- resources/views/components/blog-post.blade.php -->
 <div class="flex flex-col overflow-hidden hover:bg-neutral-200 rounded-lg">
     <a href="{{ route('blogs.show', $post->slug) }}" class="p-4">
-        <img class="aspect-video rounded-lg object-cover"
-            src="{{ $post->cover ? str_replace('public', 'storage', $post->cover) : 'https://placehold.co/400' }}"
-            alt="{{ $post->title }}" loading="lazy" />
+        @if ($post->cover)
+            <img class="aspect-video rounded-lg object-cover" src="{{ str_replace('public', 'storage', $post->cover) }}"
+                alt="{{ $post->title }}" loading="lazy" />
+        @else
+            <img class="aspect-video rounded-lg object-cover" src="https://placehold.co/400" alt="{{ $post->title }}"
+                loading="lazy" />
+        @endif
     </a>
     <div class="p-4 flex flex-col justify-between">
         <div>
