@@ -75,11 +75,6 @@ class CategoryController extends Controller
     public function show($slug)
     {
         $category = Category::where('slug', $slug)->first();
-
-        if (!$category) {
-            abort(404);
-        }
-
         $products = $category->products()
             ->where('is_verified', true)
             ->get();
