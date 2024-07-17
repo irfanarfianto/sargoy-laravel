@@ -27,8 +27,5 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->render(function (InvalidOrderException $e, Request $request) {
-            return response()->view('errors.invalid-order', [], 500);
-        });
     })
     ->create();
