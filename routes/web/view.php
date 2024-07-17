@@ -32,7 +32,7 @@ Route::get('search', [SearchController::class, 'index'])->name('search');
 Route::get('faqs', [FAQController::class, 'publicIndex'])->name('faqs.page');
 Route::get('blogs', [BlogPostController::class, 'publicIndex'])->name('blogs.page');
 Route::get('blogs/{slug}', [BlogPostController::class, 'show'])->name('blogs.show');
-
+Route::get('kategori/{slug}', [CategoryController::class, 'show'])->name('categories.show');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('profile-saya', [ProfileController::class, 'publicIndex'])->name('profile.page');
@@ -90,7 +90,7 @@ Route::get('/foo', function () {
 });
 
 require __DIR__ . '/auth.php';
-Route::get('{slug}', [CategoryController::class, 'show'])->name('categories.show');
+
 Route::fallback(function () {
     return redirect('/');
 });
