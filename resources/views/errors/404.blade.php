@@ -32,9 +32,7 @@
                         class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-6 text-gray-300 font-semibold">Oops!</span>
                 </div>
                 <h5 class="text-gray-300 font-semibold mt-4">Page not found</h5>
-                <p class="text-gray-100 mt-2 mb-6 px-4">{{ $exception }}</p>
-
-                <a href="/"
+                <a href="{{ route('home.page') }}"
                     class="bg-green-400 px-5 py-3 text-sm shadow-sm font-medium tracking-wider text-gray-50 rounded-full hover:shadow-lg">
                     Go to Home
                 </a>
