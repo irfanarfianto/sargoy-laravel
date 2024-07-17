@@ -74,27 +74,23 @@ class CategoryController extends Controller
     // Display the specified resource.
     public function show($slug)
     {
-        try {
-            $category = Category::where('slug', $slug)->firstOrFail();
+        $category = Category::where('slug', $slug)->first();
 
-            // Optimasi query dengan eager loading
-            $products = $category->products()
-                ->where('is_verified', true)
-                ->get();
-
-            $breadcrumbItems = [
-                ['name' => 'Beranda', 'url' => route('home.page')],
-                ['name' => 'Kategori'],
-                ['name' => $category->name],
-            ];
-
-            return view('pages.categories.show', compact('category', 'products', 'breadcrumbItems'));
-        } catch (\Exception $e) {
-            // Tambahkan detail lebih pada log jika diperlukan
-            Log::error('Error displaying category: ' . $e->getMessage(), ['slug' => $slug]);
-            flash()->error('Failed to display category: ' . $e->getMessage());
-            return redirect()->back();
+        if (!$category) {
+            abort(404);
         }
+
+        $products = $category->products()
+            ->where('is_verified', true)
+            ->get();
+
+        $breadcrumbItems = [
+            ['name' => 'Beranda', 'url' => route('home.page')],
+            ['name' => 'Kategori'],
+            ['name' => $category->name],
+        ];
+
+        return view('pages.categories.show', compact('category', 'products', 'breadcrumbItems'));
     }
 
 
