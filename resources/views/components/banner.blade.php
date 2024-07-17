@@ -17,7 +17,7 @@
                 sarung
                 goyor khas Desa Wanarejan Utara. Bergabunglah dengan komunitas kami dan dapatkan manfaatnya!</p>
 
-            <a href="https://wa.me/082322546452">
+            <a href="https://wa.me/+6282322546452">
                 <button class="btn btn-primary mt-8 lg:mt-12">
                     Daftar Sekarang
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
