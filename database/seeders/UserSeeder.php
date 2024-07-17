@@ -45,6 +45,6 @@ class UserSeeder extends Seeder
         ]);
         $user2->assignRole('visitor');
 
-        // User::factory()->count(15)->create();
+        User::factory()->count(15)->create();
     }
 }

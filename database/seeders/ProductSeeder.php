@@ -41,7 +41,7 @@ class ProductSeeder extends Seeder
         }
 
         // Unsplash API configuration
-        $unsplashAccessKey = 'YOUR_UNSPLASH_CLIENT_ID';
+        $unsplashAccessKey = 'iRn6hoVxynx1gNiRLmIaNy8Q4AgjTh_LXX9LPgKbntQ';
         $unsplashBaseUrl = 'https://api.unsplash.com/photos/random';
         $unsplashParams = [
             'client_id' => $unsplashAccessKey,
