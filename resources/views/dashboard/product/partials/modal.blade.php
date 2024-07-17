@@ -1,6 +1,5 @@
 <!-- Modal Hapus -->
 <x-modal id="deleteModal{{ $product->id }}" title="Hapus Produk">
-    <h3 class="text-lg font-bold">Hapus Produk?</h3>
     <p class="py-4">Anda yakin ingin menghapus produk {{ $product->name }} ?</p>
     <div class="modal-action">
         <form action="{{ route('dashboard.product.hapus', $product->slug) }}" method="POST">
@@ -22,9 +21,6 @@
     <h3 class="text-lg font-bold">{{ $product->name }}</h3>
     <p class="py-4">{{ $product->description }}</p>
     <div class="flex flex-col gap-2">
-        <div>
-            <span class="font-semibold">Harga:</span> {{ $product->price }}
-        </div>
         <div>
             <span class="font-semibold">Kategori:</span>
             {{ $product->category->name }}
