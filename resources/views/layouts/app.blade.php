@@ -41,8 +41,12 @@
         @include('layouts.footer')
 
         <div id="scrollToTop" class="fixed bottom-4 right-4 hidden z-50">
-            <button onclick="scrollToTop()"
-                class="bg-blue-500 text-white p-2 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">Top</button>
+            <button onclick="scrollToTop()" class="btn text-white rounded-full shadow-lg transition duration-300"><svg
+                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 10.5 12 3m0 0 7.5 7.5M12 3v18" />
+                </svg>
+            </button>
         </div>
 
     </div>
@@ -50,12 +54,17 @@
     <script>
         window.onscroll = function() {
             var scrollToTopBtn = document.getElementById("scrollToTop");
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+            var scrollHeight = document.documentElement.scrollHeight;
+            var scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            var clientHeight = document.documentElement.clientHeight;
+
+            if (scrollTop > (scrollHeight - clientHeight) / 2) {
                 scrollToTopBtn.classList.remove('hidden');
             } else {
                 scrollToTopBtn.classList.add('hidden');
             }
         };
+
         function scrollToTop() {
             window.scrollTo({
                 top: 0,
