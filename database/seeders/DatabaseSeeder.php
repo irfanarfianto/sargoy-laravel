@@ -26,7 +26,7 @@ class DatabaseSeeder extends Seeder
             SellerProfileSeeder::class,
             VisitorProfileSeeder::class,
             FaqSeeder::class,
-            // VisitSeeder::class,
+            VisitSeeder::class,
             BlogPostSeeder::class
         ]);
     }
