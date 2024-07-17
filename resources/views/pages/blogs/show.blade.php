@@ -24,7 +24,8 @@
                     <h2 class="text-xl font-bold mb-2">{{ $post->title }}</h2>
                     <p class="text-gray-600 text-xs mb-2">By: {{ $post->author }}</p>
                     @if (Auth::user()->hasRole('admin'))
-                        <a href="{{ route('blogs.edit', $post->slug) }}" class="link link-primary link-hover">Edit Blog</a>
+                        <a href="{{ route('blogs.edit', $post->slug) }}" class="link link-primary link-hover">Edit
+                            Blog</a>
                     @endif
                     <p class="text-gray-600">{!! $post->content !!}</p>
                     @if ($post->tags)
@@ -51,7 +52,7 @@
                         <div class="flex flex-row h-24 overflow-hidden hover:bg-neutral-200 rounded-lg">
                             <a href="{{ route('blogs.show', $post->slug) }}" class="p-2">
                                 <img class="h-full min-w-24 max-w-24 rounded-lg object-cover"
-                                    src="{{ $post->cover ? asset('storage/blog_images/' . $post->cover) : 'https://placehold.co/400' }}"
+                                    src="{{ asset(str_replace('public', 'storage', $post->cover)) ?? 'https://placehold.co/400' }}"
                                     alt="{{ $post->title }}" loading="lazy" />
                             </a>
                             <div class="p-4 flex flex-col">
