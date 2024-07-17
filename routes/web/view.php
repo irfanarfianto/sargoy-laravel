@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FAQController;
+use Illuminate\Support\Facades\Artisan;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SearchController;
@@ -84,7 +85,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('notifications', [NotificationController::class, 'index'])->name('pesan');
 });
 
-
+Route::get('/foo', function () {
+    Artisan::call('storage:link');
+});
 
 require __DIR__ . '/auth.php';
 
