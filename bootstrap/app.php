@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
             Route::middleware('web')
                 ->group(glob(base_path('routes/web/*.php')));
         },
-        health: '/up',
+        health: '/status',
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
