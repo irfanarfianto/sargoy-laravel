@@ -22,15 +22,15 @@ export default {
         themes: [
             {
                 mytheme: {
-                    primary: "#4339f2",
+                    primary: "#046aff",
                     secondary: "#004eff",
                     accent: "#0000ff",
                     neutral: "#171d45",
                     "base-100": "#ebecf2",
-                    info: "#00edff",
-                    success: "#00d088",
-                    warning: "#ffa400",
-                    error: "#e80015",
+                    info: "#25A3FC",
+                    success: "#70CE29",
+                    warning: "#FFBA3A",
+                    error: "#FC3A3A",
                     blue: "#26355D",
                 },
             },

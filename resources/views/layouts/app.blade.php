@@ -34,15 +34,35 @@
             @include('components.carousel')
         @endif
 
-
-
         <!-- Page Content -->
         <main id="main-content" class="max-w-7xl mx-auto mt-3 px-3 lg:px-[8px]">
             {{ $slot }}
         </main>
         @include('layouts.footer')
+
+        <div id="scrollToTop" class="fixed bottom-4 right-4 hidden z-50">
+            <button onclick="scrollToTop()"
+                class="bg-blue-500 text-white p-2 rounded-full shadow-lg hover:bg-blue-700 transition duration-300">Top</button>
+        </div>
+
     </div>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+    <script>
+        window.onscroll = function() {
+            var scrollToTopBtn = document.getElementById("scrollToTop");
+            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
+                scrollToTopBtn.classList.remove('hidden');
+            } else {
+                scrollToTopBtn.classList.add('hidden');
+            }
+        };
+        function scrollToTop() {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        }
+    </script>
 </body>
 
 </html>
