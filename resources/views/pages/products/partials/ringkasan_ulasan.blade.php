@@ -15,7 +15,7 @@
             {{ $ratingPercentage }}% pembeli merasa puas
         </div>
         <div class="tooltip tooltip-left"
-            data-tip="Dihitung dari jumlah rating positif (bintang 4 dan 5) dibagi dengan total rating.">
+            data-tip="Dihitung dari jumlah rating positif<br> (bintang 4 dan 5)<br> dibagi dengan total rating.">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                 stroke="currentColor" class="size-4">
                 <path stroke-linecap="round" stroke-linejoin="round"
