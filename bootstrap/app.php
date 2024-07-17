@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Spatie\Permission\Exceptions\UnauthorizedException;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -20,21 +21,13 @@ return Application::configure(basePath: dirname(__DIR__))
             'role' => \Spatie\Permission\Middleware\RoleMiddleware::class,
             'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
             'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
-            'record.visit' =>   \App\Http\Middleware\RecordVisit::class,
+            'record.visit' => \App\Http\Middleware\RecordVisit::class,
             'record.product.view' => \App\Http\Middleware\RecordProductVisit::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        $exceptions->handler(function (Request $request, Throwable $e) {
-            if ($e instanceof \Spatie\Permission\Exceptions\UnauthorizedException) {
-                return response()->json([
-                    'message' => 'Unauthorized access',
-                ], 403);
-            }
-
-            return response()->json([
-                'message' => $e->getMessage(),
-            ], 500);
+        $exceptions->render(function (UnauthorizedException $e, Request $request) {
+            return response()->view('errors.index', ['exception' => $e->getMessage()], 404);
         });
     })
     ->create();
