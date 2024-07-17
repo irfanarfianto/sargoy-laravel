@@ -55,7 +55,8 @@
                         <tr>
                             <th class="py-3 px-6 text-left">
                                 <label>
-                                    <input type="checkbox" id="select-all-checkbox" class="checkbox checkbox-sm checkbox-primary" />
+                                    <input type="checkbox" id="select-all-checkbox"
+                                        class="checkbox checkbox-sm checkbox-primary" />
                                 </label>
                             </th>
                             <th class="py-3 px-6 text-left">Nama</th>
@@ -115,7 +116,7 @@
                                 <td class="py-3 px-6 text-left">
                                     @if (!$product->is_verified)
                                         @if (auth()->user()->hasRole('seller'))
-                                            <span class="badge badge-red">Belum Diverifikasi</span>
+                                            <span class="badge badge-neutral badge-xs">Menunggu Diverifikasi</span>
                                         @endif
                                         @if (auth()->user()->hasRole('admin'))
                                             @if (!$product->is_verified)
@@ -130,12 +131,12 @@
                                     @else
                                         @if ($product->status == 1)
                                             <p class="text-xs items-center">
-                                                <span class="badge badge-success badge-sm"></span>
+                                                <span class="badge badge-success badge-xs"></span>
                                                 Aktif
                                             </p>
                                         @else
                                             <p class="text-xs items-center">
-                                                <span class="badge badge-error badge-sm"></span>
+                                                <span class="badge badge-error badge-xs"></span>
                                                 Nonaktif
                                             </p>
                                         @endif
