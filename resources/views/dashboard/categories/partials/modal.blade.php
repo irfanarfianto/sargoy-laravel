@@ -67,7 +67,9 @@
                     <div class="flex justify-end space-x-2">
                         <button type="button" class="btn btn-ghost"
                             onclick="closeModal('editModal{{ $category->slug }}')">Batal</button>
-                        <button type="submit" class="btn btn-primary">Simpan</button>
+                        <x-loading-button data-loading-text="Memperbarui...">
+                            Perbarui
+                        </x-loading-button>
                     </div>
                 </form>
             </div>
@@ -125,7 +127,9 @@
             </div>
             <div class="flex justify-end space-x-2">
                 <button type="button" class="btn btn-ghost" onclick="closeModal('createModal')">Batal</button>
-                <button type="submit" class="btn btn-primary">Simpan</button>
+                <x-loading-button data-loading-text="Menyimpan...">
+                    Simpan
+                </x-loading-button>
             </div>
         </form>
         <!-- Form end -->
