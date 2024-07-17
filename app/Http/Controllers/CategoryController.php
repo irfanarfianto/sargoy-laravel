@@ -92,7 +92,7 @@ class CategoryController extends Controller
         } catch (\Exception $e) {
             // Tambahkan detail lebih pada log jika diperlukan
             Log::error('Error displaying category: ' . $e->getMessage(), ['slug' => $slug]);
-            flash()->error('Failed to display category.');
+            flash()->error('Failed to display category: ' . $e->getMessage());
             return redirect()->back();
         }
     }
