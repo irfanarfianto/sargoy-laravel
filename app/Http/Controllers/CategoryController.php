@@ -76,12 +76,13 @@ class CategoryController extends Controller
     {
         try {
             $category = Category::where('slug', $slug)->firstOrFail();
+            $products = $category->products()->where('is_verified', true)->get();
             $breadcrumbItems = [
                 ['name' => 'Beranda', 'url' => route('home.page')],
                 ['name' => 'Kategori'],
                 ['name' => $category->name],
             ];
-            return view('pages.categories.show', compact('category', 'breadcrumbItems'));
+            return view('pages.categories.show', compact('category', 'products', 'breadcrumbItems'));
         } catch (\Exception $e) {
             Log::error('Error displaying category: ' . $e->getMessage());
             flash()->error('Failed to display category.');
