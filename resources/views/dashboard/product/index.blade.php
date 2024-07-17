@@ -116,7 +116,7 @@
                                 <td class="py-3 px-6 text-left">
                                     @if (!$product->is_verified)
                                         @if (auth()->user()->hasRole('seller'))
-                                            <span class="badge badge-neutral badge-xs">Menunggu Diverifikasi</span>
+                                            <span class="badge badge-neutral badge-sm">Menunggu Diverifikasi</span>
                                         @endif
                                         @if (auth()->user()->hasRole('admin'))
                                             @if (!$product->is_verified)
@@ -131,12 +131,12 @@
                                     @else
                                         @if ($product->status == 1)
                                             <p class="text-xs items-center">
-                                                <span class="badge badge-success badge-xs"></span>
+                                                <span class="badge badge-success badge-sm"></span>
                                                 Aktif
                                             </p>
                                         @else
                                             <p class="text-xs items-center">
-                                                <span class="badge badge-error badge-xs"></span>
+                                                <span class="badge badge-error badge-sm"></span>
                                                 Nonaktif
                                             </p>
                                         @endif
