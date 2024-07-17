@@ -80,7 +80,7 @@ class SellerController extends Controller
     private function getProductsByMostReviews($userId, $limit)
     {
         return Product::where('user_id', $userId)
-            ->where('is_verified', true) // Hanya ambil produk yang sudah diverifikasi
+            ->where('is_verified', true)
             ->withCount('reviews')
             ->has('reviews')
             ->with(['reviews' => function ($query) {
