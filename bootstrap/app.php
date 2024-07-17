@@ -27,7 +27,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (UnauthorizedException $e, Request $request) {
-            return response()->view('errors.index', ['exception' => $e->getMessage()], 404);
+            return response()->view('errors.404', ['exception' => $e->getMessage()], 404);
         });
     })
     ->create();
