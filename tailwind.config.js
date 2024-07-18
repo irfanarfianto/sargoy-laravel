@@ -30,7 +30,7 @@ export default {
                     info: "#25A3FC",
                     success: "#70CE29",
                     warning: "#FFBA3A",
-                    error: "#FC3A3A",
+                    error: "#e80015",
                     blue: "#26355D",
                 },
             },
