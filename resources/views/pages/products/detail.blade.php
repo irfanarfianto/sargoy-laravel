@@ -32,12 +32,13 @@
             </div>
         </div>
         {{-- Detail Produk --}}
-        <div class="w-full lg:w-4/6">
+        <div class="w-full lg:w-4/6 lg:pl-3">
             <div class="overflow-hidden">
                 <div class="flex flex-row justify-between mt-2 lg:mt-0">
                     <div class="lg:w-1/2">
-                        <a href="{{ route('categories.show', $product->category->slug) }}" class="text-gray-600">
-                            Kategori: {{ $product->category->name }}
+                        <a href="{{ route('categories.show', $product->category->slug) }}"
+                            class="text-gray-600 link link-hover items-center">
+                            <div class="badge badge-primary badge-xs"></div> {{ $product->category->name }}
                         </a>
                         <h2 class="text-2xl font-bold">{{ $product->name }}</h2>
                     </div>
@@ -97,23 +98,23 @@
                     </div>
                     <div class="flex justify-between mt-6">
                         <h3 class="text-lg font-semibold">Ulasan Pilihan</h3>
-                        <div class="dropdown dropdown-left">
+                        <div class="dropdown dropdown-end">
                             <div tabindex="0" role="button" class="btn btn-sm btn-ghost">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-4">
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
                                 </svg>
-                                Urutkan:
-                                <span class="text-neutral">
-                                    @if (request()->get('order') === 'latest')
-                                        Terbaru
-                                    @elseif (request()->get('order') === 'highest')
-                                        Rating Tertinggi
-                                    @elseif (request()->get('order') === 'lowest')
-                                        Rating Terendah
-                                    @endif
-                                </span>
+                                <span class="hidden lg:block">Urutkan</span>
+
+                                @if (request()->get('order') === 'latest')
+                                    Terbaru
+                                @elseif (request()->get('order') === 'highest')
+                                    Rating Tertinggi
+                                @elseif (request()->get('order') === 'lowest')
+                                    Rating Terendah
+                                @endif
+
                             </div>
                             <ul tabindex="0"
                                 class="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow">
@@ -215,7 +216,7 @@
             @if ($whatsappNumber)
                 <a href="https://wa.me/{{ $whatsappNumber }}" class="btn bg-[#25D366] text-base-100 w-1/6"
                     target="_blank" rel="noopener noreferrer">
-                    <i class="fa-brands fa-whatsapp"></i> <span class="hidden lg:block">Hubungi via WhatsApp
+                    <i class="fa-brands fa-whatsapp"></i>
                     </span>
                 </a>
             @endif
