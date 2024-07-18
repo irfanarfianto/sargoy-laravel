@@ -10,7 +10,7 @@
             <a href="{{ route('blogs.create') }}" class="btn btn-primary mb-3">Create New Post</a>
         </div>
     </div>
-    <div class="container">
+    <div class="container mb-16 lg:mb-2">
         @if (session('error'))
             <div class="alert alert-danger">
                 {{ session('error') }}
@@ -71,7 +71,7 @@
             </table>
         </div>
 
-        <div class="mt-4">
+        <div class="mt-4 ">
             {{ $posts->links('vendor.pagination.custom') }}
         </div>
         <div class="btm-nav shadow-lg z-50 flex lg:hidden ">
@@ -79,6 +79,5 @@
                 <a href="{{ route('blogs.create') }}" class="btn btn-primary w-full">Create New Post</a>
             </div>
         </div>
-
     </div>
 </x-dashboard-layout>
