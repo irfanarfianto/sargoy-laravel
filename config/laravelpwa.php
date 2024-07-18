@@ -9,7 +9,7 @@ return [
         'background_color' => '#ffffff',
         'theme_color' => '#000000',
         'display' => 'standalone',
-        'orientation' => 'any',
+        'orientation' => 'portrait',
         'status_bar' => 'black',
         'icons' => [
             '72x72' => [
@@ -59,20 +59,16 @@ return [
         ],
         'shortcuts' => [
             [
-                'name' => 'Shortcut Link 1',
-                'description' => 'Shortcut Link 1 Description',
-                'url' => '/shortcutlink1',
+                'name' => 'Produk Sarung Goyor',
+                'description' => 'Menuju ke halaman produk',
+                'url' => '/products',
                 'icons' => [
                     "src" => "/images/icons/icon-72x72.png",
                     "purpose" => "any"
                 ]
             ],
-            [
-                'name' => 'Shortcut Link 2',
-                'description' => 'Shortcut Link 2 Description',
-                'url' => '/shortcutlink2'
-            ]
         ],
+        
         'custom' => [
             'description' => 'Sargoy App'
         ]
