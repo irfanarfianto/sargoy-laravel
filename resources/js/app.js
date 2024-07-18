@@ -20,6 +20,29 @@ window.Echo.channel("system-alerts").listen("SystemAlert", (e) => {
     alert("Alert: " + e.alert);
 });
 
+// Function to show loading indicator
+function showLoadingIndicator() {
+    console.log("Showing loading indicator");
+    // Add logic to show loading indicator in your UI
+    document.getElementById("loadingIndicator").classList.remove("hidden");
+}
+
+// Function to hide loading indicator
+function hideLoadingIndicator() {
+    console.log("Hiding loading indicator");
+    // Add logic to hide loading indicator in your UI
+    document.getElementById("loadingIndicator").classList.add("hidden");
+}
+
+// Receive messages from service worker
+navigator.serviceWorker.addEventListener("message", (event) => {
+    if (event.data.action === "showLoading") {
+        showLoadingIndicator();
+    } else if (event.data.action === "hideLoading") {
+        hideLoadingIndicator();
+    }
+});
+
 // document.addEventListener("DOMContentLoaded", function () {
 //     document
 //         .querySelectorAll('button[type="submit"]')
@@ -42,7 +65,7 @@ window.Echo.channel("system-alerts").listen("SystemAlert", (e) => {
 //                     button.querySelector(".btn-text").textContent =
 //                         originalText;
 //                     alert("Action completed!");
-//                 }, 2000); 
+//                 }, 2000);
 //             });
 //         });
 // });

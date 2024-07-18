@@ -44,18 +44,13 @@ var filesToCache = [
     "/images/icons/icon-512x512.png",
 ];
 
-// Fungsi untuk menampilkan indikator loading
-function showLoadingIndicator() {
-    // Tambahkan logika untuk menampilkan indikator loading di sini
-    // Contoh:
-    document.getElementById("loadingIndicator").classList.remove("hidden");
-}
-
-// Fungsi untuk menyembunyikan indikator loading
-function hideLoadingIndicator() {
-    // Tambahkan logika untuk menyembunyikan indikator loading di sini
-    // Contoh:
-    document.getElementById("loadingIndicator").classList.add("hidden");
+// Fungsi untuk mengirim pesan ke klien
+function sendMessageToClients(message) {
+    clients.matchAll().then((clients) => {
+        clients.forEach((client) => {
+            client.postMessage(message);
+        });
+    });
 }
 
 self.addEventListener("install", (event) => {
@@ -96,13 +91,13 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
     if (event.request.url.startsWith(self.location.origin)) {
-        showLoadingIndicator();
+        sendMessageToClients({ action: "showLoading" });
 
         event.respondWith(
             caches
                 .match(event.request)
                 .then((response) => {
-                    hideLoadingIndicator();
+                    sendMessageToClients({ action: "hideLoading" });
 
                     return (
                         response ||
@@ -120,7 +115,7 @@ self.addEventListener("fetch", (event) => {
                     );
                 })
                 .catch(() => {
-                    hideLoadingIndicator();
+                    sendMessageToClients({ action: "hideLoading" });
 
                     return caches.match("/offline");
                 })
