@@ -6,7 +6,7 @@
                 {{ __('Daftar Produk') }}
             </h4>
         </div>
-        <div class="flex items-center justify-between mb-2 w-full md:w-auto space-x-2">
+        <div class="flex items-center justify-between mb-2 w-full md:w-auto lg:space-x-2">
             <div class="hidden lg:block">
                 @include('dashboard.product.partials.sorting')
             </div>
@@ -38,7 +38,7 @@
 
 
     <!-- Daftar Produk -->
-    <div class="container mx-auto shadow bg-white rounded-lg">
+    <div class="container mb-16 lg:mb-2">
         @if ($products->isEmpty())
             @if ($search)
                 <p class="text-center text-gray-600 mt-8">Produk {{ $search }} yang Anda cari tidak ditemukan.
@@ -176,10 +176,9 @@
                     </tbody>
                 </table>
             </div>
-            <div class="mt-4 mb-8 lg:mb-2">
+            <div class="mt-4">
                 {{ $products->links('vendor.pagination.custom') }}
             </div>
-
         @endif
     </div>
     <div class="btm-nav shadow-lg z-50 flex lg:hidden">

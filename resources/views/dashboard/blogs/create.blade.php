@@ -12,7 +12,7 @@
         </div>
     </div>
 
-    <div class="container">
+    <div class="container mb-6 lg:mb-0">
         <form id="blogForm" action="{{ route('blogs.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
 
@@ -124,4 +124,3 @@
         }
     </script>
 </x-dashboard-layout>
-

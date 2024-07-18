@@ -1,6 +1,6 @@
 <x-dashboard-layout>
     <div class="pt-14 flex flex-wrap w-full justify-between items-start">
-        <div class="flex flex-col">
+        <div class="flex flex-col mb-5">
             <x-breadcrumb :items="$breadcrumbItems" />
             <h4 class="text-xl font-bold text-gray-900">
                 {{ __('Edit Blog Post') }}
@@ -13,7 +13,7 @@
     </div>
 
 
-    <div class="container mt-6">
+    <div class="container mb-6 lg:mb-0">
         <form id="blogForm" action="{{ route('blogs.update', $post->slug) }}" method="POST"
             enctype="multipart/form-data">
             @csrf
@@ -77,7 +77,7 @@
                                 <span>Upload New Cover (optional)</span>
                             </div>
                             @if ($post->cover)
-                                <img id="image-preview" src="{{ asset('storage/blog_images/' . $post->cover) }}"
+                                <img id="image-preview" src="{{ str_replace('public', 'storage', $post->cover) }}"
                                     class="absolute top-0 left-0 w-full h-full object-cover rounded-lg">
                             @else
                                 <img id="image-preview" src="{{ asset('storage/blog_images/default.jpg') }}"
