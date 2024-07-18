@@ -11,7 +11,7 @@
             <button type="submit" form="edit-product-form" class="btn btn-primary w-full md:w-auto">Simpan</button>
         </div>
     </div>
-    <div class="container">
+    <div class="container mb-6 lg:mb-0">
         <form id="edit-product-form" action="{{ route('dashboard.product.update', $product->slug) }}" method="POST"
             enctype="multipart/form-data">
             @csrf
