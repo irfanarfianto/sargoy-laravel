@@ -51,8 +51,14 @@ self.addEventListener("install", (event) => {
             .then((cache) => {
                 return cache.addAll(filesToCache);
             })
+            .then(() => {
+                console.log("Sumber daya berhasil di-cache.");
+            })
             .catch((error) => {
-                console.error("Failed to cache files:", error);
+                console.error(
+                    "Gagal menambahkan sumber daya ke dalam cache:",
+                    error
+                );
             })
     );
     self.skipWaiting();
