@@ -14,23 +14,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-        /* CSS untuk indikator loading */
-        .spinner-border {
-            width: 3rem;
-            height: 3rem;
-            border-width: 0.25rem;
-            border-color: currentColor;
-            border-top-color: transparent;
-            animation: spin 0.75s linear infinite;
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-    </style>
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -67,9 +50,7 @@
 
         <div id="loadingIndicator"
             class="fixed inset-0 z-50 flex items-center justify-center bg-gray-900 bg-opacity-50 hidden">
-            <div class="spinner-border text-primary" role="status">
-                <span class="sr-only">Loading...</span>
-            </div>
+            <span class="loading loading-dots loading-md"></span>
         </div>
 
     </div>
