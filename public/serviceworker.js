@@ -94,30 +94,27 @@ self.addEventListener("fetch", (event) => {
         sendMessageToClients({ action: "showLoading" });
 
         event.respondWith(
-            caches
-                .match(event.request)
-                .then((response) => {
+            fetch(event.request)
+                .then((fetchResponse) => {
+                    // Clone the response to put in the cache
+                    const responseClone = fetchResponse.clone();
+
+                    caches.open(staticCacheName).then((cache) => {
+                        cache.put(event.request, responseClone);
+                    });
+
                     sendMessageToClients({ action: "hideLoading" });
 
-                    return (
-                        response ||
-                        fetch(event.request).then((fetchResponse) => {
-                            return caches
-                                .open(staticCacheName)
-                                .then((cache) => {
-                                    cache.put(
-                                        event.request,
-                                        fetchResponse.clone()
-                                    );
-                                    return fetchResponse;
-                                });
-                        })
-                    );
+                    return fetchResponse;
                 })
                 .catch(() => {
                     sendMessageToClients({ action: "hideLoading" });
-
-                    return caches.match("/offline");
+                    return caches.match(event.request).then((response) => {
+                        if (response) {
+                            return response;
+                        }
+                        return caches.match("/offline");
+                    });
                 })
         );
     }
