@@ -113,7 +113,7 @@
             <div class="mb-4">
                 <label for="descriptionCreate" class="block text-sm font-medium text-gray-700">Deskripsi</label>
                 <textarea name="description" id="descriptionCreate" class="textarea textarea-bordered w-full" rows="5"
-                    placeholder="Masukkan deskripsi produk" required></textarea>
+                    placeholder="Masukkan deskripsi produk"></textarea>
             </div>
             <div class="mb-4">
                 <label for="imageCreate" class="block text-sm font-medium text-gray-700">Gambar</label>
