@@ -12,14 +12,14 @@
 </x-modal>
 
 <x-modal id="viewModal{{ $product->id }}" title="Detail Product">
-    <div class="flex flex-wrap">
-        <div class="w-1/3 lg:pr-3">
+    <div class="flex flex-wrap gap-2 lg:gap-0">
+        <div class="w-full lg:w-1/3 lg:pr-3">
             <div class="relative overflow-hidden rounded-lg">
                 <img src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}"
                     alt="{{ $product->name }}" class=" aspect-square object-cover">
             </div>
         </div>
-        <div class="w-2/3">
+        <div class="w-full lg:w-2/3">
             <div class="flex flex-col items-start space-y-2">
                 @if (!$product->is_verified)
                     <span class="badge badge-red">Belum Diverifikasi</span>
