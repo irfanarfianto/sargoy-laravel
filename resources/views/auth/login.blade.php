@@ -48,10 +48,15 @@
         </div>
 
 
-        <div class="mt-4">
+        <div class="mt-4 space-y-3">
             <button class="btn btn-primary w-full">
-                {{ __('Log in') }}
+                {{ __('Login') }}
             </button>
+            
+            <button  onclick="document.getElementById('DemoAkun').showModal()" class="btn btn-primary btn-outline w-full">
+                {{ __('Demo Akun') }}
+            </button>
+
         </div>
     </form>
 
