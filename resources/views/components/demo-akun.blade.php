@@ -17,7 +17,7 @@
             <div class="flex flex-col justify-between py-2">
                 <label class="block">Email</label>
                 <div class="relative">
-                    <input id="adminEmail" type="text" value="demoadmin@gmail.com"
+                    <input id="adminEmail" type="text" value="admin@gmail.com"
                         class="input input-bordered w-full pr-10" readonly>
                     <button type="button"
                         class="btn btn-ghost btn-xs absolute right-2 top-1/2 transform -translate-y-1/2"
@@ -63,7 +63,7 @@
             <div class="flex flex-col justify-between py-2">
                 <label class="block">Email</label>
                 <div class="relative">
-                    <input id="sellerEmail" type="text" value="demoseller@gmail.com"
+                    <input id="sellerEmail" type="text" value="susanti@gmail.com"
                         class="input input-bordered w-full pr-10" readonly>
                     <button type="button"
                         class="btn btn-ghost btn-xs absolute right-2 top-1/2 transform -translate-y-1/2"
