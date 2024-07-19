@@ -3,7 +3,7 @@
         <div class="flex flex-col mb-5">
             <x-breadcrumb :items="$breadcrumbItems" />
             <h4 class="text-xl font-bold text-gray-900">
-                {{ __('Daftar Produk') }}
+                {{ __('FAQs') }}
             </h4>
         </div>
         {{-- Hanya tampilkan untuk admin --}}
@@ -50,7 +50,7 @@
             </div>
         @endif
         {{-- Tampilkan accordion untuk seller --}}
-        @if (auth()->user()->hasRole('seller'))
+        @if (auth()->user()->hasRole('seller') || auth()->user()->hasRole('demo_seller'))
             <div class="container mx-auto flex flex-col lg:flex-row lg:space-x-4">
                 <div class="lg:w-3/4 order-2 lg:order-1 shadow bg-white rounded-lg py-4 px-5">
                     @isset($error)

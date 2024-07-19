@@ -111,7 +111,7 @@
                                     Profil Saya</a></li>
 
                             <li>
-                                @if (Auth::user()->hasRole('admin'))
+                                @if (Auth::user()->hasRole('admin') || Auth::user()->hasRole('demo_admin'))
                                     <a href="{{ route('admin') }}"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -119,7 +119,7 @@
                                         </svg>
                                         Dashboard Admin</a>
                                 @endif
-                                @if (Auth::user()->hasRole('seller'))
+                                @if (Auth::user()->hasRole('seller') || Auth::user()->hasRole('demo_seller'))
                                     <a href="{{ route('seller') }}"><svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                             viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                             <path stroke-linecap="round" stroke-linejoin="round"

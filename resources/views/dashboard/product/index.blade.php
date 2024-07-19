@@ -24,14 +24,26 @@
                     </button>
                 </div>
             </form>
-            <a href="{{ route('dashboard.product.tambah') }}" class="btn btn-primary hidden lg:flex">
-                <span class="hidden sm:inline">Tambah Produk</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-            </a>
+            @if (Auth::user()->hasRole('demo_admin') || Auth::user()->hasRole('demo_seller'))
+                <a onclick="document.getElementById('Forbidden').showModal()" class="btn btn-primary hidden lg:flex">
+                    <span class="hidden sm:inline">Tambah Produk</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </a>
+            @else
+                <a href="{{ route('dashboard.product.tambah') }}" class="btn btn-primary hidden lg:flex">
+                    <span class="hidden sm:inline">Tambah Produk</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </a>
+            @endif
+
         </div>
 
     </div>
@@ -153,8 +165,9 @@
                                     <div class=" flex flex-wrap items-center space-x-2">
                                         <a class="btn btn-ghost btn-xs text-neutral"
                                             onclick="document.getElementById('viewModal{{ $product->id }}').showModal()">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="size-4">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                class="size-4">
                                                 <path stroke-linecap="round" stroke-linejoin="round"
                                                     d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
                                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -163,10 +176,17 @@
                                         </a>
                                         <a href="{{ route('dashboard.product.edit', $product->slug) }}"
                                             class="text-indigo-600 hover:text-indigo-900 btn btn-ghost btn-xs">Edit</a>
-                                        <a class="btn btn-ghost btn-xs text-error"
-                                            onclick="document.getElementById('deleteModal{{ $product->id }}').showModal()">
-                                            Hapus
-                                        </a>
+                                        @if (Auth::user()->hasRole('demo_admin') || Auth::user()->hasRole('demo_seller'))
+                                            <a class="btn btn-ghost btn-xs text-error"
+                                                onclick="document.getElementById('Forbidden').showModal()">
+                                                Hapus
+                                            </a>
+                                        @else
+                                            <a class="btn btn-ghost btn-xs text-error"
+                                                onclick="document.getElementById('deleteModal{{ $product->id }}').showModal()">
+                                                Hapus
+                                            </a>
+                                        @endif
                                     </div>
                                 </td>
                             </tr>
@@ -184,14 +204,25 @@
     <div class="btm-nav shadow-lg z-50 flex lg:hidden">
         <div class="flex flex-row px-4">
             @include('dashboard.product.partials.sorting')
-            <a href="{{ route('dashboard.product.tambah') }}" class="btn btn-primary w-4/5">
-                <span class="inline">Tambah Produk</span>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                    stroke="currentColor" class="size-6">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                        d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                </svg>
-            </a>
+            @if (Auth::user()->hasRole('demo_admin'))
+                <a onclick="document.getElementById('Forbidden').showModal()" class="btn btn-primary w-4/5">
+                    <span class="inline">Buyer Produk</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </a>
+            @else
+                <a href="{{ route('dashboard.product.tambah') }}" class="btn btn-primary w-4/5">
+                    <span class="inline">Tambah Produk</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                        stroke="currentColor" class="size-6">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </a>
+            @endif
         </div>
     </div>
 </x-dashboard-layout>

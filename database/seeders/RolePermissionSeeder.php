@@ -22,6 +22,7 @@ class RolePermissionSeeder extends Seeder
         Permission::create(['name' => 'approve products']);
         Permission::create(['name' => 'manage content']);
         Permission::create(['name' => 'approve sellers']);
+        Permission::create(['name' => 'view demo data']);
 
         // Membuat roles dan menambahkan permissions
         $role = Role::create(['name' => 'visitor']);
@@ -32,5 +33,11 @@ class RolePermissionSeeder extends Seeder
 
         $role = Role::create(['name' => 'admin']);
         $role->givePermissionTo(Permission::all());
+
+        $role = Role::create(['name' => 'demo_seller']);
+        $role->givePermissionTo(['view catalog', 'view statistics', 'view demo data']);
+
+        $role = Role::create(['name' => 'demo_admin']);
+        $role->givePermissionTo(['view catalog', 'view statistics', 'view demo data']);
     }
 }

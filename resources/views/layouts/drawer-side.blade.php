@@ -5,7 +5,7 @@
         <p class="menu-title text-gray-500">
             <span>Dashboard</span>
         </p>
-        @if (auth()->user()->hasRole('seller'))
+        @if (auth()->user()->hasRole('seller') || auth()->user()->hasRole('demo_seller'))
             <li>
                 <a href="{{ route('seller') }}" class="{{ request()->routeIs('seller') ? 'text-indigo-500' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -18,7 +18,7 @@
                 </a>
             </li>
         @endif
-        @if (auth()->user()->hasRole('admin'))
+        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('demo_admin'))
             <li>
                 <a href="{{ route('admin') }}" class="{{ request()->routeIs('admin') ? 'text-indigo-500' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -50,7 +50,7 @@
                 @endif
             </a>
         </li>
-        @if (auth()->user()->hasRole('admin'))
+        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('demo_admin'))
             <li>
                 <a href="{{ route('categories.index') }}"
                     class="{{ request()->routeIs('categories.index', 'categories.create', 'categories.edit') ? 'text-indigo-500' : '' }}">
@@ -81,7 +81,7 @@
 
 
         <!-- Users Section -->
-        @if (auth()->user()->hasRole('admin'))
+        @if (auth()->user()->hasRole('admin') || auth()->user()->hasRole('demo_admin'))
             <p class="menu-title text-gray-500">
                 <span>Pages</span>
             </p>
@@ -97,7 +97,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('carousels.index') }}" lass="{{ request()->routeIs('carousels.index', 'carousels.create', 'carousels.edit') ? 'text-indigo-500' : '' }}">
+                <a href="{{ route('carousels.index') }}"
+                    lass="{{ request()->routeIs('carousels.index', 'carousels.create', 'carousels.edit') ? 'text-indigo-500' : '' }}">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round"

@@ -43,6 +43,7 @@
             </div>
             @include('layouts.drawer-side')
         </div>
+        @include('components.forbidden')
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

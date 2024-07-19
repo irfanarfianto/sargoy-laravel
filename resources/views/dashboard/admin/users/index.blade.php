@@ -53,15 +53,29 @@
                             </td>
                             <td>
                                 <div class="flex space-x-2">
-                                    <button class="btn btn-ghost btn-xs" {{ $user->hasRole('admin') ? 'disabled' : '' }}
-                                        onclick="document.getElementById('editModal{{ $user->id }}').showModal()">
-                                        Edit
-                                    </button>
-                                    <a class="btn btn-ghost btn-xs text-error"
-                                        {{ $user->hasRole('admin') ? 'disabled' : '' }}
-                                        onclick="document.getElementById('deleteModal{{ $user->id }}').showModal()">
-                                        Hapus
-                                    </a>
+                                    @if (Auth::user()->hasRole('demo_admin'))
+                                        <button class="btn btn-ghost btn-xs"
+                                            onclick="document.getElementById('Forbidden').showModal()">
+                                            Edit
+                                        </button>
+                                        <button class="btn btn-ghost btn-xs text-error"
+                                            onclick="document.getElementById('Forbidden').showModal()">
+                                            Hapus
+                                        </button>
+                                    @endif
+
+                                    @if (Auth::user()->hasRole('admin'))
+                                        <button class="btn btn-ghost btn-xs"
+                                            {{ $user->hasRole('admin') ? 'disabled' : '' }}
+                                            onclick="document.getElementById('editModal{{ $user->id }}').showModal()">
+                                            Edit
+                                        </button>
+                                        <a class="btn btn-ghost btn-xs text-error"
+                                            {{ $user->hasRole('admin') ? 'disabled' : '' }}
+                                            onclick="document.getElementById('deleteModal{{ $user->id }}').showModal()">
+                                            Hapus
+                                        </a>
+                                    @endif
                                 </div>
                             </td>
                         </tr>

@@ -67,9 +67,11 @@
                     <div class="flex justify-end space-x-2">
                         <button type="button" class="btn btn-ghost"
                             onclick="closeModal('editModal{{ $category->slug }}')">Batal</button>
-                        <x-loading-button data-loading-text="Memperbarui...">
-                            Perbarui
-                        </x-loading-button>
+                        @if (Auth::user()->hasRole('admin'))
+                            <x-loading-button data-loading-text="Memperbarui...">
+                                Perbarui
+                            </x-loading-button>
+                        @endif
                     </div>
                 </form>
             </div>
@@ -127,9 +129,13 @@
             </div>
             <div class="flex justify-end space-x-2">
                 <button type="button" class="btn btn-ghost" onclick="closeModal('createModal')">Batal</button>
-                <x-loading-button data-loading-text="Menyimpan...">
-                    Simpan
-                </x-loading-button>
+                @if (Auth::user()->hasRole('demo_admin'))
+                    <button onclick="document.getElementById('Forbidden').showModal()"
+                        class="btn btn-primary">Simpan</button>
+                @endif
+                @if (Auth::user()->hasRole('admin'))
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                @endif
             </div>
         </form>
         <!-- Form end -->
