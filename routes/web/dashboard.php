@@ -18,7 +18,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
       Route::patch('profile', [ProfileController::class, 'update'])->name('profile.update');
       Route::delete('profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-      Route::middleware('role:admin|demo_admin')->group(function () {
+      Route::middleware('role:admin')->group(function () {
          Route::resource('users', UserController::class);
          Route::resource('carousels', CarouselController::class);
          Route::resource('categories', CategoryController::class)->except(['show']);
@@ -43,7 +43,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
          Route::get('seller', [SellerController::class, 'index'])->name('seller');
       });
 
-      Route::middleware('role:seller|admin|demo_seller|demo_admin')->group(function () {
+      Route::middleware('role:seller|admin')->group(function () {
          Route::resource('reviews', ProductReviewController::class);
          Route::post('/mark-review-as-read/{review}', [ProductReviewController::class, 'markAsRead'])->name('review.mark-as-read');
          Route::get('/faqs', [FAQController::class, 'index'])->name('faqs.index');
