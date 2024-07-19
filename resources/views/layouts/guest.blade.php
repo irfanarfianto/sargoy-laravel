@@ -11,7 +11,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -36,6 +36,7 @@
                 </p>
             @endif
         </div>
+        @include('components.demo-akun')
         <footer class="fixed bottom-0 left-0 p-4">
             <div class="flex flex-col justify-center items-start space-y-2">
                 <p class="text-xs text-gray-600">Didukung oleh</p>
