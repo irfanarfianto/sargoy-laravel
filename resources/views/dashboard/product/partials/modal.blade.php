@@ -12,31 +12,36 @@
 </x-modal>
 
 <x-modal id="viewModal{{ $product->id }}" title="Detail Product">
-    <div class="avatar">
-        <div class="mask mask-squircle h-12 w-12">
-            <img src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}"
-                alt="{{ $product->name }}" class="h-12 w-12 object-cover">
+    <div class="flex flex-wrap">
+        <div class="w-1/3 lg:pr-3">
+            <div class="relative overflow-hidden rounded-lg">
+                <img src="{{ $product->images->first()->image_url ?? 'https://placehold.co/400' }}"
+                    alt="{{ $product->name }}" class=" aspect-square object-cover">
+            </div>
+        </div>
+        <div class="w-2/3">
+            <div class="flex flex-col items-start space-y-2">
+                @if (!$product->is_verified)
+                    <span class="badge badge-red">Belum Diverifikasi</span>
+                @else
+                    @if ($product->status)
+                        <span class="badge badge-success badge-outline badge-sm"> Status Aktif</span>
+                    @else
+                        <span class="badge badge-danger badge-outline badge-sm">Status Nonaktif</span>
+                    @endif
+                @endif
+                <div class="flex items-center">
+                    <div class="badge badge-primary badge-xs mr-2"></div>
+                    {{ $product->category->name }} <div>
+                    </div>
+                </div>
+            </div>
+            <h3 class="text-lg font-bold">{{ $product->name }}</h3>
         </div>
     </div>
-    <h3 class="text-lg font-bold">{{ $product->name }}</h3>
-    <p class="py-4">{{ $product->description }}</p>
     <div class="flex flex-col gap-2">
-        <div>
-            <span class="font-semibold">Kategori:</span>
-            {{ $product->category->name }}
-        </div>
-        <div>
-            <span class="font-semibold">Status:</span>
-            @if (!$product->is_verified)
-                <span class="badge badge-red">Belum Diverifikasi</span>
-            @else
-                @if ($product->status)
-                    <span class="badge badge-success badge-outline badge-sm">Aktif</span>
-                @else
-                    <span class="badge badge-danger badge-outline badge-sm">Nonaktif</span>
-                @endif
-            @endif
-        </div>
+        <p class="font-semibold">Deskripsi:</p>
+        <p>{{ $product->description }}</p>
         @if ($product->material)
             <div>
                 <span class="font-semibold">Material:</span> {{ $product->material }}
