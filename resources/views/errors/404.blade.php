@@ -26,15 +26,15 @@
             <div class="flex flex-col items-center text-gray-50 text-center">
                 <div class="relative mt-10 md:mt-20 lg:mt-32">
                     <h1 class="text-7xl md:text-9xl tracking-tighter-less text-shadow font-sans font-bold">
-                        <span>4</span><span>0</span><span>3</span>
+                        <span>4</span><span>0</span><span>4</span>
                     </h1>
                     <span
                         class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-6 text-gray-300 font-semibold">Oops!</span>
                 </div>
-                <h5 class="text-gray-300 font-semibold mt-4">Page not found</h5>
-                <a href="{{ route('home.page') }}"
-                    class="bg-green-400 px-5 py-3 text-sm shadow-sm font-medium tracking-wider text-gray-50 rounded-full hover:shadow-lg">
-                    Go to Home
+                <h5 class="font-semibold my-4">Page not found</h5>
+                <a href="{{ URL::previous() }}"
+                    class="btn btn-primary">
+                    Go Back
                 </a>
             </div>
         </div>

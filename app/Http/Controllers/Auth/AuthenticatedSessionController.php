@@ -35,11 +35,11 @@ class AuthenticatedSessionController extends Controller
         // Regenerate the session to prevent session fixation attacks
         $request->session()->regenerate();
 
-        if (Auth::user()->hasRole('admin')) {
+        if (Auth::user()->hasRole('admin|demo_admin')) {
             return redirect()->intended(route('admin'));
         }
 
-        if (Auth::user()->hasRole('seller')) {
+        if (Auth::user()->hasRole('seller|demo_seller')) {
             return redirect()->intended(route('seller'));
         }
 

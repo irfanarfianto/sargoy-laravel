@@ -8,7 +8,12 @@
         </div>
         <div class="hidden lg:flex flex-wrap-reverse w-full md:w-auto space-x-2">
             <button class="btn btn-ghost w-full md:w-auto" onclick="window.history.back();">Kembali</button>
-            <button type="submit" form="tambah-product-form" class="btn btn-primary w-full md:w-auto">Simpan</button>
+            @if (Auth::user()->hasRole('demo_admin') || Auth::user()->hasRole('demo_seller'))
+                <button onclick="document.getElementById('Forbidden').showModal()"
+                    class="btn btn-primary w-full md:w-auto">Simpan</button>
+            @else
+                <button type="submit" form="tambah-product-form" class="btn btn-primary w-full md:w-auto">Simpan</button>
+            @endif
         </div>
     </div>
     <div class="container mb-6 lg:mb-0">
@@ -241,7 +246,12 @@
     <div class="btm-nav shadow-lg z-50 flex lg:hidden">
         <div class="flex flex-row px-4">
             <button class="btn btn-ghost w-1/2" onclick="window.history.back();">Kembali</button>
-            <button type="submit" form="tambah-product-form" class="btn btn-primary w-1/2">Simpan</button>
+            @if (Auth::user()->hasRole('demo_admin') || Auth::user()->hasRole('demo_seller'))
+                <button onclick="document.getElementById('Forbidden').showModal()"
+                    class="btn btn-primary w-1/2">Simpan</button>
+            @else
+                <button type="submit" form="tambah-product-form" class="btn btn-primary w-1/2">Simpan</button>
+            @endif
         </div>
     </div>
 </x-dashboard-layout>

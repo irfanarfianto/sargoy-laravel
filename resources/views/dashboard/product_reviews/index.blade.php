@@ -71,7 +71,7 @@
     </div>
     <div class="container mx-auto shadow bg-white rounded-lg py-4 px-5">
         @if ($productReviews->isEmpty())
-            <div class="flex bg-gray-400 w-full px-2 py-3">
+            <div class="flex space-x-2">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-6">
                     <path stroke-linecap="round" stroke-linejoin="round"

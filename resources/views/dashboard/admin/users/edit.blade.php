@@ -40,7 +40,11 @@
                 @endforeach
             </div>
             <div class="flex justify-end">
-                <button type="submit" class="btn btn-primary">Update</button>
+                @if (Auth::user()->hasRole('demo_admin'))
+                    <button type="submit" class="btn btn-primary" disabled>Update</button>
+                @else
+                    <button type="submit" class="btn btn-primary">Update</button>
+                @endif
             </div>
         </form>
     </div>

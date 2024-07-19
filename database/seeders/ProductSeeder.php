@@ -16,11 +16,6 @@ use GuzzleHttp\Exception\ClientException;
 
 class ProductSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
     public function run()
     {
         $faker = Faker::create();
@@ -33,10 +28,13 @@ class ProductSeeder extends Seeder
             return;
         }
 
-        // Define users who are sellers (assuming you have this role logic implemented)
+        // Define users who are sellers and demo_sellers
         $sellers = User::role('seller')->pluck('id');
-        if ($sellers->isEmpty()) {
-            $this->command->info('No sellers found. Please create sellers first.');
+        $demoSellers = User::role('demo_seller')->pluck('id');
+        $allSellers = $sellers->merge($demoSellers);
+
+        if ($allSellers->isEmpty()) {
+            $this->command->info('No sellers or demo sellers found. Please create sellers or demo sellers first.');
             return;
         }
 
@@ -55,7 +53,7 @@ class ProductSeeder extends Seeder
         // Seed products
         for ($i = 0; $i < 20; $i++) {
             $category = $categories->random();
-            $seller = $sellers->random();
+            $seller = $allSellers->random();
 
             $product = Product::create([
                 'user_id' => $seller,

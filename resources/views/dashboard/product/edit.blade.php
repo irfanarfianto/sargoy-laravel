@@ -8,7 +8,12 @@
         </div>
         <div class="hidden lg:flex flex-wrap-reverse w-full md:w-auto space-x-2">
             <a href="{{ route('dashboard.product.index') }}" class="btn btn-ghost w-full md:w-auto">Kembali</a>
-            <button type="submit" form="edit-product-form" class="btn btn-primary w-full md:w-auto">Simpan</button>
+            @if (Auth::user()->hasRole('demo_admin') || Auth::user()->hasRole('demo_seller'))
+                <button onclick="document.getElementById('Forbidden').showModal()"
+                    class="btn btn-primary w-full md:w-auto">Simpan</button>
+            @else
+                <button type="submit" form="edit-product-form" class="btn btn-primary w-full md:w-auto">Simpan</button>
+            @endif
         </div>
     </div>
     <div class="container mb-6 lg:mb-0">
@@ -210,7 +215,11 @@
     <div
         class="lg:hidden flex fixed bottom-0 left-0 justify-between items-center bg-white w-full py-2 px-4 z-10 shadow-2xl">
         <a href="{{ route('dashboard.product.index') }}" class="btn btn-ghost">Kembali</a>
-        <button type="submit" form="edit-product-form" class="btn btn-primary">Simpan</button>
+        @if (Auth::user()->hasRole('demo_admin') || Auth::user()->hasRole('demo_seller'))
+            <button onclick="document.getElementById('Forbidden').showModal()" class="btn btn-primary">Simpan</button>
+        @else
+            <button type="submit" form="edit-product-form" class="btn btn-primary">Simpan</button>
+        @endif
     </div>
 </x-dashboard-layout>
 
