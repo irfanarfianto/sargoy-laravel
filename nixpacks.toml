@@ -1,5 +1,5 @@
 [phases.setup]
-commands = [
+cmds = [
       "composer install --no-dev --optimize-autoloader",
         "php artisan key:generate",
           "php artisan migrate --force",
@@ -11,13 +11,13 @@ commands = [
 ]
 
 [phases.build]
-commands = [
+cmds = [
       "npm install",
         "npm run production"
 ]
 
 [phases.start]
-commands = [
+cmds = [
       "php artisan serve --host=0.0.0.0 --port=$PORT"
 ]
 
